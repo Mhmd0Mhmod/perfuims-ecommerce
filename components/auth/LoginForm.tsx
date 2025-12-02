@@ -1,0 +1,68 @@
+"use client";
+import { login } from "@/app/(auth)/login/actions";
+import { signInSchema } from "@/lib/zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useCallback } from "react";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+import z from "zod";
+import SubmitButton from "../shared/submit-button";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "../ui/form";
+import { Input } from "../ui/input";
+type SignInFormData = z.infer<typeof signInSchema>;
+function LoginForm() {
+  const form = useForm({
+    resolver: zodResolver(signInSchema),
+    defaultValues: {
+      identifier: "",
+      password: "",
+    },
+  });
+  const handleSubmit = useCallback(async (data: SignInFormData) => {
+    const id = toast.loading("جارٍ تسجيل الدخول...");
+    try {
+      await login(data);
+      toast.success("تم تسجيل الدخول بنجاح!", { id });
+    } catch (error) {
+      if (error instanceof Error) {
+        toast.error(error.message, { id });
+        return;
+      }
+      toast.error("فشل تسجيل الدخول. يرجى التحقق من بياناتك والمحاولة مرة أخرى.", { id });
+    }
+  }, []);
+  return (
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
+        <FormField
+          name="identifier"
+          control={form.control}
+          render={({ field }) => (
+            <FormItem className="space-y-2">
+              <FormLabel>البريد الإلكتروني أو اسم المستخدم</FormLabel>
+              <FormControl>
+                <Input placeholder="أدخل بريدك الإلكتروني أو اسم المستخدم" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          name="password"
+          control={form.control}
+          render={({ field }) => (
+            <FormItem className="space-y-2">
+              <FormLabel>كلمة المرور</FormLabel>
+              <FormControl>
+                <Input placeholder="أدخل كلمة المرور" type="password" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <SubmitButton />
+      </form>
+    </Form>
+  );
+}
+export default LoginForm;
