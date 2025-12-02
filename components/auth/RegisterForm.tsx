@@ -25,13 +25,13 @@ function RegisterForm() {
   const onSubmit = useCallback(
     async function (data: RegisterSchema) {
       const id = toast.loading("جاري التسجيل...");
-      try {
-        await registerAction(data);
-        toast.success("تم التسجيل بنجاح!", { id });
-        form.reset();
-      } catch {
-        toast.error("حدث خطأ أثناء التسجيل. حاول مرة أخرى.", { id });
+      const response = await registerAction(data);
+      if (response?.error) {
+        toast.error(response.message || "حدث خطأ أثناء التسجيل. حاول مرة أخرى.", { id });
+        return;
       }
+      toast.success("تم التسجيل بنجاح!", { id });
+      form.reset();
     },
     [form],
   );

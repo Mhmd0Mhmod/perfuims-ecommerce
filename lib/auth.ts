@@ -1,6 +1,6 @@
 import axiosInstance from "@/lib/axios";
 import { AxiosError } from "axios";
-import NextAuth, { CredentialsSignin, DefaultSession, User } from "next-auth";
+import NextAuth, { CredentialsSignin, User } from "next-auth";
 import { JWT } from "next-auth/jwt";
 import Credentials from "next-auth/providers/credentials";
 import { signInSchema } from "../lib/zod";
@@ -17,12 +17,10 @@ declare module "next-auth" {
     phoneNumber: string;
     role: Roles;
     createdAt: string;
-    token: string;
   }
-
   interface Session {
+    user: User;
     token: string;
-    userDetails: User & DefaultSession["user"];
   }
 }
 
@@ -30,9 +28,10 @@ declare module "next-auth/jwt" {
   /** Returned by the `jwt` callback and `auth`, when using JWT sessions */
   interface JWT {
     token: string;
-    userDetails: User & DefaultSession["user"];
+    userDetails: User;
   }
 }
+
 class CustomError extends CredentialsSignin {
   constructor(message: string) {
     super(message);
@@ -47,8 +46,15 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       authorize: async (credentials) => {
         try {
           const validatedCredentials = signInSchema.parse(credentials);
-          const { data } = await axiosInstance.post<User>("auth/login", validatedCredentials);
-          return data;
+          const { data } = await axiosInstance.post<{ token: string; userDetails: User }>(
+            "auth/login",
+            validatedCredentials,
+          );
+          // Return user with token temporarily (will be separated in jwt callback)
+          return {
+            ...data.userDetails,
+            token: data.token,
+          } as User & { token: string };
         } catch (error) {
           if (error instanceof AxiosError) {
             if (
@@ -72,17 +78,19 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
-        token.userDetails = user as User;
-        token.token = (user as User).token;
+        // Store token separately from user details
+        const { token: authToken, ...userDetails } = user as User & { token: string };
+        token.token = authToken;
+        token.userDetails = userDetails as User;
       }
       return token;
     },
-    async session({ session, token }) {
-      if (token) {
-        (session.user as User) = token.userDetails;
-        session.token = token.token;
-      }
-      return session;
+    session({ session, token }) {
+      return {
+        ...session,
+        user: token.userDetails,
+        token: token.token,
+      };
     },
   },
   secret: process.env.NEXTAUTH_SECRET,
@@ -95,6 +103,7 @@ export async function getUser() {
   const session = await auth();
   return session?.user as User;
 }
+
 export async function getToken() {
   const session = await auth();
   return session?.token as string;

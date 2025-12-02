@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Playfair_Display, Cairo } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
+import { SessionProvider } from "next-auth/react";
 
 const playfairDisplay = Playfair_Display({
   variable: "--font-playfair",
