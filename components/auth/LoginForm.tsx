@@ -1,16 +1,16 @@
 "use client";
 import { login } from "@/app/(auth)/login/actions";
-import { signInSchema } from "@/lib/zod";
+import { SignInSchema, signInSchema } from "@/lib/zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useCallback } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
-import z from "zod";
 import SubmitButton from "../shared/submit-button";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "../ui/form";
 import { Input } from "../ui/input";
-type SignInFormData = z.infer<typeof signInSchema>;
+import { useRouter } from "next/navigation";
 function LoginForm() {
+  const router = useRouter();
   const form = useForm({
     resolver: zodResolver(signInSchema),
     defaultValues: {
@@ -18,19 +18,23 @@ function LoginForm() {
       password: "",
     },
   });
-  const handleSubmit = useCallback(async (data: SignInFormData) => {
-    const id = toast.loading("جارٍ تسجيل الدخول...");
-    try {
-      await login(data);
-      toast.success("تم تسجيل الدخول بنجاح!", { id });
-    } catch (error) {
-      if (error instanceof Error) {
-        toast.error(error.message, { id });
-        return;
+  const handleSubmit = useCallback(
+    async (data: SignInSchema) => {
+      const id = toast.loading("جارٍ تسجيل الدخول...");
+      try {
+        await login(data);
+        toast.success("تم تسجيل الدخول بنجاح!", { id });
+        router.push("/");
+      } catch (error) {
+        if (error instanceof Error) {
+          toast.error(error.message, { id });
+          return;
+        }
+        toast.error("فشل تسجيل الدخول. يرجى التحقق من بياناتك والمحاولة مرة أخرى.", { id });
       }
-      toast.error("فشل تسجيل الدخول. يرجى التحقق من بياناتك والمحاولة مرة أخرى.", { id });
-    }
-  }, []);
+    },
+    [router],
+  );
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
