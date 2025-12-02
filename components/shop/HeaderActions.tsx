@@ -1,6 +1,8 @@
-import { Search, ShoppingCart, Heart, User } from "lucide-react";
-import { Button } from "../ui/button";
+import { Heart, ShoppingCart, User } from "lucide-react";
+import Link from "next/link";
+import LogoutButton from "../auth/LogoutButton";
 import { Badge } from "../ui/badge";
+import { Button } from "../ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -9,16 +11,10 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
-import Link from "next/link";
 
 function HeaderActions() {
   return (
     <div className="flex items-center gap-2">
-      {/* Search Icon - Mobile Only */}
-      <Button variant="ghost" size="icon" className="lg:hidden">
-        <Search className="h-5 w-5" />
-      </Button>
-
       {/* Wishlist */}
       <Button variant="ghost" size="icon" className="relative">
         <Heart className="h-5 w-5" />
@@ -46,28 +42,28 @@ function HeaderActions() {
           <DropdownMenuLabel className="text-right">حسابي</DropdownMenuLabel>
           <DropdownMenuSeparator />
           <DropdownMenuItem className="cursor-pointer">
-            <Link href="/profile" className="w-full text-right">
+            <Link href="/account" className="w-full text-right">
               الملف الشخصي
             </Link>
           </DropdownMenuItem>
           <DropdownMenuItem className="cursor-pointer">
-            <Link href="/orders" className="w-full text-right">
+            <Link href="/account/orders" className="w-full text-right">
               طلباتي
             </Link>
           </DropdownMenuItem>
           <DropdownMenuItem className="cursor-pointer">
-            <Link href="/wishlist" className="w-full text-right">
+            <Link href="/account/wishlist" className="w-full text-right">
               المفضلة
             </Link>
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem className="cursor-pointer">
-            <Link href="/settings" className="w-full text-right">
+            <Link href="/account/settings" className="w-full text-right">
               الإعدادات
             </Link>
           </DropdownMenuItem>
           <DropdownMenuItem className="text-destructive cursor-pointer">
-            تسجيل الخروج
+            <LogoutButton />
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
