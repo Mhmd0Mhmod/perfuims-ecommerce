@@ -1,5 +1,5 @@
+import { getToken } from "@/app/(auth)/action";
 import axios from "axios";
-import { getToken } from "./auth";
 const axiosInstance = axios.create({
   baseURL: process.env.RAILWAY_API,
   headers: {

@@ -4,6 +4,7 @@ import NextAuth, { CredentialsSignin, User } from "next-auth";
 import { JWT } from "next-auth/jwt";
 import Credentials from "next-auth/providers/credentials";
 import { signInSchema } from "../lib/zod";
+import { Roles } from "@/types/roles";
 
 declare module "next-auth" {
   /**
@@ -98,13 +99,3 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     signIn: "/login",
   },
 });
-
-export async function getUser() {
-  const session = await auth();
-  return session?.user as User;
-}
-
-export async function getToken() {
-  const session = await auth();
-  return session?.token as string;
-}

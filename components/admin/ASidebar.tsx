@@ -1,4 +1,3 @@
-import { Button } from "@/components/ui/button";
 import {
   Sidebar,
   SidebarContent,
@@ -15,13 +14,13 @@ import {
   FolderTree,
   Globe,
   LayoutDashboard,
-  LogOut,
   Package,
   Settings,
   ShoppingCart,
   Users,
 } from "lucide-react";
 import ActiveLink from "../shared/active-link";
+import UserMenu from "./UserMenu";
 
 const menuItems = [
   {
@@ -105,16 +104,7 @@ export function ASidebar() {
       </SidebarContent>
 
       <SidebarFooter className="border-t p-4">
-        <SidebarMenu>
-          <SidebarMenuItem>
-            <SidebarMenuButton asChild>
-              <Button variant="outline" className="w-full justify-start gap-2">
-                <LogOut className="h-4 w-4" />
-                <span>تسجيل الخروج</span>
-              </Button>
-            </SidebarMenuButton>
-          </SidebarMenuItem>
-        </SidebarMenu>
+        <UserMenu />
       </SidebarFooter>
     </Sidebar>
   );

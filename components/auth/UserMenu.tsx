@@ -1,4 +1,4 @@
-import { Button } from "@/components/ui/button";
+import { getUser } from "@/app/(auth)/action";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -7,8 +7,9 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { auth } from "@/lib/auth";
 import Link from "next/link";
+import { Suspense } from "react";
+import { Skeleton } from "../ui/skeleton";
 import { UserAvatar } from "./UserAvatar";
 
 interface MenuItem {
@@ -23,23 +24,25 @@ const MENU_ITEMS: MenuItem[] = [
   { href: "/account/settings", label: "الإعدادات" },
 ];
 
-export async function UserMenu() {
-  const user = (await auth())?.user;
-  if (!user) {
-    return null;
-  }
-
+export function UserMenu() {
+  return (
+    <Suspense
+      fallback={
+        <>
+          <Skeleton />
+        </>
+      }
+    >
+      <UserMenuConten />
+    </Suspense>
+  );
+}
+async function UserMenuConten() {
+  const user = await getUser();
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button
-          variant="ghost"
-          size="icon"
-          className="rounded-full p-0"
-          aria-label="قائمة المستخدم"
-        >
-          <UserAvatar user={user} size="sm" />
-        </Button>
+        <UserAvatar user={user} size="sm" />
       </DropdownMenuTrigger>
 
       <DropdownMenuContent align="start" className="w-64 p-0">

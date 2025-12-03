@@ -1,4 +1,5 @@
 import axiosInstance from "@/lib/axios";
+import { Customer } from "@/types/customer";
 
 export async function getCustomers() {
   try {
