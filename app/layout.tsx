@@ -1,9 +1,10 @@
-import type { Metadata } from "next";
-import { Playfair_Display, Cairo } from "next/font/google";
-import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
+import QueryContext from "@/context/QueryContext";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import type { Metadata } from "next";
 import { SessionProvider } from "next-auth/react";
-
+import { Cairo, Playfair_Display } from "next/font/google";
+import "./globals.css";
 const playfairDisplay = Playfair_Display({
   variable: "--font-playfair",
   subsets: ["latin"],
@@ -30,8 +31,13 @@ export default function RootLayout({
   return (
     <html lang="ar" dir="rtl">
       <body className={`${playfairDisplay.variable} ${cairo.variable} antialiased`}>
-        {children}
-        <Toaster position="bottom-left" />
+        <QueryContext>
+          <SessionProvider>
+            {children}
+            <Toaster position="bottom-left" />
+            <ReactQueryDevtools initialIsOpen={false} />
+          </SessionProvider>
+        </QueryContext>
       </body>
     </html>
   );

@@ -1,9 +1,7 @@
+import AddCountryForm from "@/components/admin/countries/AddCountryForm";
 import CountryCard from "@/components/admin/countries/CountryCard";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { CheckCircle2, Globe, Plus, Search, XCircle } from "lucide-react";
-import { getAllCountries, getCountries, getCountryFlag } from "./helpers";
 import {
   Dialog,
   DialogContent,
@@ -11,7 +9,9 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import AddCountryForm from "@/components/admin/countries/AddCountryForm";
+import { Input } from "@/components/ui/input";
+import { CheckCircle2, Globe, Plus, Search, XCircle } from "lucide-react";
+import { getAllCountries, getCountries, getCountryFlag } from "./helpers";
 async function page() {
   const countries = await getCountries();
   await getAllCountries();
@@ -82,7 +82,7 @@ async function page() {
             </DialogTrigger>
             <DialogContent>
               <DialogHeader>
-                <DialogTitle></DialogTitle>
+                <DialogTitle>إضافة دولة جديدة إلى قائمة الدول المتاحة للشحن</DialogTitle>
               </DialogHeader>
               <AddCountryForm />
             </DialogContent>

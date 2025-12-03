@@ -32,7 +32,7 @@ export type RegisterSchema = z.infer<typeof registerSchema>;
 export const addCountrySchema = z.object({
   name: z.string(),
   currency: z.string(),
-  isActive: z.boolean().default(true),
+  isActive: z.boolean(),
 });
 export type AddCountrySchema = z.infer<typeof addCountrySchema>;
 

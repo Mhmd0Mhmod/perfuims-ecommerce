@@ -1,17 +1,10 @@
 import ActiveBadge from "@/components/shared/active-badge";
-import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import { Separator } from "@/components/ui/separator";
-import { Calendar, DollarSign, Edit, Eye, MoreHorizontal, Power, Trash2 } from "lucide-react";
+import { Calendar } from "lucide-react";
 import Image from "next/image";
+import DeleteCountryButton from "./DeleteCountryButton";
+import EditCountryButton from "./EditCountryButton";
 function CountryCard({ country, flagUrl }: { country: Country; flagUrl: string }) {
   return (
     <Card className="transition-shadow hover:shadow-lg">
@@ -26,34 +19,10 @@ function CountryCard({ country, flagUrl }: { country: Country; flagUrl: string }
               <CardDescription className="mt-1">#{country.id}</CardDescription>
             </div>
           </div>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="icon" className="h-8 w-8">
-                <MoreHorizontal className="h-4 w-4" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuLabel>الإجراءات</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem className="gap-2">
-                <Edit className="h-4 w-4" />
-                تعديل البيانات
-              </DropdownMenuItem>
-              <DropdownMenuItem className="gap-2">
-                <Eye className="h-4 w-4" />
-                عرض التفاصيل
-              </DropdownMenuItem>
-              <DropdownMenuItem className="gap-2">
-                <Power className="h-4 w-4" />
-                {country.isActive ? "تعطيل" : "تفعيل"}
-              </DropdownMenuItem>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem className="text-destructive gap-2">
-                <Trash2 className="h-4 w-4" />
-                حذف الدولة
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+          <div className="space-x-2">
+            <EditCountryButton country={country} />
+            <DeleteCountryButton countryId={country.id} />
+          </div>
         </div>
       </CardHeader>
       <CardContent className="space-y-4">
@@ -61,15 +30,12 @@ function CountryCard({ country, flagUrl }: { country: Country; flagUrl: string }
           <span className="text-muted-foreground text-sm">الحالة</span>
           <ActiveBadge isActive={country.isActive} />
         </div>
-
         <Separator />
-
         <div className="space-y-3">
           <div className="flex items-center justify-between">
             <span className="text-muted-foreground text-sm">العملة</span>
             <div className="flex items-center gap-2">
               <span className="font-medium">{country.currency}</span>
-              <DollarSign className="text-muted-foreground h-4 w-4" />
             </div>
           </div>
 

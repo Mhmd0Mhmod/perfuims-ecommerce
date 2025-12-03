@@ -12,9 +12,16 @@ export async function getCountries() {
 
 export async function getAllCountries() {
   try {
-    const { data } = await axios.get(
-      "https://restcountries.com/v3.1/all?fields=name,flags,currencies",
-    );
+    const { data } = await axios.get<
+      {
+        id: number;
+        name: {
+          common: string;
+        };
+        currencies: Record<string, unknown>;
+        flags: { svg: string };
+      }[]
+    >("https://restcountries.com/v3.1/all?fields=name,flags,currencies");
     return data;
   } catch (error) {
     console.error("Error fetching countries:", error);
@@ -31,8 +38,7 @@ export async function getCountryFlag(countryName: string) {
       return countryData[0].flags.svg;
     }
     return null;
-  } catch (error) {
-    console.error(`Error fetching flag for ${countryName}:`, error);
-    return null;
+  } catch {
+    return "/placeholder-flag.svg";
   }
 }

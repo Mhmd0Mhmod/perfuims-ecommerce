@@ -1,8 +1,12 @@
-import { getCountries } from "@/app/admin/countries/helpers";
-import { use } from "react";
+"use client";
+import { getAllCountries } from "@/app/admin/countries/helpers";
+import { useQuery } from "@tanstack/react-query";
 
-function useCountries() {
-  const countries = use(getCountries());
-  return countries;
-}
+const useCountries = () =>
+  useQuery({
+    queryKey: ["countries"],
+    queryFn: getAllCountries,
+    refetchOnWindowFocus: false,
+    staleTime: "static",
+  });
 export { useCountries };

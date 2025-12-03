@@ -1,6 +1,12 @@
 import { Button } from "@/components/ui/button";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { Separator } from "@/components/ui/separator";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { auth } from "@/lib/auth";
 import Link from "next/link";
 import { UserAvatar } from "./UserAvatar";
@@ -24,8 +30,8 @@ export async function UserMenu() {
   }
 
   return (
-    <Popover>
-      <PopoverTrigger>
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
         <Button
           variant="ghost"
           size="icon"
@@ -34,31 +40,32 @@ export async function UserMenu() {
         >
           <UserAvatar user={user} size="sm" />
         </Button>
-      </PopoverTrigger>
+      </DropdownMenuTrigger>
 
-      <PopoverContent align="start" className="w-64 p-0">
-        <div className="flex flex-row-reverse items-center gap-3 p-4">
-          <div className="flex-1 text-right">
-            <p className="text-sm leading-none font-semibold">{user.fullName || user.username}</p>
-            <p className="text-muted-foreground mt-1 text-xs">{user.email}</p>
+      <DropdownMenuContent align="start" className="w-64 p-0">
+        <DropdownMenuLabel className="p-0">
+          <div className="flex flex-row-reverse items-center gap-3 p-4">
+            <div className="flex-1 text-right">
+              <p className="text-sm leading-none font-semibold">{user.fullName || user.username}</p>
+              <p className="text-muted-foreground mt-1 text-xs">{user.email}</p>
+            </div>
           </div>
-        </div>
+        </DropdownMenuLabel>
 
-        <Separator />
+        <DropdownMenuSeparator />
 
-        <div className="p-2">
-          {MENU_ITEMS.map((item) => (
+        {MENU_ITEMS.map((item) => (
+          <DropdownMenuItem key={item.href} asChild>
             <Link
-              key={item.href}
               href={item.href}
-              className="hover:bg-accent hover:text-accent-foreground flex w-full cursor-pointer items-center rounded-sm px-2 py-2 text-right text-sm"
+              className="hover:bg-accent hover:text-accent-foreground flex w-full items-center rounded-sm px-2 py-2 text-right text-sm"
             >
               {item.label}
             </Link>
-          ))}
-        </div>
-      </PopoverContent>
-    </Popover>
+          </DropdownMenuItem>
+        ))}
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 }
 
