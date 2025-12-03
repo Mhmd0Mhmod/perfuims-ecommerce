@@ -24,5 +24,12 @@ axiosInstance.interceptors.response.use(
     return Promise.reject(error);
   },
 );
+const publicAxiosInstance = axios.create({
+  baseURL: process.env.RAILWAY_API,
+  headers: {
+    "Content-Type": "application/json",
+  },
+});
 
+export { publicAxiosInstance };
 export default axiosInstance;

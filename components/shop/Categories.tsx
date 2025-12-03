@@ -1,41 +1,10 @@
 import { Card, CardContent } from "../ui/card";
 import { Badge } from "../ui/badge";
 import Link from "next/link";
+import { getAllCategories } from "@/app/(shop)/helper";
 
-function Categories() {
-  const categories = [
-    {
-      name: "عطور رجالية",
-      count: "150+ منتج",
-      href: "/category/men",
-    },
-    {
-      name: "عطور نسائية",
-      count: "200+ منتج",
-      href: "/category/women",
-    },
-    {
-      name: "عطور للجنسين",
-      count: "80+ منتج",
-      href: "/category/unisex",
-    },
-    {
-      name: "عطور فاخرة",
-      count: "120+ منتج",
-      href: "/category/luxury",
-    },
-    {
-      name: "عطور شرقية",
-      count: "90+ منتج",
-      href: "/category/oriental",
-    },
-    {
-      name: "عطور منعشة",
-      count: "110+ منتج",
-      href: "/category/fresh",
-    },
-  ];
-
+async function Categories() {
+  const categories = await getAllCategories();
   return (
     <section className="bg-muted/30 py-16 md:py-24">
       <div className="container mx-auto px-4">
@@ -52,8 +21,8 @@ function Categories() {
 
         {/* Categories Grid */}
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {categories.map((category) => (
-            <Link key={category.name} href={category.href}>
+          {categories.content.map((category) => (
+            <Link key={category.name} href={`/products?category=${category.id}`}>
               <Card className="group hover:border-primary overflow-hidden transition-all hover:shadow-lg">
                 <CardContent className="p-6">
                   <div className="flex items-center justify-between">
@@ -61,7 +30,7 @@ function Categories() {
                       <h3 className="group-hover:text-primary mb-2 text-xl font-bold transition-colors">
                         {category.name}
                       </h3>
-                      <p className="text-muted-foreground text-sm">{category.count}</p>
+                      <p className="text-muted-foreground text-sm">{category.description}</p>
                     </div>
                     <div className="bg-primary/10 group-hover:bg-primary/20 flex h-16 w-16 items-center justify-center rounded-full transition-colors">
                       <div className="bg-primary/20 h-10 w-10 rounded-full" />

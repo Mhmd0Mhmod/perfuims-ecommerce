@@ -2,15 +2,7 @@
 
 import { addCategory, updateCategory } from "@/app/admin/categories/actions";
 import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
+import { DialogFooter } from "@/components/ui/dialog";
 import {
   Form,
   FormControl,
@@ -33,7 +25,6 @@ import { Textarea } from "@/components/ui/textarea";
 import { useAdminCountries } from "@/hooks/use-admin-countries";
 import { AddCategorySchema, addCategorySchema } from "@/lib/zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Plus } from "lucide-react";
 import { useCallback } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
