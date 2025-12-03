@@ -28,3 +28,20 @@ export const registerSchema = z.object({
   role: z.literal("customer"),
 });
 export type RegisterSchema = z.infer<typeof registerSchema>;
+
+export const addCountrySchema = z.object({
+  name: z.string(),
+  currency: z.string(),
+  isActive: z.boolean().default(true),
+});
+export type AddCountrySchema = z.infer<typeof addCountrySchema>;
+
+export const addCategorySchema = z.object({
+  name: z.string({ message: "اسم التصنيف مطلوب" }).min(3, {
+    message: "اسم التنصيف يجب ان يكون 3 احرف علي الاقل",
+  }),
+  description: z.string().nullable,
+  countryId: z.number(),
+  isActive: z.boolean().default(true),
+});
+export type AddCategorySchema = z.infer<typeof addCategorySchema>;

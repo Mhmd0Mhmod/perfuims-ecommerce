@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button";
 import {
   Sidebar,
   SidebarContent,
@@ -11,22 +12,27 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import {
+  FolderTree,
+  Globe,
   LayoutDashboard,
+  LogOut,
   Package,
+  Settings,
   ShoppingCart,
   Users,
-  FolderTree,
-  Settings,
-  LogOut,
 } from "lucide-react";
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
+import ActiveLink from "../shared/active-link";
 
 const menuItems = [
   {
     title: "لوحة التحكم",
     url: "/admin",
     icon: LayoutDashboard,
+  },
+  {
+    title: "النطاقات",
+    url: "/admin/countries",
+    icon: Globe,
   },
   {
     title: "المنتجات",
@@ -82,10 +88,14 @@ export function ASidebar() {
               {menuItems.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
-                    <Link href={item.url} className="flex items-center gap-3">
+                    <ActiveLink
+                      href={item.url}
+                      className="flex items-center gap-3"
+                      activeClassName="bg-primary/10 text-primary"
+                    >
                       <item.icon className="h-5 w-5" />
                       <span>{item.title}</span>
-                    </Link>
+                    </ActiveLink>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}

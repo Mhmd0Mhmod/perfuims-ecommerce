@@ -1,3 +1,4 @@
+"use client";
 import { deleteCustomerAction } from "@/app/admin/customers/actions";
 import {
   AlertDialog,
@@ -32,7 +33,7 @@ function DeleteCustomerButton({ customerId }: { customerId: number }) {
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>حذف العميل</AlertDialogTitle>
+          <AlertDialogTitle className="sm:text-right">حذف العميل</AlertDialogTitle>
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>إلغاء</AlertDialogCancel>

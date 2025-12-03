@@ -17,6 +17,7 @@ import { Calendar, Eye, Mail, Phone, Search, Shield, UserCog, Users } from "luci
 import { getCustomers } from "./helper";
 import { formatDate, getInitials } from "@/lib/utils";
 import Link from "next/link";
+import { UserAvatar } from "@/components/auth/UserAvatar";
 
 async function page() {
   const customers = await getCustomers();
@@ -94,11 +95,12 @@ async function page() {
                     <TableRow key={customer.id} className="hover:bg-muted/50">
                       <TableCell>
                         <div className="flex items-center gap-3">
-                          <Avatar className="h-10 w-10">
-                            <AvatarFallback className="bg-primary/10 text-primary font-semibold">
-                              {getInitials(customer.fullName)}
-                            </AvatarFallback>
-                          </Avatar>
+                          <UserAvatar
+                            user={{
+                              name: customer.fullName,
+                            }}
+                            size="sm"
+                          />
                           <div className="text-right">
                             <div className="font-medium">{customer.fullName}</div>
                             <div className="text-muted-foreground text-sm">
