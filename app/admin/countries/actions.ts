@@ -5,6 +5,19 @@ import { ErrorResponse } from "@/lib/utils";
 import { AddCountrySchema } from "@/lib/zod";
 import { revalidatePath } from "next/cache";
 
+export async function getCountries(): Promise<ApiResponse<Pagination<Country>>> {
+  try {
+    const response = await axiosInstance.get<Pagination<Country>>("admin/countries");
+    return {
+      data: response.data,
+      status: response.status,
+      success: true,
+    };
+  } catch (error) {
+    return ErrorResponse(error);
+  }
+}
+
 export async function addCountry(data: AddCountrySchema): Promise<ApiResponse<Country>> {
   try {
     const response = await axiosInstance.post<Country>("admin/countries", data);

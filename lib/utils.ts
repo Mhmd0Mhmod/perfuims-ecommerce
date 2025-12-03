@@ -30,10 +30,11 @@ export function formatDate(dateString: string, type: "short" | "long" = "long"):
   }).format(date);
 }
 
-export function ErrorResponse(error: unknown): ResponseError {
+export function ErrorResponse<T = void>(error: unknown): ApiResponse<T> {
   if (error instanceof AxiosError) {
     const axiosError = error as AxiosError<{ message: string }>;
     return {
+      success: false,
       status: axiosError.response?.status || 500,
       error: axiosError.response?.statusText || "Internal Server Error",
       message: axiosError.response?.data.message || "An unexpected error occurred",
@@ -41,12 +42,14 @@ export function ErrorResponse(error: unknown): ResponseError {
   }
   if (error instanceof Error) {
     return {
+      success: false,
       status: 500,
       error: "Internal Server Error",
       message: error.message,
     };
   }
   return {
+    success: false,
     status: 500,
     error: "Internal Server Error",
     message: "An unexpected error occurred",

@@ -3,28 +3,51 @@
 import axiosInstance from "@/lib/axios";
 import { ErrorResponse } from "@/lib/utils";
 import { AddCategorySchema } from "@/lib/zod";
+import { revalidatePath } from "next/cache";
 
-export async function addCategory(data: AddCategorySchema) {
+export async function addCategory(data: AddCategorySchema): Promise<ApiResponse<Category>> {
   try {
-    const respone = await axiosInstance.post("admin/categories", data);
-    return respone;
+    const response = await axiosInstance.post<Category>("admin/categories", data);
+    revalidatePath("/admin/categories");
+    return {
+      data: response.data,
+      status: response.status,
+      message: "تمت إضافة التصنيف بنجاح",
+      success: true,
+    };
   } catch (error) {
     return ErrorResponse(error);
   }
 }
 
-export async function updateCategory(categoryId: number, data: Partial<AddCategorySchema>) {
+export async function updateCategory(
+  categoryId: number,
+  data: Partial<AddCategorySchema>,
+): Promise<ApiResponse<Category>> {
   try {
-    const respone = await axiosInstance.patch(`admin/categories/${categoryId}`, data);
-    return respone;
+    const response = await axiosInstance.patch<Category>(`admin/categories/${categoryId}`, data);
+    revalidatePath(`/admin/categories/${categoryId}`);
+    revalidatePath("/admin/categories");
+    return {
+      data: response.data,
+      status: response.status,
+      message: "تم تحديث بيانات التصنيف بنجاح",
+      success: true,
+    };
   } catch (error) {
     return ErrorResponse(error);
   }
 }
-export async function deleteCategory(categoryId: number) {
+
+export async function deleteCategory(categoryId: number): Promise<ApiResponse> {
   try {
-    const respone = await axiosInstance.delete(`admin/categories/${categoryId}`);
-    return respone;
+    const response = await axiosInstance.delete(`admin/categories/${categoryId}`);
+    revalidatePath("/admin/categories");
+    return {
+      status: response.status,
+      message: "تم حذف التصنيف بنجاح",
+      success: true,
+    };
   } catch (error) {
     return ErrorResponse(error);
   }

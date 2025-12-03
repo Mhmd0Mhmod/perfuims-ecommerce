@@ -40,8 +40,8 @@ export const addCategorySchema = z.object({
   name: z.string({ message: "اسم التصنيف مطلوب" }).min(3, {
     message: "اسم التنصيف يجب ان يكون 3 احرف علي الاقل",
   }),
-  description: z.string().nullable,
-  countryId: z.number(),
-  isActive: z.boolean().default(true),
+  description: z.string().nullable(),
+  countryId: z.number().or(z.string()),
+  isActive: z.boolean(),
 });
 export type AddCategorySchema = z.infer<typeof addCategorySchema>;
