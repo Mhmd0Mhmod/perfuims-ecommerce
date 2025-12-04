@@ -21,6 +21,7 @@ import {
 } from "lucide-react";
 import ActiveLink from "../shared/active-link";
 import UserMenu from "./UserMenu";
+import Link from "next/link";
 
 const menuItems = [
   {
@@ -66,14 +67,16 @@ export function ASidebar() {
       <SidebarHeader className="border-b p-4">
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButton className="flex items-center gap-2" size="lg">
-              <div className="bg-primary flex h-10 w-10 items-center justify-center rounded-lg">
-                <Package className="text-primary-foreground h-6 w-6" />
-              </div>
-              <div className="text-right">
-                <h2 className="text-lg font-bold">لوحة الإدارة</h2>
-                <p className="text-muted-foreground text-xs">متجر العطور</p>
-              </div>
+            <SidebarMenuButton size="lg">
+              <Link href="/" className="flex items-center gap-2">
+                <div className="bg-primary flex h-10 w-10 items-center justify-center rounded-lg">
+                  <Package className="text-primary-foreground h-6 w-6" />
+                </div>
+                <div className="text-right">
+                  <h2 className="text-lg font-bold">لوحة الإدارة</h2>
+                  <p className="text-muted-foreground text-xs">متجر العطور</p>
+                </div>
+              </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
@@ -86,16 +89,16 @@ export function ASidebar() {
             <SidebarMenu>
               {menuItems.map((item) => (
                 <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild>
-                    <ActiveLink
-                      href={item.url}
-                      className="flex items-center gap-3"
-                      activeClassName="bg-primary/10 text-primary"
-                    >
+                  <ActiveLink
+                    href={item.url}
+                    className="flex cursor-pointer items-center gap-3 rounded-md"
+                    activeClassName="bg-primary/10 text-primary"
+                  >
+                    <SidebarMenuButton tooltip={item.title} className="flex items-center gap-3">
                       <item.icon className="h-5 w-5" />
                       <span>{item.title}</span>
-                    </ActiveLink>
-                  </SidebarMenuButton>
+                    </SidebarMenuButton>
+                  </ActiveLink>
                 </SidebarMenuItem>
               ))}
             </SidebarMenu>
