@@ -7,5 +7,6 @@ interface Customer {
   email: string;
   phoneNumber: string;
   role: Roles;
+  deleted: boolean;
   createdAt: string;
 }

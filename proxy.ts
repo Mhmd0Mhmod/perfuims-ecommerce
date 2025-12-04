@@ -10,6 +10,13 @@ export const proxy = auth(async (request) => {
     if (!user) return NextResponse.redirect(new URL("/login", request.url));
     if (user.role !== Roles.ADMIN) return NextResponse.redirect(new URL("/", request.url));
   }
+  if (pathname === "/account") {
+    if (!user) return NextResponse.redirect(new URL("/login", request.url));
+    if (user.role === Roles.ADMIN) return NextResponse.redirect(new URL("/admin", request.url));
+  }
 
   return NextResponse.next();
 });
+export const config = {
+  matcher: ["/admin/:path*", "/account"],
+};

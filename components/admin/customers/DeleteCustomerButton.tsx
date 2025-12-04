@@ -14,7 +14,13 @@ import { Button } from "@/components/ui/button";
 import { Trash } from "lucide-react";
 import { useCallback } from "react";
 import { toast } from "sonner";
-function DeleteCustomerButton({ customerId }: { customerId: number }) {
+function DeleteCustomerButton({
+  customerId,
+  disabled,
+}: {
+  customerId: number;
+  disabled?: boolean;
+}) {
   const handleDelete = useCallback(async () => {
     const id = toast.loading("جاري حذف العميل...");
     const response = await deleteCustomerAction(customerId);
@@ -26,7 +32,7 @@ function DeleteCustomerButton({ customerId }: { customerId: number }) {
   }, [customerId]);
   return (
     <AlertDialog>
-      <AlertDialogTrigger asChild>
+      <AlertDialogTrigger asChild disabled={disabled}>
         <Button variant={"ghost"} size="sm">
           <Trash className="h-4 w-4 text-red-600" />
         </Button>

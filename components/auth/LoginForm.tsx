@@ -21,17 +21,13 @@ function LoginForm() {
   const handleSubmit = useCallback(
     async (data: SignInSchema) => {
       const id = toast.loading("جارٍ تسجيل الدخول...");
-      try {
-        await login(data);
-        toast.success("تم تسجيل الدخول بنجاح!", { id });
-        router.push("/");
-      } catch (error) {
-        if (error instanceof Error) {
-          toast.error(error.message, { id });
-          return;
-        }
-        toast.error("فشل تسجيل الدخول. يرجى التحقق من بياناتك والمحاولة مرة أخرى.", { id });
+      const respone = await login(data);
+      if (!respone?.success) {
+        toast.error(respone?.message, { id });
+        return;
       }
+      toast.success("تم تسجيل الدخول بنجاح!", { id });
+      router.push("/");
     },
     [router],
   );

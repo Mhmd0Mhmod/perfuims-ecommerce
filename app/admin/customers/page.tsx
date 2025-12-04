@@ -1,6 +1,6 @@
 import RemoveCustomerButton from "@/components/admin/customers/DeleteCustomerButton";
 import { UserAvatar } from "@/components/auth/UserAvatar";
-import CardSkeleton from "@/components/shared/card-skeleton";
+import StatsSkeleton from "@/components/shared/stats-skeleton";
 import TableSkeleton from "@/components/shared/table-skeleton";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -14,14 +14,13 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { formatDate } from "@/lib/utils";
+import { cn, formatDate } from "@/lib/utils";
 import { Customer } from "@/types/customer";
 import { Roles } from "@/types/roles";
 import { Calendar, Eye, Mail, Phone, Search, Shield, UserCog, Users } from "lucide-react";
 import Link from "next/link";
 import { Suspense } from "react";
 import { getCustomers } from "./helper";
-import StatsSkeleton from "@/components/shared/stats-skeleton";
 
 function page() {
   return (
@@ -118,7 +117,13 @@ async function CustomerTable() {
           <TableBody>
             {customers.content.length > 0 ? (
               customers.content.map((customer: Customer) => (
-                <TableRow key={customer.id} className="hover:bg-muted/50">
+                <TableRow
+                  key={customer.id}
+                  className={cn(
+                    "hover:bg-muted/50",
+                    customer.deleted && "bg-muted/10 cursor-not-allowed opacity-50",
+                  )}
+                >
                   <TableCell>
                     <div className="flex items-center gap-3">
                       <UserAvatar
@@ -163,12 +168,12 @@ async function CustomerTable() {
                     </div>
                   </TableCell>
                   <TableCell className="flex items-center justify-end text-left">
-                    <Button variant={"ghost"} size="sm">
+                    <Button variant={"ghost"} size="sm" disabled={customer.deleted}>
                       <Link href={`/admin/customers/${customer.id}`}>
                         <Eye />
                       </Link>
                     </Button>
-                    <RemoveCustomerButton customerId={customer.id} />
+                    <RemoveCustomerButton customerId={customer.id} disabled={customer.deleted} />
                   </TableCell>
                 </TableRow>
               ))
