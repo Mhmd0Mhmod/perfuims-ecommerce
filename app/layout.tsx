@@ -34,8 +34,8 @@ export default function RootLayout({
         <QueryContext>
           <SessionProvider>
             {children}
-            <Toaster position="bottom-left" />
-            <ReactQueryDevtools initialIsOpen={false} buttonPosition="top-left" />
+            <Toaster position="bottom-right" />
+            <ReactQueryDevtools initialIsOpen={false} />
           </SessionProvider>
         </QueryContext>
       </body>
