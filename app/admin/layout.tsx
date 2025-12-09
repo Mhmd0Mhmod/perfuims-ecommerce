@@ -1,6 +1,5 @@
 import ASidebar from "@/components/admin/ASidebar";
 import { SidebarInset, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
-
 function layout({ children }: { children: React.ReactNode }) {
   return (
     <SidebarProvider>

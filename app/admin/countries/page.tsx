@@ -142,7 +142,7 @@ async function CountriesList() {
   );
 }
 
-async function page() {
+function page() {
   return (
     <div className="container mx-auto space-y-6 p-6">
       {/* Stats Cards */}

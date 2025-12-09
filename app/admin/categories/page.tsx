@@ -14,7 +14,7 @@ import { Suspense } from "react";
 import { getCategories } from "./helper";
 import { Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
-async function CategoriesPage() {
+function CategoriesPage() {
   return (
     <div className="container mx-auto space-y-6 p-6">
       <div className="flex items-center justify-between">

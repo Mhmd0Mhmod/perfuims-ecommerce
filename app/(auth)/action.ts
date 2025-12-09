@@ -1,5 +1,4 @@
 "use server";
-
 import { auth } from "@/lib/auth";
 import { User } from "next-auth";
 

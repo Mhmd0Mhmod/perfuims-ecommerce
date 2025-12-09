@@ -31,9 +31,34 @@ import { getAdminProducts } from "./helper";
 import { getCategories } from "../categories/helper";
 import { getAdminSizes } from "../sizes/helper";
 
-async function ProductsPage() {
+async function AddProductDialogButton() {
   const categories = await getCategories();
+
   const sizes = await getAdminSizes();
+  return (
+    <Dialog>
+      <DialogTrigger asChild>
+        <Button>
+          <Plus className="mr-2 h-4 w-4" />
+          إضافة منتج
+        </Button>
+      </DialogTrigger>
+      <DialogContent>
+        <DialogClose />
+        <DialogHeader className="sm:text-right">
+          <DialogTitle>إضافة منتج جديد</DialogTitle>
+          <DialogDescription>
+            أدخل بيانات المنتج الجديد هنا. انقر حفظ عند الانتهاء.
+          </DialogDescription>
+        </DialogHeader>
+
+        <AddProductDialog categories={categories.content} sizes={sizes.content} />
+      </DialogContent>
+    </Dialog>
+  );
+}
+
+function ProductsPage() {
   return (
     <div className="container mx-auto space-y-6 p-6">
       {/* Header */}
@@ -42,25 +67,7 @@ async function ProductsPage() {
           <h1 className="text-3xl font-bold tracking-tight">المنتجات</h1>
           <p className="text-muted-foreground">إدارة جميع المنتجات والباقات</p>
         </div>
-        <Dialog>
-          <DialogTrigger asChild>
-            <Button>
-              <Plus className="mr-2 h-4 w-4" />
-              إضافة منتج
-            </Button>
-          </DialogTrigger>
-          <DialogContent>
-            <DialogClose />
-            <DialogHeader className="sm:text-right">
-              <DialogTitle>إضافة منتج جديد</DialogTitle>
-              <DialogDescription>
-                أدخل بيانات المنتج الجديد هنا. انقر حفظ عند الانتهاء.
-              </DialogDescription>
-            </DialogHeader>
-
-            <AddProductDialog categories={categories.content} sizes={sizes.content} />
-          </DialogContent>
-        </Dialog>
+        <AddProductDialogButton />
       </div>
 
       {/* Stats Cards */}

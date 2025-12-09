@@ -5,7 +5,7 @@ import ProductCard from "../products/ProductCard";
 import CardSkeleton from "../shared/card-skeleton";
 
 function ProductsGrid({ limit = 4 }: { limit?: number }) {
-  const { data: products, isFetching } = useProducts();
+  const { data: products, isFetching } = useProducts({});
   if (isFetching) {
     return (
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
