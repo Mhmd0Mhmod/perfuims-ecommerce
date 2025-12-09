@@ -1,13 +1,13 @@
 "use client";
-import { getCountries } from "@/app/admin/countries/actions";
+import { getAdminCountries } from "@/app/admin/countries/helpers";
 import { useQuery } from "@tanstack/react-query";
 
 const useAdminCountries = () =>
   useQuery({
     queryKey: ["admin-countries"],
     queryFn: async () => {
-      const response = await getCountries();
-      return response.data;
+      const response = await getAdminCountries();
+      return response;
     },
   });
 

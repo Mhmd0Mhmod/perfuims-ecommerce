@@ -2,7 +2,7 @@ import axiosInstance from "@/lib/axios";
 import { throwingError } from "@/lib/utils";
 import axios from "axios";
 
-export async function getCountries() {
+export async function getAdminCountries() {
   try {
     const response = await axiosInstance.get<Pagination<Country>>("admin/countries");
     return response.data;

@@ -1,52 +1,9 @@
 import Link from "next/link";
-import ProductCard from "../products/ProductCard";
 import { Badge } from "../ui/badge";
 import { Button } from "../ui/button";
+import ProductsGrid from "./ProductsGrid";
 
 function FeaturedProducts() {
-  const products = [
-    {
-      id: 1,
-      name: "عطر الورد الفاخر",
-      price: "450 ريال",
-      originalPrice: "600 ريال",
-      rating: 4.8,
-      reviews: 124,
-      badge: "الأكثر مبيعاً",
-      inStock: true,
-    },
-    {
-      id: 2,
-      name: "عطر العود الملكي",
-      price: "850 ريال",
-      originalPrice: "1200 ريال",
-      rating: 4.9,
-      reviews: 89,
-      badge: "جديد",
-      inStock: true,
-    },
-    {
-      id: 3,
-      name: "عطر الياسمين الشرقي",
-      price: "380 ريال",
-      originalPrice: "500 ريال",
-      rating: 4.7,
-      reviews: 156,
-      badge: "خصم 30%",
-      inStock: true,
-    },
-    {
-      id: 4,
-      name: "عطر المسك الأبيض",
-      price: "520 ريال",
-      originalPrice: "750 ريال",
-      rating: 4.9,
-      reviews: 203,
-      badge: "الأكثر مبيعاً",
-      inStock: true,
-    },
-  ];
-
   return (
     <section className="py-16 md:py-24">
       <div className="container mx-auto px-4">
@@ -62,11 +19,7 @@ function FeaturedProducts() {
         </div>
 
         {/* Products Grid */}
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {products.map((product) => (
-            <ProductCard key={product.id} product={product} />
-          ))}
-        </div>
+        <ProductsGrid limit={4} />
 
         {/* View All Button */}
         <div className="mt-12 text-center">

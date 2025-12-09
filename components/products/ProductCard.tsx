@@ -1,30 +1,49 @@
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { ShoppingCart, Heart, Star } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Product } from "@/types/product";
+import { Heart, ShoppingCart } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 
 interface ProductCardProps {
-  product: {
-    id: number;
-    name: string;
-    price: string;
-    originalPrice?: string;
-    rating: number;
-    reviews: number;
-    badge?: string;
-    inStock: boolean;
-  };
+  product: Product;
 }
 
 function ProductCard({ product }: ProductCardProps) {
+  // Determine if product is available
+  const isAvailable = product.isPackage
+    ? true
+    : product.variants?.some((v) => v.isAvailable) || false;
+
+  // Get price to display
+  const displayPrice = product.isPackage
+    ? product.price
+    : product.variants?.find((v) => v.isAvailable)?.price || product.variants?.[0]?.price;
+
   return (
     <Card className="group overflow-hidden p-0 transition-shadow hover:shadow-lg">
       <CardHeader className="relative p-0">
-        <div className="bg-muted relative flex aspect-square items-center justify-center overflow-hidden">
-          <div className="bg-primary/20 h-32 w-32 rounded-full" />
-          {product.badge && (
-            <Badge className="bg-primary absolute top-4 right-4">{product.badge}</Badge>
+        <div className="bg-muted relative aspect-square overflow-hidden">
+          {product.imageUrl ? (
+            <Image
+              src={product.imageUrl}
+              alt={product.name}
+              fill
+              className="object-cover transition-transform group-hover:scale-105"
+            />
+          ) : (
+            <div className="flex h-full items-center justify-center">
+              <div className="bg-primary/20 h-32 w-32 rounded-full" />
+            </div>
+          )}
+          {product.categoryName && (
+            <Badge className="bg-primary absolute top-4 right-4">{product.categoryName}</Badge>
+          )}
+          {!isAvailable && (
+            <Badge variant="destructive" className="absolute bottom-4 left-4">
+              غير متوفر
+            </Badge>
           )}
           <Button
             size="icon"
@@ -37,32 +56,28 @@ function ProductCard({ product }: ProductCardProps) {
       </CardHeader>
       <CardContent className="p-4 text-right">
         <CardTitle className="mb-2 line-clamp-2 text-lg">{product.name}</CardTitle>
-        <div className="mb-2 flex items-center justify-end gap-2">
-          <div className="text-muted-foreground flex items-center gap-1 text-sm">
-            <span>({product.reviews})</span>
-            <span>{product.rating}</span>
-          </div>
-          <Star className="fill-primary text-primary h-4 w-4" />
-        </div>
-        <div className="mb-2 flex items-center justify-end gap-2">
-          {product.originalPrice && (
-            <span className="text-muted-foreground text-sm line-through">
-              {product.originalPrice}
-            </span>
-          )}
-          <span className="text-primary text-xl font-bold">{product.price}</span>
-        </div>
-        {!product.inStock && (
-          <Badge variant="secondary" className="mt-2">
-            غير متوفر حالياً
-          </Badge>
+        {product.description && (
+          <p className="text-muted-foreground mb-3 line-clamp-2 text-sm">{product.description}</p>
         )}
+        <div className="flex items-center justify-between">
+          {displayPrice && (
+            <span className="text-primary text-xl font-bold">{displayPrice.toFixed(2)}</span>
+          )}
+          {product.isPackage ? (
+            <Badge variant="secondary">عبوة</Badge>
+          ) : (
+            product.variants &&
+            product.variants.length > 0 && (
+              <Badge variant="outline">{product.variants.length} أحجام</Badge>
+            )
+          )}
+        </div>
       </CardContent>
       <CardFooter className="p-4 pt-0">
-        <Button asChild className="w-full" disabled={!product.inStock}>
+        <Button asChild className="w-full" disabled={!isAvailable}>
           <Link href={`/products/${product.id}`}>
             <ShoppingCart className="ml-2 h-4 w-4" />
-            {product.inStock ? "أضف للسلة" : "عرض المنتج"}
+            {isAvailable ? "أضف للسلة" : "عرض المنتج"}
           </Link>
         </Button>
       </CardFooter>

@@ -6,15 +6,14 @@ import { Card, CardContent } from "../ui/card";
 import CategoriesSkeleton from "./CategoriesSkeleton";
 
 function CategoriesGrid() {
-  const { data: page, isFetching } = useCategories();
+  const { data: categories, isFetching } = useCategories();
   if (isFetching) {
     return <CategoriesSkeleton />;
   }
-  console.log(page);
 
   return (
     <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-      {page?.content.map((category) => (
+      {categories?.map((category) => (
         <Link key={category.id} href={`/products?category=${category.id}`}>
           <Card className="group hover:border-primary border transition-all hover:shadow-lg">
             <CardContent className="flex items-center gap-4 p-6">
