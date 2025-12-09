@@ -79,7 +79,7 @@ export const addProductSchema = z.object({
     .optional(),
   description: z.string().optional(),
   variants: z.array(addProductVariantSchema).optional(),
-  categoryId: z.number().or(z.string()).optional(),
+  categoryIds: z.array(z.string()).optional(),
   imageUrl: z.string().url().optional(),
 });
 export type AddProductSchema = z.infer<typeof addProductSchema>;

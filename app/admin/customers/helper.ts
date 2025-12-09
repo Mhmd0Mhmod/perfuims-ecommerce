@@ -1,4 +1,5 @@
 import axiosInstance from "@/lib/axios";
+import { throwingError } from "@/lib/utils";
 import { Customer } from "@/types/customer";
 
 export async function getCustomers() {
@@ -6,6 +7,6 @@ export async function getCustomers() {
     const { data } = await axiosInstance.get<Pagination<Customer>>("/admin/users");
     return data;
   } catch (error) {
-    throw error;
+    throw throwingError(error);
   }
 }

@@ -71,7 +71,7 @@ function FeaturedProducts() {
         {/* View All Button */}
         <div className="mt-12 text-center">
           <Button asChild size="lg" variant="outline">
-            <Link href="/shop">عرض جميع المنتجات</Link>
+            <Link href="/products">عرض جميع المنتجات</Link>
           </Button>
         </div>
       </div>

@@ -61,10 +61,10 @@ function HeroShopPage() {
             {/* CTA Buttons */}
             <div className="flex flex-col gap-4 sm:flex-row">
               <Button asChild size="lg" variant="outline" className="text-base">
-                <Link href="/shop">تصفح الكل</Link>
+                <Link href="/products">تصفح الكل</Link>
               </Button>
               <Button asChild size="lg" className="text-base">
-                <Link href="/deals">العروض الخاصة</Link>
+                <Link href="/products?deals=true">العروض الخاصة</Link>
               </Button>
             </div>
 

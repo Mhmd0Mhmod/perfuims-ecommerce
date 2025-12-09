@@ -29,7 +29,15 @@ export function formatDate(dateString: string, type: "short" | "long" = "long"):
     day: "numeric",
   }).format(date);
 }
-
+export function throwingError(error: unknown) {
+  if (error instanceof AxiosError) {
+    throw new Error(error.response?.data.message || "An unexpected error occurred");
+  }
+  if (error instanceof Error) {
+    throw new Error(error.message);
+  }
+  throw new Error("An unexpected error occurred");
+}
 export function ErrorResponse<T = void>(error: unknown): ApiResponse<T> {
   if (error instanceof AxiosError) {
     const axiosError = error as AxiosError<{ message: string }>;

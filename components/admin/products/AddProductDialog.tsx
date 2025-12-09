@@ -10,15 +10,9 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import {
-  Select,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-  SelectContent,
-} from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
+import { MultiSelect } from "@/components/shared/multi-select";
 import { addProductSchema, AddProductSchema } from "@/lib/zod";
 import { Product } from "@/types/product";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -95,26 +89,22 @@ function AddProductDialog({ product, categories, sizes }: AddProductDialogProps)
 
           <FormField
             control={form.control}
-            name="categoryId"
+            name="categoryIds"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>التصنيف</FormLabel>
+                <FormLabel>التصنيفات</FormLabel>
                 <FormControl>
-                  <Select
-                    value={field.value?.toString() || ""}
-                    onValueChange={(value) => field.onChange(Number(value))}
-                  >
-                    <SelectTrigger dir="rtl" className="w-full">
-                      <SelectValue placeholder="اختر تصنيف" />
-                    </SelectTrigger>
-                    <SelectContent dir="rtl">
-                      {categories?.map((cat) => (
-                        <SelectItem key={cat.id} value={cat.id.toString()}>
-                          {cat.name}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
+                  <MultiSelect
+                    options={
+                      categories?.map((cat) => ({
+                        label: cat.name,
+                        value: cat.id.toString(),
+                      })) || []
+                    }
+                    selected={field.value || []}
+                    onChange={field.onChange}
+                    placeholder="اختر التصنيفات"
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>

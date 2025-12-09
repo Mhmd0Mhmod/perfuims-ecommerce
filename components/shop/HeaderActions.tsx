@@ -1,11 +1,11 @@
 "use client";
-import { Heart, ShoppingCart } from "lucide-react";
 import { useSession } from "next-auth/react";
+import Link from "next/link";
 import UserMenu from "../auth/UserMenu";
-import { Badge } from "../ui/badge";
+import CartButton from "../cart/CartButton";
 import { Button } from "../ui/button";
 import { Skeleton } from "../ui/skeleton";
-import Link from "next/link";
+import WishlistButton from "../wishlist/WishlistButton";
 
 function HeaderActions() {
   const { data: session, status } = useSession();
@@ -35,21 +35,9 @@ function HeaderActions() {
   return (
     <div className="flex items-center gap-2">
       {/* Wishlist */}
-      <Button variant="ghost" size="icon" className="relative">
-        <Heart className="h-5 w-5" />
-        <Badge className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center p-0 text-xs">
-          3
-        </Badge>
-      </Button>
-
+      <WishlistButton />
       {/* Cart */}
-      <Button variant="ghost" size="icon" className="relative">
-        <ShoppingCart className="h-5 w-5" />
-        <Badge className="bg-primary absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center p-0 text-xs">
-          5
-        </Badge>
-      </Button>
-
+      <CartButton />
       {/* User Menu */}
       <UserMenu user={session.user} />
     </div>
