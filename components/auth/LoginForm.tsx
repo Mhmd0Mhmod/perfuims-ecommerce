@@ -9,7 +9,9 @@ import SubmitButton from "../shared/submit-button";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "../ui/form";
 import { Input } from "../ui/input";
 import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 function LoginForm() {
+  const { update } = useSession();
   const router = useRouter();
   const form = useForm({
     resolver: zodResolver(signInSchema),
@@ -27,9 +29,10 @@ function LoginForm() {
         return;
       }
       toast.success("تم تسجيل الدخول بنجاح!", { id });
+      await update();
       router.push("/");
     },
-    [router],
+    [router, update],
   );
   return (
     <Form {...form}>

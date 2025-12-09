@@ -25,7 +25,7 @@ axiosInstance.interceptors.response.use(
   },
 );
 const publicAxiosInstance = axios.create({
-  baseURL: process.env.RAILWAY_API,
+  baseURL: process.env.NEXT_PUBLIC_RAILWAY_API,
   headers: {
     "Content-Type": "application/json",
   },

@@ -2,7 +2,7 @@ import MobileMenu from "./MobileMenu";
 import Logo from "./Logo";
 import SearchBar from "../shared/SearchBar";
 import HeaderActions from "./HeaderActions";
-import CategoryBar from "./CategoryBar";
+import CategoryBar from "../categories/CategoryBar";
 
 function ShopHeader() {
   return (
