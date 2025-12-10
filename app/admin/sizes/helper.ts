@@ -6,8 +6,6 @@ export async function getAdminSizes(): Promise<Size[]> {
     const { data } = await axiosInstance.get<Size[]>("admin/sizes");
     return data;
   } catch (error) {
-    console.dir(error);
-
     throw throwingError(error);
   }
 }

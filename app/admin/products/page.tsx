@@ -1,5 +1,6 @@
-import ProductDetailsDialog from "@/components/admin/products/ProductDetailsDialog";
 import AddProductDialog from "@/components/admin/products/AddProductDialog";
+import { ProductActionsMenu } from "@/components/admin/products/ProductActionsMenu";
+import { VariantsPopover } from "@/components/admin/products/VariantsPopover";
 import StatsSkeleton from "@/components/shared/stats-skeleton";
 import TableSkeleton from "@/components/shared/table-skeleton";
 import { Badge } from "@/components/ui/badge";
@@ -42,7 +43,7 @@ async function AddProductDialogButton() {
           إضافة منتج
         </Button>
       </DialogTrigger>
-      <DialogContent>
+      <DialogContent className="max-w-3xl">
         <DialogClose />
         <DialogHeader className="sm:text-right">
           <DialogTitle>إضافة منتج جديد</DialogTitle>
@@ -51,7 +52,7 @@ async function AddProductDialogButton() {
           </DialogDescription>
         </DialogHeader>
 
-        <AddProductDialog categories={categories.content} sizes={sizes} />
+        <AddProductDialog categories={categories} sizes={sizes} />
       </DialogContent>
     </Dialog>
   );
@@ -144,6 +145,8 @@ async function ProductStatsCards() {
 async function ProductsTable() {
   const data = await getAdminProducts();
   const products = data.content;
+  const categories = await getCategories();
+  const sizes = await getAdminSizes();
 
   if (products.length === 0) {
     return (
@@ -176,7 +179,7 @@ async function ProductsTable() {
                   <div className="flex items-center gap-3">
                     <div className="relative h-12 w-12 overflow-hidden rounded-md">
                       <Image
-                        src={product.imageUrl || "/placeholder-product.jpg"}
+                        src={product.imageUrl}
                         alt={product.name}
                         fill
                         className="object-cover"
@@ -191,22 +194,37 @@ async function ProductsTable() {
                   </div>
                 </TableCell>
                 <TableCell className="text-right">
-                  <Badge variant="outline">{product.categoryName}</Badge>
+                  <div className="flex max-w-[200px] flex-wrap gap-1">
+                    {product.categoryNames && product.categoryNames.length > 0 ? (
+                      product.categoryNames.slice(0, 2).map((catName) => (
+                        <Badge variant="outline" key={catName} className="text-xs">
+                          {catName}
+                        </Badge>
+                      ))
+                    ) : (
+                      <Badge variant="secondary" className="text-xs">
+                        بدون تصنيف
+                      </Badge>
+                    )}
+                    {product.categoryNames && product.categoryNames.length > 2 && (
+                      <Badge variant="secondary" className="text-xs">
+                        +{product.categoryNames.length - 2}
+                      </Badge>
+                    )}
+                  </div>
                 </TableCell>
                 <TableCell className="text-right">
-                  {product.isPackage ? (
-                    <Badge className="bg-blue-500">
-                      باقة ({product.variants?.length || 0} أحجام)
-                    </Badge>
+                  {!product.isPackage && product.variants ? (
+                    <VariantsPopover variants={product.variants} />
                   ) : (
-                    <Badge variant="secondary">منتج فردي</Badge>
+                    <Badge variant="secondary">عبوه</Badge>
                   )}
                 </TableCell>
                 <TableCell className="text-right font-medium">
                   {product.isPackage ? (
-                    <span className="text-muted-foreground text-sm">متعدد</span>
+                    <span>{product.packagePrice} ر.س</span>
                   ) : (
-                    <span>{product.price}</span>
+                    <span className="text-muted-foreground text-sm">متعدد</span>
                   )}
                 </TableCell>
                 <TableCell className="text-muted-foreground text-right text-sm">
@@ -214,7 +232,7 @@ async function ProductsTable() {
                 </TableCell>
                 <TableCell>
                   <div className="flex items-center justify-center gap-2">
-                    <ProductDetailsDialog product={product} />
+                    <ProductActionsMenu product={product} categories={categories} sizes={sizes} />
                   </div>
                 </TableCell>
               </TableRow>

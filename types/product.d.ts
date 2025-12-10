@@ -4,10 +4,10 @@ interface Product {
   description: string;
   isPackage: boolean;
   variants?: ProductVariant[];
-  price?: number;
+  packagePrice?: number;
   imageUrl: string;
-  categoryId: number;
-  categoryName: string;
+  categoryIds: number[];
+  categoryNames: string[];
   createdAt: string;
   updatedAt: string;
 }

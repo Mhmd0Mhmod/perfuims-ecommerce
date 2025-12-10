@@ -19,7 +19,7 @@ function LogoutButton() {
       });
   }, [router]);
   return (
-    <Button variant="destructive" className="w-full text-right" onClick={logout}>
+    <Button variant="ghost" className="w-full text-right" onClick={logout}>
       تسجيل الخروج
     </Button>
   );

@@ -18,7 +18,7 @@ function ProductCard({ product }: ProductCardProps) {
 
   // Get price to display
   const displayPrice = product.isPackage
-    ? product.price
+    ? product.packagePrice
     : product.variants?.find((v) => v.isAvailable)?.price || product.variants?.[0]?.price;
 
   return (
@@ -37,9 +37,13 @@ function ProductCard({ product }: ProductCardProps) {
               <div className="bg-primary/20 h-32 w-32 rounded-full" />
             </div>
           )}
-          {product.categoryName && (
-            <Badge className="bg-primary absolute top-4 right-4">{product.categoryName}</Badge>
-          )}
+          <div className="flex items-center gap-2">
+            {product.categoryNames.map((catName) => (
+              <Badge className="bg-primary absolute top-4 right-4" key={catName}>
+                {catName}
+              </Badge>
+            ))}
+          </div>
           {!isAvailable && (
             <Badge variant="destructive" className="absolute bottom-4 left-4">
               غير متوفر

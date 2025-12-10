@@ -21,8 +21,6 @@ function CurrencyCombobox({
   useEffect(() => {
     if (name) {
       const country = data?.find((c) => c.name.common === name);
-      console.log(country);
-
       if (country) {
         const countryCurrencies = Object.keys(country.currencies);
         if (countryCurrencies.length > 0) {

@@ -89,13 +89,6 @@ async function SizesList() {
           <SizeCard key={size.id} size={size} />
         ))}
       </div>
-      <Card>
-        <CardContent className="pt-6">
-          <div className="text-muted-foreground text-center text-sm">
-            إجمالي الأحجام: {sizes.length || 0}
-          </div>
-        </CardContent>
-      </Card>
     </>
   );
 }

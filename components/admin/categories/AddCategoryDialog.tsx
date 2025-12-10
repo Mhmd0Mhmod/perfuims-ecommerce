@@ -22,17 +22,19 @@ import {
 } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
-import { useAdminCountries } from "@/hooks/use-admin-countries";
 import { AddCategorySchema, addCategorySchema } from "@/lib/zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useCallback } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 
-export function AddCategoryDialog({ category }: { category?: Category }) {
-  const { data: countries, isLoading: isCountriesLoading } = useAdminCountries();
-  console.log(countries);
-
+export function AddCategoryDialog({
+  category,
+  countries,
+}: {
+  category?: Category;
+  countries: Country[];
+}) {
   const form = useForm<AddCategorySchema>({
     resolver: zodResolver(addCategorySchema),
     defaultValues: category || {
@@ -114,7 +116,6 @@ export function AddCategoryDialog({ category }: { category?: Category }) {
         <FormField
           control={form.control}
           name="countryId"
-          disabled={isCountriesLoading}
           render={({ field }) => (
             <FormItem className="flex flex-col">
               <FormLabel>الدولة</FormLabel>
@@ -124,7 +125,7 @@ export function AddCategoryDialog({ category }: { category?: Category }) {
                     <SelectValue placeholder="اختر الدولة..." {...field} />
                   </SelectTrigger>
                   <SelectContent>
-                    {countries?.content.map((country) => (
+                    {countries?.map((country) => (
                       <SelectItem key={country.id} value={country.id.toString()}>
                         {country.name}
                       </SelectItem>

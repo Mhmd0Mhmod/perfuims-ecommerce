@@ -1,9 +1,7 @@
-"use client";
+import { ChevronsUpDown, LayoutDashboard, Settings } from "lucide-react";
+import { getUser } from "@/app/(auth)/action";
 
-import { ChevronsUpDown, LayoutDashboard, LogOut, Settings } from "lucide-react";
-import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
-
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -14,6 +12,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { SidebarMenu, SidebarMenuButton, SidebarMenuItem } from "@/components/ui/sidebar";
 import type { LucideIcon } from "lucide-react";
+import LogoutButton from "../auth/LogoutButton";
 import { UserAvatar } from "../auth/UserAvatar";
 
 interface AdminMenuItem {
@@ -27,10 +26,8 @@ const ADMIN_MENU_ITEMS: AdminMenuItem[] = [
   { href: "/admin/settings", label: "الإعدادات", icon: Settings },
 ];
 
-export function UserMenu() {
-  const { data: session } = useSession();
-  const user = session?.user;
-  if (!user) return null;
+export async function UserMenu() {
+  const user = await getUser();
   return (
     <SidebarMenu>
       <SidebarMenuItem>
@@ -45,7 +42,7 @@ export function UserMenu() {
             </SidebarMenuButton>
           </DropdownMenuTrigger>
           <DropdownMenuContent
-            className="w-(--radix-dropdown-menu-trigger-width) min-w-56 rounded-lg"
+            className="min-w-56 rounded-lg"
             side={"bottom"}
             align="start"
             forceMount
@@ -73,9 +70,8 @@ export function UserMenu() {
 
             <DropdownMenuSeparator />
 
-            <DropdownMenuItem onClick={() => signOut()}>
-              <LogOut />
-              تسجيل الخروج
+            <DropdownMenuItem asChild>
+              <LogoutButton />
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

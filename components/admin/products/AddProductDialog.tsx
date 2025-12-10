@@ -1,4 +1,6 @@
 "use client";
+import { addProduct, updateProduct } from "@/app/admin/products/actions";
+import { MultiSelect } from "@/components/shared/multi-select";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -10,14 +12,14 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
-import { MultiSelect } from "@/components/shared/multi-select";
+import { Textarea } from "@/components/ui/textarea";
 import { addProductSchema, AddProductSchema } from "@/lib/zod";
 import { Product } from "@/types/product";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useCallback, useState } from "react";
-import { useForm } from "react-hook-form";
+import { useCallback } from "react";
+import { useForm, useWatch } from "react-hook-form";
+import { toast } from "sonner";
 import ProductVariants from "./ProductVariants";
 
 interface AddProductDialogProps {
@@ -28,32 +30,53 @@ interface AddProductDialogProps {
 
 function AddProductDialog({ product, categories, sizes }: AddProductDialogProps) {
   const isEditMode = Boolean(product);
-  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const form = useForm<AddProductSchema>({
     resolver: zodResolver(addProductSchema),
-    defaultValues: product || {
-      name: "",
-      isPackage: true,
-    },
+    defaultValues: product
+      ? {
+          ...product,
+          categoryIds: product.categoryIds?.map((id) => id.toString()),
+        }
+      : {
+          name: "",
+          isPackage: true,
+        },
   });
 
-  const isPackage = form.watch("isPackage");
+  const isPackage = useWatch({
+    control: form.control,
+    name: "isPackage",
+  });
 
-  const onSubmit = useCallback(async (data: AddProductSchema) => {
-    setIsSubmitting(true);
-    try {
-      console.log("Form data:", data);
-      // Handle form submission here
-      // await createProduct(data) or await updateProduct(data)
-    } catch (error) {
-      console.error("Error submitting form:", error);
-    } finally {
-      setIsSubmitting(false);
-    }
-  }, []);
-  console.log("Form Errors:", form.formState.errors);
-
+  const onSubmit = useCallback(
+    async (data: AddProductSchema) => {
+      const id = toast.loading(isEditMode ? "جارى تحديث المنتج..." : "جارى إضافة المنتج...");
+      try {
+        if (isEditMode) {
+          const response = await updateProduct(product!.id, data);
+          if (response.success) {
+            toast.success(response.message || "تم تحديث المنتج بنجاح", { id });
+          } else {
+            toast.error(response.message || "حدث خطأ أثناء تحديث المنتج", { id });
+          }
+          return;
+        }
+        const response = await addProduct(data);
+        if (response.success) {
+          toast.success(response.message || "تم إضافة المنتج بنجاح", { id });
+          form.reset();
+        } else {
+          toast.error(response.message || "حدث خطأ أثناء إضافة المنتج", { id });
+        }
+      } catch {
+        toast.error(isEditMode ? "حدث خطأ أثناء تحديث المنتج" : "حدث خطأ أثناء إضافة المنتج", {
+          id,
+        });
+      }
+    },
+    [isEditMode, product, form],
+  );
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 text-right">
@@ -159,7 +182,7 @@ function AddProductDialog({ product, categories, sizes }: AddProductDialogProps)
                         type="number"
                         placeholder="0.00"
                         {...field}
-                        onChange={(e) => field.onChange(Number(e.target.value))}
+                        onChange={(e) => field.onChange(Number(e.target.value) || 0)}
                       />
                     </FormControl>
                     <FormMessage />
@@ -177,18 +200,26 @@ function AddProductDialog({ product, categories, sizes }: AddProductDialogProps)
           )}
         </div>
         {/* Submit Button */}
-        <Button type="submit" className="w-full" disabled={isSubmitting}>
-          {isSubmitting
-            ? isEditMode
-              ? "جارٍ تحديث المنتج..."
-              : "جارٍ إضافة المنتج..."
-            : isEditMode
-              ? "تحديث المنتج"
-              : "إضافة المنتج"}
-        </Button>
+        <SubmitingButton isEditMode={isEditMode} />
       </form>
     </Form>
   );
 }
+function SubmitingButton({ isEditMode }: { isEditMode: boolean }) {
+  const {
+    formState: { isSubmitting: pending },
+  } = useForm();
 
+  return (
+    <Button type="submit" className="w-full" disabled={pending}>
+      {pending
+        ? isEditMode
+          ? "جارٍ تحديث المنتج..."
+          : "جارٍ إضافة المنتج..."
+        : isEditMode
+          ? "تحديث المنتج"
+          : "إضافة المنتج"}
+    </Button>
+  );
+}
 export default AddProductDialog;

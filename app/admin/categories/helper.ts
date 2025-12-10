@@ -3,7 +3,7 @@ import { throwingError } from "@/lib/utils";
 
 export async function getCategories() {
   try {
-    const response = await axiosInstance.get<Pagination<Category>>("admin/categories");
+    const response = await axiosInstance.get<Category[]>("admin/categories");
     return response.data;
   } catch (error) {
     throw throwingError(error);

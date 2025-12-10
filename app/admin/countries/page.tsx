@@ -18,9 +18,8 @@ import { getAdminCountries, getCountryFlag } from "./helpers";
 
 async function StatsCards() {
   const countries = await getAdminCountries();
-  const totalCountries = countries.totalElements;
-  const activeCountries = countries.content.filter((c: Country) => c.isActive).length;
-  const inactiveCountries = countries.content.filter((c: Country) => !c.isActive).length;
+  const activeCountries = countries.filter((c: Country) => c.isActive).length;
+  const inactiveCountries = countries.filter((c: Country) => !c.isActive).length;
 
   return (
     <div className="grid gap-4 md:grid-cols-3">
@@ -30,7 +29,7 @@ async function StatsCards() {
           <Globe className="text-muted-foreground h-4 w-4" />
         </CardHeader>
         <CardContent>
-          <div className="text-2xl font-bold">{totalCountries}</div>
+          <div className="text-2xl font-bold">{countries.length}</div>
           <p className="text-muted-foreground text-xs">جميع الدول المسجلة</p>
         </CardContent>
       </Card>
@@ -94,18 +93,16 @@ function CountriesListSkeleton() {
 async function CountriesList() {
   const countries = await getAdminCountries();
   const countriesWithFlags = await Promise.all(
-    countries.content.map(async (country: Country) => ({
+    countries.map(async (country: Country) => ({
       country,
       flagUrl: (await getCountryFlag(country.name)) || "/placeholder-flag.svg",
     })),
   );
 
-  const totalCountries = countries.totalElements;
-
   return (
     <>
       {/* Countries Grid */}
-      {countries.content.length > 0 ? (
+      {countries.length > 0 ? (
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           {countriesWithFlags.map(({ country, flagUrl }) => (
             <CountryCard key={country.id} country={country} flagUrl={flagUrl} />
@@ -125,18 +122,6 @@ async function CountriesList() {
             </Button>
           </div>
         </Card>
-      )}
-
-      {/* Pagination Info */}
-      {countries.content.length > 0 && (
-        <div className="flex items-center justify-between">
-          <div className="text-muted-foreground text-sm">
-            عرض {countries.content.length} من {totalCountries} دولة
-          </div>
-          <div className="text-muted-foreground text-sm">
-            صفحة {countries.number + 1} من {countries.totalPages}
-          </div>
-        </div>
       )}
     </>
   );

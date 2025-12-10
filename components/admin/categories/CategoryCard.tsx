@@ -34,7 +34,13 @@ import {
 } from "@/components/ui/dialog";
 import { AddCategoryDialog } from "./AddCategoryDialog";
 
-export function CategoryCard({ category }: { category: Category }) {
+export function CategoryCard({
+  category,
+  countries,
+}: {
+  category: Category;
+  countries: Country[];
+}) {
   const handleDelete = async () => {
     const id = toast.loading("جارى حذف التصنيف...");
     try {
@@ -77,7 +83,7 @@ export function CategoryCard({ category }: { category: Category }) {
               <DialogTitle>تعديل التصنيف</DialogTitle>
               <DialogDescription>عدل بيانات التصنيف هنا. انقر حفظ عند الانتهاء.</DialogDescription>
             </DialogHeader>
-            <AddCategoryDialog category={category} />
+            <AddCategoryDialog category={category} countries={countries} />
           </DialogContent>
         </Dialog>
 

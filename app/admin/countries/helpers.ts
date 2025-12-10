@@ -4,7 +4,7 @@ import axios from "axios";
 
 export async function getAdminCountries() {
   try {
-    const response = await axiosInstance.get<Pagination<Country>>("admin/countries");
+    const response = await axiosInstance.get<Country[]>("admin/countries");
     return response.data;
   } catch (error) {
     throw throwingError(error);

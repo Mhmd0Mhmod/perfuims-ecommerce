@@ -26,7 +26,6 @@ export async function updateSize(
 ): Promise<ApiResponse<Size>> {
   try {
     const response = await axiosInstance.patch<Size>(`admin/sizes/${sizeId}`, data);
-    revalidatePath(`/admin/sizes/${sizeId}`);
     revalidatePath("/admin/sizes");
     return {
       data: response.data,

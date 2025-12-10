@@ -28,8 +28,9 @@ import { toast } from "sonner";
 
 const UNITS = [
   { value: "ml", label: "مل (ml)" },
-  { value: "oz", label: "أونصة (oz)" },
   { value: "l", label: "لتر (L)" },
+  { value: "g", label: "جرام (g)" },
+  { value: "kg", label: "كيلوجرام (kg)" },
 ];
 
 export function AddSizeDialog({ size }: { size?: Size }) {

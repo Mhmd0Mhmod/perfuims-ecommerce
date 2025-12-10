@@ -15,13 +15,14 @@ import {
   Globe,
   LayoutDashboard,
   Package,
+  Ruler,
   Settings,
   ShoppingCart,
   Users,
 } from "lucide-react";
+import Link from "next/link";
 import ActiveLink from "../shared/active-link";
 import UserMenu from "./UserMenu";
-import Link from "next/link";
 
 const menuItems = [
   {
@@ -30,14 +31,19 @@ const menuItems = [
     icon: LayoutDashboard,
   },
   {
-    title: "النطاقات",
-    url: "/admin/countries",
-    icon: Globe,
-  },
-  {
     title: "المنتجات",
     url: "/admin/products",
     icon: Package,
+  },
+  {
+    title: "التصنيفات",
+    url: "/admin/categories",
+    icon: FolderTree,
+  },
+  {
+    title: "أحجام",
+    url: "/admin/sizes",
+    icon: Ruler,
   },
   {
     title: "الطلبات",
@@ -50,9 +56,9 @@ const menuItems = [
     icon: Users,
   },
   {
-    title: "التصنيفات",
-    url: "/admin/categories",
-    icon: FolderTree,
+    title: "النطاقات",
+    url: "/admin/countries",
+    icon: Globe,
   },
   {
     title: "الإعدادات",
