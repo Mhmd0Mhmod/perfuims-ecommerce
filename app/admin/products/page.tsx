@@ -33,7 +33,6 @@ import { getAdminSizes } from "../sizes/helper";
 
 async function AddProductDialogButton() {
   const categories = await getCategories();
-
   const sizes = await getAdminSizes();
   return (
     <Dialog>
@@ -52,7 +51,7 @@ async function AddProductDialogButton() {
           </DialogDescription>
         </DialogHeader>
 
-        <AddProductDialog categories={categories.content} sizes={sizes.content} />
+        <AddProductDialog categories={categories.content} sizes={sizes} />
       </DialogContent>
     </Dialog>
   );

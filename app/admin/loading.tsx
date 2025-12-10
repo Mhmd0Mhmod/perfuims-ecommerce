@@ -24,7 +24,7 @@ export default function AdminLoading() {
                   <Skeleton className="h-5 w-[200px]" />
                   <Skeleton className="h-4 w-[150px]" />
                 </div>
-                <Skeleton className="h-8 w-[80px]" />
+                <Skeleton className="h-8 w-20" />
               </div>
             ))}
           </div>

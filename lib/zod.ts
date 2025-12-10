@@ -46,6 +46,16 @@ export const addCategorySchema = z.object({
 });
 export type AddCategorySchema = z.infer<typeof addCategorySchema>;
 
+export const addSizeSchema = z.object({
+  size: z.number({ message: "حجم الزجاجة مطلوب" }).min(1, {
+    message: "حجم الزجاجة يجب أن يكون أكبر من صفر",
+  }),
+  unit: z.string({ message: "الوحدة مطلوبة" }).min(1, {
+    message: "يجب اختيار وحدة القياس",
+  }),
+});
+export type AddSizeSchema = z.infer<typeof addSizeSchema>;
+
 export const addProductVariantSchema = z
   .object({
     sizeId: z.string().optional().nullable(),
