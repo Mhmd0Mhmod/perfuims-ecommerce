@@ -3,13 +3,11 @@
 import { useProducts } from "@/hooks/use-products";
 import ProductCard from "../products/ProductCard";
 import CardSkeleton from "../shared/card-skeleton";
-import { useCountryContext } from "@/context/CountryProvider";
+import { useSelectedCountry } from "@/hooks/use-selected-country";
 
 function ProductsGrid({ limit = 4 }: { limit?: number }) {
-  const { country } = useCountryContext();
-  const { data: products, isFetching } = useProducts({
-    countryId: country?.id.toString(),
-  });
+  const { selectedCountry: country } = useSelectedCountry();
+  const { data: products, isFetching } = useProducts();
   if (isFetching) {
     return (
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">

@@ -1,6 +1,6 @@
 "use client";
 
-import { addCountry, updateCountry } from "@/app/admin/countries/actions";
+import { addCountry, updateCountry } from "@/app/[locale]/admin/countries/actions";
 import SubmitButton from "@/components/shared/submit-button";
 import {
   Form,
@@ -25,6 +25,7 @@ function AddCountryForm({ country }: { country?: Country }) {
     resolver: zodResolver(addCountrySchema),
     defaultValues: country || {
       name: "",
+      code: "",
       currency: "",
       isActive: true,
     },
@@ -73,7 +74,13 @@ function AddCountryForm({ country }: { country?: Country }) {
             <FormItem className="flex flex-col">
               <FormLabel>الدولة</FormLabel>
               <FormControl>
-                <CountriesCombox value={field.value} onChange={field.onChange} />
+                <CountriesCombox
+                  value={field.value}
+                  onChange={(name, code) => {
+                    field.onChange(name);
+                    form.setValue("code", code);
+                  }}
+                />
               </FormControl>
               <FormDescription>اختر الدولة من القائمة</FormDescription>
               <FormMessage />

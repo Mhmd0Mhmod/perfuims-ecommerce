@@ -12,6 +12,7 @@ import { formatDate } from "@/lib/utils";
 import { Package, Pencil } from "lucide-react";
 import { AddSizeDialog } from "./AddSizeDialog";
 import DeleteSizeButton from "./DeleteSizeButton";
+import { Size } from "@/types/size";
 
 export function SizeCard({ size }: { size: Size }) {
   return (

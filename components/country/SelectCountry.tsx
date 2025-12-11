@@ -7,20 +7,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useCountryContext } from "@/context/CountryProvider";
+import { useCountries } from "@/hooks/use-countries";
+import { useSelectedCountry } from "@/hooks/use-selected-country";
 import Image from "next/image";
 import { Skeleton } from "../ui/skeleton";
 
 function SelectCountry() {
-  const { countries, setCountry, country, isFetching } = useCountryContext();
-  const handleCountryChange = (countryId: string) => {
-    const selectedCountry = countries.find((country) => country.id.toString() === countryId);
-    if (selectedCountry) {
-      setCountry(selectedCountry);
-    }
-  };
-
-  const activeCountries = countries.filter((country) => country.isActive);
+  const { data: countries, isFetching } = useCountries();
+  const { selectedCountry, setSelectedCountryById } = useSelectedCountry();
   if (isFetching) {
     return (
       <div className="flex items-center justify-end gap-4">
@@ -28,18 +22,20 @@ function SelectCountry() {
       </div>
     );
   }
-  if (activeCountries.length === 0) {
-    return null;
-  }
 
   return (
     <div className="flex items-center justify-end gap-4">
-      <Select value={country?.id.toString()} onValueChange={handleCountryChange}>
+      <Select
+        defaultValue={selectedCountry?.id.toString()}
+        onValueChange={(value) => {
+          setSelectedCountryById(Number(value));
+        }}
+      >
         <SelectTrigger id="country-select">
           <SelectValue placeholder="🌐" />
         </SelectTrigger>
         <SelectContent>
-          {countries.map((country) => (
+          {countries?.map((country) => (
             <SelectItem key={country.id} value={country.id.toString()}>
               <div className="flex items-center gap-2">
                 <Image

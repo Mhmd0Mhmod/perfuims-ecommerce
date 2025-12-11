@@ -3,10 +3,8 @@
 import { useProducts } from "@/hooks/use-products";
 import { Product } from "@/types/product";
 import { createContext, useContext, useReducer, Dispatch } from "react";
-import { useCountryContext } from "./CountryProvider";
 
 export type ProductsState = {
-  countryId: string;
   searchTerm: string;
   categorieIds: string[];
   dealIds: string[];
@@ -25,7 +23,6 @@ type ProductsAction =
   | { type: "RESET_FILTERS" };
 
 const initialState: ProductsState = {
-  countryId: "",
   searchTerm: "",
   categorieIds: [],
   dealIds: [],
@@ -48,8 +45,6 @@ function productsReducer(state: ProductsState, action: ProductsAction): Products
       return { ...state, page: action.payload };
     case "RESET_FILTERS":
       return initialState;
-    case "SET_COUNTRY":
-      return { ...state, countryId: action.payload };
     default:
       return state;
   }
@@ -66,9 +61,7 @@ const ProductsContext = createContext<ProductsContextType | undefined>(undefined
 
 export function ProductsProvider({ children }: { children: React.ReactNode }) {
   const [state, dispatch] = useReducer(productsReducer, initialState);
-  const { country } = useCountryContext();
   const { data: products, isFetching } = useProducts({
-    countryId: country?.id.toString(),
     searchTerm: state.searchTerm,
     categorieIds: state.categorieIds,
     dealIds: state.dealIds,

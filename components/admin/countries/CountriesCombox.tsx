@@ -10,11 +10,12 @@ function CountriesCombox({
   onChange,
 }: {
   value: string | undefined;
-  onChange: (value: string) => void;
+  onChange: (name: string, code: string) => void;
 }) {
   const { data, isLoading: isCountriesLoading } = useAllCountries();
   const countries = data?.map((country) => ({
     name: country.name.common,
+    code: country.cca2,
     currency: Object.keys(country.currencies)[0],
     flag: country.flags.svg,
   }));
@@ -39,7 +40,7 @@ function CountriesCombox({
             <ComboBox.Item
               key={country.name}
               value={country.name}
-              onSelect={() => onChange(country.name)}
+              onSelect={() => onChange(country.name, country.code)}
             >
               <Check
                 className={cn("mr-2 h-4 w-4", value === country.name ? "opacity-100" : "opacity-0")}

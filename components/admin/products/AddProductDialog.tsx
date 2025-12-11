@@ -1,24 +1,23 @@
 "use client";
-import { addProduct, updateProduct } from "@/app/admin/products/actions";
+import { addProduct, updateProduct } from "@/app/[locale]/admin/products/actions";
 import { MultiSelect } from "@/components/shared/multi-select";
 import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
 import { addProductSchema, AddProductSchema } from "@/lib/zod";
 import { Product } from "@/types/product";
+import { Size } from "@/types/size";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useCallback } from "react";
-import { useForm, useWatch } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import ProductVariants from "./ProductVariants";
 

@@ -1,4 +1,4 @@
-import { getCountries } from "@/app/(shop)/helper";
+import { getCountries } from "@/app/[locale]/(shop)/helper";
 import { useQuery } from "@tanstack/react-query";
 
 export function useCountries(onSuccess?: (countries: Country[]) => void) {

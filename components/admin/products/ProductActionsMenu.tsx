@@ -1,5 +1,5 @@
 "use client";
-import { deleteProduct } from "@/app/admin/products/actions";
+import { deleteProduct } from "@/app/[locale]/admin/products/actions";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -33,6 +33,7 @@ import { toast } from "sonner";
 import AddProductDialog from "./AddProductDialog";
 import ProductDetailsDialog from "./ProductDetailsDialog";
 import { Separator } from "@/components/ui/separator";
+import { Size } from "@/types/size";
 
 interface ProductActionsMenuProps {
   product: Product;

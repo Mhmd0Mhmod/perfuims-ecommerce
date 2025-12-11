@@ -12,7 +12,9 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
+import { SIZES_UNITS } from "@/constants/sizes_units";
 import { AddProductSchema } from "@/lib/zod";
+import { Size } from "@/types/size";
 import { Plus, Trash2 } from "lucide-react";
 import { Control, useFieldArray, useFormContext } from "react-hook-form";
 
@@ -21,7 +23,6 @@ interface ProductVariantsProps {
   sizes?: Size[];
 }
 
-const DEFAULT_UNITS = ["مل", "جرام", "لتر", "كجم"];
 function ProductVariants({ control, sizes }: ProductVariantsProps) {
   const { fields, append, remove } = useFieldArray({
     control,
@@ -167,7 +168,7 @@ function ProductVariantItem({ index, control, sizes, onRemove }: ProductVariantI
                       <SelectValue placeholder="اختر وحدة" />
                     </SelectTrigger>
                     <SelectContent dir="rtl">
-                      {DEFAULT_UNITS.map((unit) => (
+                      {Object.values(SIZES_UNITS).map((unit) => (
                         <SelectItem key={unit} value={unit}>
                           {unit}
                         </SelectItem>

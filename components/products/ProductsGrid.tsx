@@ -4,11 +4,11 @@ import { useProductsContext } from "@/context/ProductsContext";
 import InfiniteScroll from "react-infinite-scroll-component";
 import ProductCard from "./ProductCard";
 import CardSkeleton from "../shared/card-skeleton";
-import { useCountryContext } from "@/context/CountryProvider";
+import { useSelectedCountry } from "@/hooks/use-selected-country";
 
 function ProductsGrid() {
   const { products, isFetching, filters, dispatch } = useProductsContext();
-  const { country } = useCountryContext();
+  const { selectedCountry } = useSelectedCountry();
   const hasMore = products ? !products.last : false;
   const items = products?.content ?? [];
 
@@ -37,7 +37,7 @@ function ProductsGrid() {
       </div>
     );
   }
-  if (!country?.id) {
+  if (!selectedCountry?.id) {
     return (
       <div className="flex min-h-[400px] items-center justify-center">
         <div className="text-center">

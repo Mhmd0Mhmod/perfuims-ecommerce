@@ -1,5 +1,5 @@
 "use client";
-import { deleteSize } from "@/app/admin/sizes/actions";
+import { deleteSize } from "@/app/[locale]/admin/sizes/actions";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -12,6 +12,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
+import { Size } from "@/types/size";
 import { Trash2 } from "lucide-react";
 import { toast } from "sonner";
 function DeleteSizeButton({ size }: { size: Size }) {

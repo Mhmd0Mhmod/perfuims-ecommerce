@@ -1,3 +1,4 @@
+import { SIZES_UNITS } from "@/constants/sizes_units";
 import { z } from "zod";
 
 export const signInSchema = z.object({
@@ -31,6 +32,7 @@ export type RegisterSchema = z.infer<typeof registerSchema>;
 
 export const addCountrySchema = z.object({
   name: z.string(),
+  code: z.string().length(2, { message: "رمز الدولة يجب أن يكون حرفين" }),
   currency: z.string(),
   isActive: z.boolean(),
 });
@@ -50,9 +52,7 @@ export const addSizeSchema = z.object({
   size: z.number({ message: "حجم الزجاجة مطلوب" }).min(1, {
     message: "حجم الزجاجة يجب أن يكون أكبر من صفر",
   }),
-  unit: z.string({ message: "الوحدة مطلوبة" }).min(1, {
-    message: "يجب اختيار وحدة القياس",
-  }),
+  unit: z.enum(SIZES_UNITS, { message: "وحدة الحجم مطلوبة" }),
 });
 export type AddSizeSchema = z.infer<typeof addSizeSchema>;
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { addSize, updateSize } from "@/app/admin/sizes/actions";
+import { addSize, updateSize } from "@/app/[locale]/admin/sizes/actions";
 import { Button } from "@/components/ui/button";
 import { DialogFooter } from "@/components/ui/dialog";
 import {
@@ -20,18 +20,13 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { SIZES_UNITS } from "@/constants/sizes_units";
 import { AddSizeSchema, addSizeSchema } from "@/lib/zod";
+import { Size } from "@/types/size";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useCallback } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
-
-const UNITS = [
-  { value: "ml", label: "مل (ml)" },
-  { value: "l", label: "لتر (L)" },
-  { value: "g", label: "جرام (g)" },
-  { value: "kg", label: "كيلوجرام (kg)" },
-];
 
 export function AddSizeDialog({ size }: { size?: Size }) {
   const form = useForm<AddSizeSchema>({
@@ -43,7 +38,7 @@ export function AddSizeDialog({ size }: { size?: Size }) {
         }
       : {
           size: 0,
-          unit: "ml",
+          unit: SIZES_UNITS.ML,
         },
   });
 
@@ -120,9 +115,9 @@ export function AddSizeDialog({ size }: { size?: Size }) {
                     <SelectValue placeholder="اختر الوحدة..." />
                   </SelectTrigger>
                   <SelectContent>
-                    {UNITS.map((unit) => (
-                      <SelectItem key={unit.value} value={unit.value}>
-                        {unit.label}
+                    {Object.values(SIZES_UNITS).map((unit) => (
+                      <SelectItem key={unit} value={unit}>
+                        {unit}
                       </SelectItem>
                     ))}
                   </SelectContent>
