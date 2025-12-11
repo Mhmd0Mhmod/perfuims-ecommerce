@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/table";
 import { formatDate } from "@/lib/utils";
 import { Product } from "@/types/product";
-import { Package, Calendar, Hash, Tag, DollarSign } from "lucide-react";
+import { Calendar, Hash, Tag, DollarSign } from "lucide-react";
 import Image from "next/image";
 
 export function ProductDetailsDialog({ product }: { product: Product }) {
@@ -24,24 +24,22 @@ export function ProductDetailsDialog({ product }: { product: Product }) {
         <Card>
           <CardHeader className="text-right">
             <CardTitle className="text-xl">{product.name}</CardTitle>
-            <CardDescription>{product.description}</CardDescription>
+            <CardDescription className="text-base">{product.description}</CardDescription>
           </CardHeader>
-          <CardContent className="space-y-4">
+          <CardContent>
             <div className="flex flex-wrap gap-2">
-              {product.categoryNames &&
+              {product.categoryNames && product.categoryNames.length > 0 ? (
                 product.categoryNames.map((catName) => (
-                  <Badge variant="outline" key={catName}>
+                  <Badge variant="outline" key={catName} className="text-sm">
                     <Tag className="ml-1 h-3 w-3" />
                     {catName}
                   </Badge>
-                ))}
-              {product.isPackage ? (
-                <Badge className="bg-blue-500">
-                  <Package className="ml-1 h-3 w-3" />
-                  باقة
-                </Badge>
+                ))
               ) : (
-                <Badge variant="secondary">منتج فردي</Badge>
+                <Badge variant="secondary" className="text-sm">
+                  <Tag className="ml-1 h-3 w-3" />
+                  بدون تصنيف
+                </Badge>
               )}
             </div>
           </CardContent>
@@ -73,15 +71,31 @@ export function ProductDetailsDialog({ product }: { product: Product }) {
               </span>
             </div>
 
-            {!product.isPackage && (
-              <div className="bg-primary/5 flex items-center justify-between rounded-lg border p-3">
-                <span className="text-muted-foreground flex items-center gap-2">
-                  <DollarSign className="h-4 w-4" />
-                  السعر
-                </span>
-                <span className="text-primary text-lg font-bold">{product.packagePrice} ر.س</span>
-              </div>
-            )}
+            <div className="bg-primary/5 flex items-center justify-between rounded-lg border p-4">
+              <span className="text-muted-foreground flex items-center gap-2 text-sm font-medium">
+                <DollarSign className="h-4 w-4" />
+                نطاق الأسعار
+              </span>
+              {product.variants.length > 0 ? (
+                <div className="flex items-center gap-2">
+                  <span className="text-primary text-xl font-bold">
+                    {Math.min(...product.variants.map((v) => v.price))}
+                  </span>
+                  {Math.min(...product.variants.map((v) => v.price)) !==
+                    Math.max(...product.variants.map((v) => v.price)) && (
+                    <>
+                      <span className="text-muted-foreground">-</span>
+                      <span className="text-primary text-xl font-bold">
+                        {Math.max(...product.variants.map((v) => v.price))}
+                      </span>
+                    </>
+                  )}
+                  <span className="text-muted-foreground text-sm">ر.س</span>
+                </div>
+              ) : (
+                <Badge variant="secondary">غير محدد</Badge>
+              )}
+            </div>
 
             <div className="flex items-center justify-between rounded-lg border p-3">
               <span className="text-muted-foreground flex items-center gap-2">
@@ -102,49 +116,48 @@ export function ProductDetailsDialog({ product }: { product: Product }) {
         </Card>
 
         {/* Variants Card */}
-        {product.isPackage && product.variants && product.variants.length > 0 && (
-          <Card>
-            <CardHeader className="text-right">
-              <CardTitle className="flex items-center justify-between text-lg">
-                <span>الأحجام المتوفرة</span>
-                <Badge variant="outline">{product.variants.length} حجم</Badge>
-              </CardTitle>
-              <CardDescription>جميع الأحجام المتاحة للمنتج مع الأسعار</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="rounded-md border">
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead className="text-right">الحجم</TableHead>
-                      <TableHead className="text-right">السعر</TableHead>
-                      <TableHead className="text-center">الحالة</TableHead>
+        <Card>
+          <CardHeader className="text-right">
+            <CardTitle className="flex items-center justify-between text-lg">
+              <span>الأحجام المتوفرة</span>
+              <Badge variant="outline">{product.variants.length} حجم</Badge>
+            </CardTitle>
+            <CardDescription>جميع الأحجام المتاحة للمنتج مع الأسعار</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="rounded-md border">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead className="text-right">الحجم</TableHead>
+                    <TableHead className="text-right">السعر</TableHead>
+                    <TableHead className="text-center">الحالة</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {product.variants.map((variant) => (
+                    <TableRow key={variant.id}>
+                      <TableCell className="text-right font-medium">
+                        {variant.size} {variant.unit}
+                      </TableCell>
+                      <TableCell className="text-right font-semibold">
+                        {variant.price} ر.س
+                      </TableCell>
+                      <TableCell className="text-center">
+                        {variant.isAvailable ? (
+                          <Badge className="bg-green-500">متوفر</Badge>
+                        ) : (
+                          <Badge variant="destructive">غير متوفر</Badge>
+                        )}
+                      </TableCell>
                     </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {product.variants.map((variant) => (
-                      <TableRow key={variant.id}>
-                        <TableCell className="text-right font-medium">
-                          {variant.size} {variant.unit}
-                        </TableCell>
-                        <TableCell className="text-right font-semibold">
-                          {variant.price} ر.س
-                        </TableCell>
-                        <TableCell className="text-center">
-                          {variant.isAvailable ? (
-                            <Badge className="bg-green-500">متوفر</Badge>
-                          ) : (
-                            <Badge variant="destructive">غير متوفر</Badge>
-                          )}
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </div>
-            </CardContent>
-          </Card>
-        )}
+                  ))}
+                </TableBody>
+              </Table>
+            </div>
+          </CardContent>
+        </Card>
+
         <Card>
           <CardContent className="p-4">
             <div className="relative aspect-square w-full overflow-hidden rounded-lg">

@@ -1,6 +1,5 @@
 "use client";
 
-import { Label } from "@/components/ui/label";
 import {
   Select,
   SelectContent,
@@ -8,43 +7,49 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useProductsContext } from "@/context/ProductsContext";
+import { useCountryContext } from "@/context/CountryProvider";
 import Image from "next/image";
+import { Skeleton } from "../ui/skeleton";
 
-function SelectCountry({ countries = [] }: { countries: { country: Country; flagUrl: string }[] }) {
-  const { filters, dispatch } = useProductsContext();
-
+function SelectCountry() {
+  const { countries, setCountry, country, isFetching } = useCountryContext();
   const handleCountryChange = (countryId: string) => {
-    dispatch({ type: "SET_COUNTRY", payload: countryId });
+    const selectedCountry = countries.find((country) => country.id.toString() === countryId);
+    if (selectedCountry) {
+      setCountry(selectedCountry);
+    }
   };
 
-  const activeCountries = countries.filter((country) => country.country.isActive);
-
+  const activeCountries = countries.filter((country) => country.isActive);
+  if (isFetching) {
+    return (
+      <div className="flex items-center justify-end gap-4">
+        <Skeleton className="h-8 w-20 rounded-md" />
+      </div>
+    );
+  }
   if (activeCountries.length === 0) {
     return null;
   }
 
   return (
     <div className="flex items-center justify-end gap-4">
-      <Label htmlFor="country-select" className="block text-right">
-        اختر الدولة
-      </Label>
-      <Select value={filters.countryId} onValueChange={handleCountryChange}>
+      <Select value={country?.id.toString()} onValueChange={handleCountryChange}>
         <SelectTrigger id="country-select">
-          <SelectValue placeholder="اختر الدولة للعرض" />
+          <SelectValue placeholder="🌐" />
         </SelectTrigger>
         <SelectContent>
           {countries.map((country) => (
-            <SelectItem key={country.country.id} value={country.country.id.toString()}>
+            <SelectItem key={country.id} value={country.id.toString()}>
               <div className="flex items-center gap-2">
                 <Image
                   src={country.flagUrl}
-                  alt={`${country.country.name} flag`}
+                  alt={`${country.name} flag`}
                   width={24}
                   height={16}
                   className="rounded-sm object-cover"
                 />
-                <span>{country.country.name}</span>
+                <span>{country.name}</span>
               </div>
             </SelectItem>
           ))}

@@ -80,13 +80,6 @@ export const addProductSchema = z.object({
   name: z.string({ message: "اسم المنتج مطلوب" }).min(3, {
     message: "اسم المنتج يجب ان يكون 3 احرف علي الاقل",
   }),
-  isPackage: z.boolean(),
-  packagePrice: z
-    .number()
-    .refine((val) => val >= 0, {
-      message: "السعر يجب ان يكون رقم موجب",
-    })
-    .optional(),
   description: z.string().optional(),
   variants: z.array(addProductVariantSchema).optional(),
   categoryIds: z.array(z.string()).optional(),

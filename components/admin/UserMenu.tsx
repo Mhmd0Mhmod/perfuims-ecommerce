@@ -1,7 +1,4 @@
 import { ChevronsUpDown, LayoutDashboard, Settings } from "lucide-react";
-import { getUser } from "@/app/(auth)/action";
-
-import Link from "next/link";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -12,6 +9,8 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { SidebarMenu, SidebarMenuButton, SidebarMenuItem } from "@/components/ui/sidebar";
 import type { LucideIcon } from "lucide-react";
+import { User } from "next-auth";
+import Link from "next/link";
 import LogoutButton from "../auth/LogoutButton";
 import { UserAvatar } from "../auth/UserAvatar";
 
@@ -26,8 +25,7 @@ const ADMIN_MENU_ITEMS: AdminMenuItem[] = [
   { href: "/admin/settings", label: "الإعدادات", icon: Settings },
 ];
 
-export async function UserMenu() {
-  const user = await getUser();
+export function UserMenu({ user }: { user: User }) {
   return (
     <SidebarMenu>
       <SidebarMenuItem>
@@ -42,10 +40,9 @@ export async function UserMenu() {
             </SidebarMenuButton>
           </DropdownMenuTrigger>
           <DropdownMenuContent
-            className="min-w-56 rounded-lg"
-            side={"bottom"}
+            className="w-[--radix-dropdown-menu-trigger-width] min-w-56 rounded-lg"
+            side="bottom"
             align="start"
-            forceMount
           >
             <DropdownMenuLabel className="p-0 font-normal">
               <div className="flex items-center gap-2 px-1 py-1.5 text-sm">

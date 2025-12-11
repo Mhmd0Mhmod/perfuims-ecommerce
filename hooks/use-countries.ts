@@ -1,12 +1,15 @@
-"use client";
-import { getAllCountries } from "@/app/admin/countries/helpers";
+import { getCountries } from "@/app/(shop)/helper";
 import { useQuery } from "@tanstack/react-query";
 
-const useCountries = () =>
-  useQuery({
+export function useCountries(onSuccess?: (countries: Country[]) => void) {
+  const query = useQuery<Country[]>({
     queryKey: ["countries"],
-    queryFn: getAllCountries,
-    refetchOnWindowFocus: false,
+    queryFn: async () => {
+      const response = await getCountries();
+      onSuccess?.(response);
+      return response;
+    },
     staleTime: "static",
   });
-export { useCountries };
+  return query;
+}

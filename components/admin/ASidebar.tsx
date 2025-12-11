@@ -1,3 +1,4 @@
+import { getUser } from "@/app/(auth)/action";
 import {
   Sidebar,
   SidebarContent,
@@ -113,9 +114,13 @@ export function ASidebar() {
       </SidebarContent>
 
       <SidebarFooter className="border-t p-4">
-        <UserMenu />
+        <UserMenuTrigger />
       </SidebarFooter>
     </Sidebar>
   );
+}
+async function UserMenuTrigger() {
+  const user = await getUser();
+  return <UserMenu user={user} />;
 }
 export default ASidebar;

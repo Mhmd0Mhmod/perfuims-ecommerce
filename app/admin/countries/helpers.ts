@@ -1,3 +1,4 @@
+"use server";
 import axiosInstance from "@/lib/axios";
 import { throwingError } from "@/lib/utils";
 import axios from "axios";
@@ -5,7 +6,14 @@ import axios from "axios";
 export async function getAdminCountries() {
   try {
     const response = await axiosInstance.get<Country[]>("admin/countries");
-    return response.data;
+    const countriesWithFlags = await Promise.all(
+      response.data.map(async (country: Country) => ({
+        ...country,
+        flagUrl: (await getCountryFlag(country.name)) || "/placeholder-flag.svg",
+      })),
+    );
+
+    return countriesWithFlags;
   } catch (error) {
     throw throwingError(error);
   }

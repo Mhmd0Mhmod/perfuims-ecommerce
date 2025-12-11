@@ -40,13 +40,7 @@ function AddProductDialog({ product, categories, sizes }: AddProductDialogProps)
         }
       : {
           name: "",
-          isPackage: true,
         },
-  });
-
-  const isPackage = useWatch({
-    control: form.control,
-    name: "isPackage",
   });
 
   const onSubmit = useCallback(
@@ -148,56 +142,10 @@ function AddProductDialog({ product, categories, sizes }: AddProductDialogProps)
             )}
           />
 
-          {/* Package Section */}
-          <div className="space-y-4 border-t pt-4">
-            <FormField
-              control={form.control}
-              name="isPackage"
-              render={({ field }) => (
-                <FormItem className="flex items-center justify-between rounded-lg border p-4">
-                  <div className="space-y-0.5">
-                    <FormLabel className="text-base">منتج {`(عبوه)`} </FormLabel>
-                    <FormDescription>هل هذا المنتج عبارة عن باقة بسعر ثابت؟</FormDescription>
-                  </div>
-                  <FormControl>
-                    <Switch
-                      className="flex-row-reverse"
-                      checked={field.value}
-                      onCheckedChange={(value) => field.onChange(value === true)}
-                    />
-                  </FormControl>
-                </FormItem>
-              )}
-            />
-
-            {isPackage && (
-              <FormField
-                control={form.control}
-                name="packagePrice"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>سعر المنتج</FormLabel>
-                    <FormControl>
-                      <Input
-                        type="number"
-                        placeholder="0.00"
-                        {...field}
-                        onChange={(e) => field.onChange(Number(e.target.value) || 0)}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            )}
-          </div>
-
           {/* Variants Section */}
-          {!isPackage && (
-            <div className="border-t pt-4">
-              <ProductVariants control={form.control} sizes={sizes} />
-            </div>
-          )}
+          <div className="border-t pt-4">
+            <ProductVariants control={form.control} sizes={sizes} />
+          </div>
         </div>
         {/* Submit Button */}
         <SubmitingButton isEditMode={isEditMode} />

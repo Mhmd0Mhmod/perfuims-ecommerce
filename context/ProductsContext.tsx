@@ -3,6 +3,7 @@
 import { useProducts } from "@/hooks/use-products";
 import { Product } from "@/types/product";
 import { createContext, useContext, useReducer, Dispatch } from "react";
+import { useCountryContext } from "./CountryProvider";
 
 export type ProductsState = {
   countryId: string;
@@ -65,9 +66,9 @@ const ProductsContext = createContext<ProductsContextType | undefined>(undefined
 
 export function ProductsProvider({ children }: { children: React.ReactNode }) {
   const [state, dispatch] = useReducer(productsReducer, initialState);
-
+  const { country } = useCountryContext();
   const { data: products, isFetching } = useProducts({
-    countryId: state.countryId,
+    countryId: country?.id.toString(),
     searchTerm: state.searchTerm,
     categorieIds: state.categorieIds,
     dealIds: state.dealIds,

@@ -11,32 +11,17 @@ interface ProductCardProps {
 }
 
 function ProductCard({ product }: ProductCardProps) {
-  // Determine if product is available
-  const isAvailable = product.isPackage
-    ? true
-    : product.variants?.some((v) => v.isAvailable) || false;
-
-  // Get price to display
-  const displayPrice = product.isPackage
-    ? product.packagePrice
-    : product.variants?.find((v) => v.isAvailable)?.price || product.variants?.[0]?.price;
-
+  const isAvailable = product.variants?.some((vari) => vari.isAvailable);
   return (
     <Card className="group overflow-hidden p-0 transition-shadow hover:shadow-lg">
       <CardHeader className="relative p-0">
         <div className="bg-muted relative aspect-square overflow-hidden">
-          {product.imageUrl ? (
-            <Image
-              src={product.imageUrl}
-              alt={product.name}
-              fill
-              className="object-cover transition-transform group-hover:scale-105"
-            />
-          ) : (
-            <div className="flex h-full items-center justify-center">
-              <div className="bg-primary/20 h-32 w-32 rounded-full" />
-            </div>
-          )}
+          <Image
+            src={product.imageUrl}
+            alt={product.name}
+            fill
+            className="object-cover transition-transform group-hover:scale-105"
+          />
           <div className="flex items-center gap-2">
             {product.categoryNames.map((catName) => (
               <Badge className="bg-primary absolute top-4 right-4" key={catName}>
@@ -63,17 +48,25 @@ function ProductCard({ product }: ProductCardProps) {
         {product.description && (
           <p className="text-muted-foreground mb-3 line-clamp-2 text-sm">{product.description}</p>
         )}
-        <div className="flex items-center justify-between">
-          {displayPrice && (
-            <span className="text-primary text-xl font-bold">{displayPrice.toFixed(2)}</span>
-          )}
-          {product.isPackage ? (
-            <Badge variant="secondary">عبوة</Badge>
-          ) : (
-            product.variants &&
-            product.variants.length > 0 && (
-              <Badge variant="outline">{product.variants.length} أحجام</Badge>
-            )
+        <div className="flex items-center justify-between gap-2">
+          <Badge variant="outline" className="text-xs">
+            {product.variants.length} أحجام
+          </Badge>
+          {product.variants.length > 0 && (
+            <div className="flex items-center gap-1">
+              <span className="text-primary text-lg font-bold">
+                {Math.min(...product.variants.map(v => v.price))}
+              </span>
+              {Math.min(...product.variants.map(v => v.price)) !== Math.max(...product.variants.map(v => v.price)) && (
+                <>
+                  <span className="text-muted-foreground text-sm">-</span>
+                  <span className="text-primary text-lg font-bold">
+                    {Math.max(...product.variants.map(v => v.price))}
+                  </span>
+                </>
+              )}
+              <span className="text-muted-foreground text-sm">ر.س</span>
+            </div>
           )}
         </div>
       </CardContent>

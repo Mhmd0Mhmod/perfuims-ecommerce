@@ -103,8 +103,8 @@ async function ProductStatsCards() {
   const data = await getAdminProducts();
   const products = data.content;
   const totalProducts = data.totalElements;
-  const packages = products.filter((p) => p.isPackage).length;
-  const singleProducts = products.filter((p) => !p.isPackage).length;
+  const availableProducts = products.filter((p) => p.variants?.some((v) => v.isAvailable)).length;
+  const unavailableProducts = totalProducts - availableProducts;
 
   return (
     <div className="grid gap-4 md:grid-cols-3">
@@ -120,22 +120,22 @@ async function ProductStatsCards() {
       </Card>
       <Card>
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-          <CardTitle className="text-sm font-medium">الباقات</CardTitle>
-          <PackageCheck className="h-4 w-4 text-blue-600" />
+          <CardTitle className="text-sm font-medium">المنتجات المتوفرة</CardTitle>
+          <PackageCheck className="h-4 w-4 text-green-600" />
         </CardHeader>
         <CardContent>
-          <div className="text-2xl font-bold">{packages}</div>
-          <p className="text-muted-foreground text-xs">منتجات بأحجام متعددة</p>
+          <div className="text-2xl font-bold">{availableProducts}</div>
+          <p className="text-muted-foreground text-xs">منتجات متاحة للشراء</p>
         </CardContent>
       </Card>
       <Card>
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-          <CardTitle className="text-sm font-medium">منتجات فردية</CardTitle>
+          <CardTitle className="text-sm font-medium">منتجات غير متوفرة</CardTitle>
           <PackageX className="text-muted-foreground h-4 w-4" />
         </CardHeader>
         <CardContent>
-          <div className="text-2xl font-bold">{singleProducts}</div>
-          <p className="text-muted-foreground text-xs">منتجات بحجم واحد</p>
+          <div className="text-2xl font-bold">{unavailableProducts}</div>
+          <p className="text-muted-foreground text-xs">منتجات غير متاحة حالياً</p>
         </CardContent>
       </Card>
     </div>
@@ -144,10 +144,8 @@ async function ProductStatsCards() {
 
 async function ProductsTable() {
   const data = await getAdminProducts();
-  const products = data.content;
-  const categories = await getCategories();
-  const sizes = await getAdminSizes();
 
+  const products = data.content;
   if (products.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center py-12">
@@ -157,6 +155,8 @@ async function ProductsTable() {
       </div>
     );
   }
+  const categories = await getCategories();
+  const sizes = await getAdminSizes();
 
   return (
     <div className="space-y-4">
@@ -214,17 +214,29 @@ async function ProductsTable() {
                   </div>
                 </TableCell>
                 <TableCell className="text-right">
-                  {!product.isPackage && product.variants ? (
+                  {product.variants && product.variants.length > 0 ? (
                     <VariantsPopover variants={product.variants} />
                   ) : (
-                    <Badge variant="secondary">عبوه</Badge>
+                    <Badge variant="secondary">لا يوجد أحجام</Badge>
                   )}
                 </TableCell>
-                <TableCell className="text-right font-medium">
-                  {product.isPackage ? (
-                    <span>{product.packagePrice} ر.س</span>
+                <TableCell className="text-right">
+                  {product.variants && product.variants.length > 0 ? (
+                    <div className="flex items-center gap-1 font-medium">
+                      <span>{Math.min(...product.variants.map((v) => v.price))}</span>
+                      {Math.min(...product.variants.map((v) => v.price)) !==
+                        Math.max(...product.variants.map((v) => v.price)) && (
+                        <>
+                          <span className="text-muted-foreground">-</span>
+                          <span>{Math.max(...product.variants.map((v) => v.price))}</span>
+                        </>
+                      )}
+                      <span className="text-muted-foreground text-xs">ر.س</span>
+                    </div>
                   ) : (
-                    <span className="text-muted-foreground text-sm">متعدد</span>
+                    <Badge variant="secondary" className="text-xs">
+                      غير محدد
+                    </Badge>
                   )}
                 </TableCell>
                 <TableCell className="text-muted-foreground text-right text-sm">

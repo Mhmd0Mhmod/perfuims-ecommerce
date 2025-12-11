@@ -2,6 +2,7 @@ import { ProductsState } from "@/context/ProductsContext";
 import { publicAxiosInstance } from "@/lib/axios";
 import { throwingError } from "@/lib/utils";
 import { Product } from "@/types/product";
+import { getCountryFlag } from "../admin/countries/helpers";
 
 export async function getAllCategories() {
   try {
@@ -36,7 +37,14 @@ export async function getProducts(params: Partial<ProductsState>): Promise<Pagin
 export async function getCountries() {
   try {
     const response = await publicAxiosInstance.get<Country[]>("/countries");
-    return response.data;
+    const countriesWithFlags = await Promise.all(
+      response.data.map(async (country: Country) => ({
+        ...country,
+        flagUrl: (await getCountryFlag(country.name)) || "/placeholder-flag.svg",
+      })),
+    );
+
+    return countriesWithFlags;
   } catch (error) {
     throw throwingError(error);
   }

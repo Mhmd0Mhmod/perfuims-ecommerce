@@ -2,9 +2,7 @@ interface Product {
   id: number;
   name: string;
   description: string;
-  isPackage: boolean;
-  variants?: ProductVariant[];
-  packagePrice?: number;
+  variants: ProductVariant[];
   imageUrl: string;
   categoryIds: number[];
   categoryNames: string[];

@@ -7,7 +7,6 @@ import CategoryBar from "../categories/CategoryBar";
 function ShopHeader() {
   return (
     <>
-      {/* Top Bar */}
       <div className="container mx-auto px-4">
         <div className="flex h-16 items-center justify-between gap-4">
           <MobileMenu />

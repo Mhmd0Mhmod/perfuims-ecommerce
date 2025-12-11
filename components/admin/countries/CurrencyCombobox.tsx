@@ -1,6 +1,6 @@
 import ComboBox from "@/components/shared/combo-box";
 import { Button } from "@/components/ui/button";
-import { useCountries } from "@/hooks/use-countries";
+import { useAllCountries } from "@/hooks/use-all-countries";
 import { cn } from "@/lib/utils";
 import { ChevronsUpDown } from "lucide-react";
 import { useEffect } from "react";
@@ -14,7 +14,7 @@ function CurrencyCombobox({
   onChange: (value: string) => void;
 }) {
   const form = useFormContext();
-  const { data, isLoading: isCountriesLoading } = useCountries();
+  const { data, isLoading: isCountriesLoading } = useAllCountries();
   const currencies = data?.flatMap((country) => Object.keys(country.currencies));
   const uniqueCurrencies = Array.from(new Set(currencies));
   const name = form.watch("name");

@@ -3,9 +3,13 @@
 import { useProducts } from "@/hooks/use-products";
 import ProductCard from "../products/ProductCard";
 import CardSkeleton from "../shared/card-skeleton";
+import { useCountryContext } from "@/context/CountryProvider";
 
 function ProductsGrid({ limit = 4 }: { limit?: number }) {
-  const { data: products, isFetching } = useProducts({});
+  const { country } = useCountryContext();
+  const { data: products, isFetching } = useProducts({
+    countryId: country?.id.toString(),
+  });
   if (isFetching) {
     return (
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
@@ -14,6 +18,9 @@ function ProductsGrid({ limit = 4 }: { limit?: number }) {
         ))}
       </div>
     );
+  }
+  if (!country?.id) {
+    return <div>يرجى اختيار الدولة لعرض المنتجات</div>;
   }
   return (
     <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">

@@ -5,14 +5,14 @@ import { Calendar } from "lucide-react";
 import Image from "next/image";
 import DeleteCountryButton from "./DeleteCountryButton";
 import EditCountryButton from "./EditCountryButton";
-function CountryCard({ country, flagUrl }: { country: Country; flagUrl: string }) {
+function CountryCard({ country }: { country: Country }) {
   return (
     <Card className="transition-shadow hover:shadow-lg">
       <CardHeader>
         <div className="flex items-start justify-between">
           <div className="flex flex-1 items-center gap-3">
             <div className="relative rounded-sm border">
-              <Image src={flagUrl} alt={`${country.name} Flag`} width={40} height={30} />
+              <Image src={country.flagUrl} alt={`${country.name} Flag`} width={40} height={30} />
             </div>
             <div className="flex-1 text-right">
               <CardTitle className="text-xl">{country.name}</CardTitle>

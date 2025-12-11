@@ -14,7 +14,7 @@ import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";
 import { CheckCircle2, Globe, Plus, Search, XCircle } from "lucide-react";
 import { Suspense } from "react";
-import { getAdminCountries, getCountryFlag } from "./helpers";
+import { getAdminCountries } from "./helpers";
 
 async function StatsCards() {
   const countries = await getAdminCountries();
@@ -92,20 +92,14 @@ function CountriesListSkeleton() {
 
 async function CountriesList() {
   const countries = await getAdminCountries();
-  const countriesWithFlags = await Promise.all(
-    countries.map(async (country: Country) => ({
-      country,
-      flagUrl: (await getCountryFlag(country.name)) || "/placeholder-flag.svg",
-    })),
-  );
 
   return (
     <>
       {/* Countries Grid */}
       {countries.length > 0 ? (
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-          {countriesWithFlags.map(({ country, flagUrl }) => (
-            <CountryCard key={country.id} country={country} flagUrl={flagUrl} />
+          {countries.map((country) => (
+            <CountryCard key={country.id} country={country} />
           ))}
         </div>
       ) : (

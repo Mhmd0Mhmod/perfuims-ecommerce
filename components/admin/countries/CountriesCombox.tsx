@@ -1,7 +1,7 @@
 "use client";
 import ComboBox from "@/components/shared/combo-box";
 import { Button } from "@/components/ui/button";
-import { useCountries } from "@/hooks/use-countries";
+import { useAllCountries } from "@/hooks/use-all-countries";
 import { cn } from "@/lib/utils";
 import { Check, ChevronsUpDown } from "lucide-react";
 
@@ -12,7 +12,7 @@ function CountriesCombox({
   value: string | undefined;
   onChange: (value: string) => void;
 }) {
-  const { data, isLoading: isCountriesLoading } = useCountries();
+  const { data, isLoading: isCountriesLoading } = useAllCountries();
   const countries = data?.map((country) => ({
     name: country.name.common,
     currency: Object.keys(country.currencies)[0],

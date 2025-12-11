@@ -2,19 +2,8 @@ import ProductFilters from "@/components/products/ProductFilters";
 import ProductsGrid from "@/components/products/ProductsGrid";
 import { Badge } from "@/components/ui/badge";
 import { ProductsProvider } from "@/context/ProductsContext";
-import { getCountries } from "../helper";
-import SelectCountry from "@/components/country/SelectCountry";
-import { getCountryFlag } from "@/app/admin/countries/helpers";
 
-export default async function ProductsPage() {
-  const countries = await getCountries();
-  const countriesWithFlags = await Promise.all(
-    countries.map(async (country: Country) => ({
-      country,
-      flagUrl: (await getCountryFlag(country.name)) || "/placeholder-flag.svg",
-    })),
-  );
-
+export default function ProductsPage() {
   return (
     <div className="container mx-auto px-4 py-8">
       {/* Page Header */}
@@ -39,17 +28,10 @@ export default async function ProductsPage() {
           </aside>
 
           {/* Products Grid */}
-          {countries && (
-            <main className="space-y-4 lg:col-span-3">
-              <SelectCountry countries={countriesWithFlags} />
-              <ProductsGrid />
-            </main>
-          )}
 
-          {/* Fallback for loading state */}
-          {!countries && (
-            <div className="flex h-full items-center justify-center">لا توجد دول متاحة للعرض</div>
-          )}
+          <main className="space-y-4 lg:col-span-3">
+            <ProductsGrid />
+          </main>
         </div>
       </ProductsProvider>
     </div>
