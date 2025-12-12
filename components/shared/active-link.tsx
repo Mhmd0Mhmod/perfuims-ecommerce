@@ -1,4 +1,5 @@
 "use client";
+import { useSelectedCountry } from "@/hooks/use-selected-country";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -16,9 +17,11 @@ function ActiveLink({
   activeClassName?: ClassNameValue;
 }) {
   const pathName = usePathname();
-  const isActive = pathName === href;
+  const { selectedCountry } = useSelectedCountry();
+  const url = `/${selectedCountry?.code}${href}`;
+  const isActive = pathName === url;
   return (
-    <Link href={href} className={cn(className, isActive && activeClassName)}>
+    <Link href={url} className={cn(className, isActive && activeClassName)}>
       {children}
     </Link>
   );

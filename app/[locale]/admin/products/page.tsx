@@ -31,9 +31,10 @@ import { Suspense } from "react";
 import { getAdminProducts } from "./helper";
 import { getCategories } from "../categories/helper";
 import { getAdminSizes } from "../sizes/helper";
+import { getCountryByCode } from "@/app/actions";
 
-async function AddProductDialogButton() {
-  const categories = await getCategories();
+async function AddProductDialogButton({ countryId }: { countryId: number }) {
+  const categories = await getCategories(countryId);
   const sizes = await getAdminSizes();
   return (
     <Dialog>
@@ -57,8 +58,10 @@ async function AddProductDialogButton() {
     </Dialog>
   );
 }
+async function ProductsPage(props: PageProps<"/[locale]/admin/products">) {
+  const { locale } = await props.params;
+  const country = await getCountryByCode(locale);
 
- function ProductsPage() {
   return (
     <div className="container mx-auto space-y-6 p-6">
       {/* Header */}
@@ -67,12 +70,12 @@ async function AddProductDialogButton() {
           <h1 className="text-3xl font-bold tracking-tight">المنتجات</h1>
           <p className="text-muted-foreground">إدارة جميع المنتجات والباقات</p>
         </div>
-        <AddProductDialogButton />
+        <AddProductDialogButton countryId={country?.data!.id} />
       </div>
 
       {/* Stats Cards */}
       <Suspense fallback={<StatsSkeleton length={3} />}>
-        <ProductStatsCards />
+        <ProductStatsCards countryId={country?.data!.id} />
       </Suspense>
 
       {/* Main Table Card */}
@@ -99,8 +102,8 @@ async function AddProductDialogButton() {
   );
 }
 
-async function ProductStatsCards() {
-  const data = await getAdminProducts();
+async function ProductStatsCards({ countryId }: { countryId: number }) {
+  const data = await getAdminProducts({ countryId });
   const products = data.content;
   const totalProducts = data.totalElements;
   const availableProducts = products.filter((p) => p.variants?.some((v) => v.isAvailable)).length;
@@ -142,8 +145,8 @@ async function ProductStatsCards() {
   );
 }
 
-async function ProductsTable() {
-  const data = await getAdminProducts();
+async function ProductsTable({ countryId }: { countryId?: number }) {
+  const data = await getAdminProducts({ countryId });
   const products = data.content;
   if (products.length === 0) {
     return (
@@ -154,7 +157,7 @@ async function ProductsTable() {
       </div>
     );
   }
-  const categories = await getCategories();
+  const categories = await getCategories(countryId);
   const sizes = await getAdminSizes();
 
   return (

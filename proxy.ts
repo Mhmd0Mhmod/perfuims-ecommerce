@@ -8,6 +8,7 @@ export async function proxy(request: NextRequest) {
   const countries = await getCountries();
 
   const exists = countries.some((c) => c.code === country);
+  console.log(country);
 
   const defaultCountry = countries.find((c) => c.isDefault);
   if (!exists) {
@@ -20,5 +21,8 @@ export async function proxy(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/((?!_next/static|_next/image|favicon.ico).*)"],
+  matcher: [
+    // Only run on locale routes, exclude auth, account, api, and static files
+    "/((?!api|_next|login|register|account|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp|ico)$).*)",
+  ],
 };

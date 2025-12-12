@@ -30,6 +30,5 @@ const publicAxiosInstance = axios.create({
     "Content-Type": "application/json",
   },
 });
-
 export { publicAxiosInstance };
 export default axiosInstance;
