@@ -1,6 +1,6 @@
 "use client";
 
-import { addCountry, updateCountry } from "@/app/[locale]/admin/countries/actions";
+import { addCountry, updateCountry } from "@/app/admin/countries/actions";
 import SubmitButton from "@/components/shared/submit-button";
 import {
   Form,

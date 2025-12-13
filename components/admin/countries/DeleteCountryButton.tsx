@@ -1,5 +1,5 @@
 "use client";
-import { deleteCountry } from "@/app/[locale]/admin/countries/actions";
+import { deleteCountry } from "@/app/admin/countries/actions";
 import {
   AlertDialog,
   AlertDialogAction,

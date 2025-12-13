@@ -25,7 +25,7 @@ async function AddCategory() {
           إضافة تصنيف
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[525px]">
+      <DialogContent className="sm:max-w-131.25">
         <DialogHeader>
           <DialogTitle>إضافة تصنيف جديد</DialogTitle>
           <DialogDescription>

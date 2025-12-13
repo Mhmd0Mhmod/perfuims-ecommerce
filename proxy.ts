@@ -1,28 +1,21 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getCountries } from "./app/[locale]/(shop)/helper";
+import { publicAxiosInstance } from "./lib/axios";
 
 export async function proxy(request: NextRequest) {
-  if (request.nextUrl.pathname.startsWith("/api/")) return NextResponse.next();
-  const country = request.nextUrl.pathname.split("/")[1];
-
-  const countries = await getCountries();
-
-  const exists = countries.some((c) => c.code === country);
-  console.log(country);
-
-  const defaultCountry = countries.find((c) => c.isDefault);
-  if (!exists) {
-    return NextResponse.redirect(
-      new URL(`/${defaultCountry?.code}${request.nextUrl.pathname}`, request.url),
-    );
+  const countryCode = request.cookies.get("country")?.value;
+  const response = NextResponse.next();
+  if (!countryCode) {
+    const countries = await publicAxiosInstance.get("/countries", {
+      fetchOptions: {
+        next: {
+          revalidate: 86400, // 24 hours
+        },
+      },
+    });
+    const defaultCountry = countries.data.find((c: Country) => c.isDefault);
+    response.cookies.set("country", defaultCountry.code);
+  } else {
+    response.cookies.set("country", countryCode);
   }
-
-  return NextResponse.next();
+  return response;
 }
-
-export const config = {
-  matcher: [
-    // Only run on locale routes, exclude auth, account, api, and static files
-    "/((?!api|_next|login|register|account|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp|ico)$).*)",
-  ],
-};

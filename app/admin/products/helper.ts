@@ -4,7 +4,7 @@ import { throwingError } from "@/lib/utils";
 import { Product } from "@/types/product";
 
 export async function getAdminProducts(
-  params?: Partial<ProductsState> & { countryId?: number },
+  params?: Partial<ProductsState>,
 ): Promise<Pagination<Product>> {
   try {
     const { data } = await axiosInstance.get<Pagination<Product>>("admin/products", {

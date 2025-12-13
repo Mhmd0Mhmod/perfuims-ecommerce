@@ -4,33 +4,21 @@ import { throwingError } from "@/lib/utils";
 import { Product } from "@/types/product";
 import { getCountryFlag } from "../admin/countries/helpers";
 
-export async function getAllCategories(countryId?: number) {
+export async function getAllCategories() {
   try {
-    const response = await publicAxiosInstance.get<Category[]>("/categories", {
-      params: {
-        countryId,
-      },
-    });
+    const response = await publicAxiosInstance.get<Category[]>("/categories");
     return response.data;
   } catch (error) {
     throw throwingError(error);
   }
 }
 
-export async function getProducts(
-  params: Partial<ProductsState> & { countryId?: number },
-): Promise<Pagination<Product>> {
+export async function getProducts(params: Partial<ProductsState>): Promise<Pagination<Product>> {
   try {
-    const { countryId, searchTerm, page, fromPrice, toPrice, categorieIds, dealIds } = params;
     const response = await publicAxiosInstance.get<Pagination<Product>>("/products", {
       params: {
-        q: searchTerm,
-        countryId,
-        page,
-        fromPrice,
-        toPrice,
-        categorieIds,
-        dealIds,
+        ...params,
+        q: params.searchTerm,
       },
     });
 

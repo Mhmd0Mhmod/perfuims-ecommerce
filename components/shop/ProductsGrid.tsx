@@ -17,7 +17,7 @@ function ProductsGrid({ limit = 4 }: { limit?: number }) {
       </div>
     );
   }
-  if (!country?.id) {
+  if (!country) {
     return <div>يرجى اختيار الدولة لعرض المنتجات</div>;
   }
   return (

@@ -30,16 +30,16 @@ function ProductsGrid() {
 
   if (!isFetching && items.length === 0) {
     return (
-      <div className="flex min-h-[400px] items-center justify-center">
+      <div className="flex min-h-100 items-center justify-center">
         <div className="text-center">
           <p className="text-muted-foreground text-lg">لا توجد منتجات متاحة</p>
         </div>
       </div>
     );
   }
-  if (!selectedCountry?.id) {
+  if (!selectedCountry) {
     return (
-      <div className="flex min-h-[400px] items-center justify-center">
+      <div className="flex min-h-100 items-center justify-center">
         <div className="text-center">
           <p className="text-muted-foreground text-lg">يرجى اختيار دولة للعرض</p>
         </div>

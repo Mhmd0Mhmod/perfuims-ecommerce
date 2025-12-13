@@ -6,7 +6,6 @@ import CartButton from "../cart/CartButton";
 import { Button } from "../ui/button";
 import { Skeleton } from "../ui/skeleton";
 import WishlistButton from "../wishlist/WishlistButton";
-import SelectCountry from "../country/SelectCountry";
 
 function HeaderActions() {
   const { data: session, status } = useSession();
@@ -15,14 +14,12 @@ function HeaderActions() {
       <div className="flex items-center gap-2">
         <Skeleton className="h-8 w-8 rounded-full" />
         <Skeleton className="h-8 w-8 rounded-full" />
-        <Skeleton className="h-8 w-8 rounded-full" />
       </div>
     );
   }
   if (status !== "authenticated") {
     return (
       <div className="flex items-center gap-2">
-        <SelectCountry />
         <Link href="/login">
           <Button variant="ghost" size="sm">
             تسجيل الدخول
@@ -37,7 +34,6 @@ function HeaderActions() {
 
   return (
     <div className="flex items-center gap-2">
-      <SelectCountry />
       {/* Wishlist */}
       <WishlistButton />
       {/* Cart */}

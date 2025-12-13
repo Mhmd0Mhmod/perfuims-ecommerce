@@ -22,7 +22,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Pencil, Trash2 } from "lucide-react";
-import { deleteCategory } from "@/app/[locale]/admin/categories/actions";
+import { deleteCategory } from "@/app/admin/categories/actions";
 import { toast } from "sonner";
 import {
   Dialog,

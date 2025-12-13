@@ -1,9 +1,12 @@
 import { getToken } from "@/app/(auth)/action";
+import { getCookie } from "cookies-next/client";
+
 import axios from "axios";
 const axiosInstance = axios.create({
   baseURL: process.env.RAILWAY_API,
   headers: {
     "Content-Type": "application/json",
+    "X-Country-Code": getCookie("country"),
   },
 });
 axiosInstance.interceptors.request.use(async (config) => {
@@ -24,11 +27,14 @@ axiosInstance.interceptors.response.use(
     return Promise.reject(error);
   },
 );
+
 const publicAxiosInstance = axios.create({
   baseURL: process.env.NEXT_PUBLIC_RAILWAY_API,
   headers: {
     "Content-Type": "application/json",
+    "X-Country-Code": getCookie("country"),
   },
 });
+
 export { publicAxiosInstance };
 export default axiosInstance;

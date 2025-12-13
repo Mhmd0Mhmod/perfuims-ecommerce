@@ -33,8 +33,8 @@ import { getCategories } from "../categories/helper";
 import { getAdminSizes } from "../sizes/helper";
 import { getCountryByCode } from "@/app/actions";
 
-async function AddProductDialogButton({ countryId }: { countryId: number }) {
-  const categories = await getCategories(countryId);
+async function AddProductDialogButton() {
+  const categories = await getCategories();
   const sizes = await getAdminSizes();
   return (
     <Dialog>
@@ -58,10 +58,7 @@ async function AddProductDialogButton({ countryId }: { countryId: number }) {
     </Dialog>
   );
 }
-async function ProductsPage(props: PageProps<"/[locale]/admin/products">) {
-  const { locale } = await props.params;
-  const country = await getCountryByCode(locale);
-
+function ProductsPage() {
   return (
     <div className="container mx-auto space-y-6 p-6">
       {/* Header */}
@@ -70,12 +67,12 @@ async function ProductsPage(props: PageProps<"/[locale]/admin/products">) {
           <h1 className="text-3xl font-bold tracking-tight">المنتجات</h1>
           <p className="text-muted-foreground">إدارة جميع المنتجات والباقات</p>
         </div>
-        <AddProductDialogButton countryId={country?.data!.id} />
+        <AddProductDialogButton />
       </div>
 
       {/* Stats Cards */}
       <Suspense fallback={<StatsSkeleton length={3} />}>
-        <ProductStatsCards countryId={country?.data!.id} />
+        <ProductStatsCards />
       </Suspense>
 
       {/* Main Table Card */}
@@ -102,8 +99,8 @@ async function ProductsPage(props: PageProps<"/[locale]/admin/products">) {
   );
 }
 
-async function ProductStatsCards({ countryId }: { countryId: number }) {
-  const data = await getAdminProducts({ countryId });
+async function ProductStatsCards() {
+  const data = await getAdminProducts();
   const products = data.content;
   const totalProducts = data.totalElements;
   const availableProducts = products.filter((p) => p.variants?.some((v) => v.isAvailable)).length;
@@ -145,8 +142,8 @@ async function ProductStatsCards({ countryId }: { countryId: number }) {
   );
 }
 
-async function ProductsTable({ countryId }: { countryId?: number }) {
-  const data = await getAdminProducts({ countryId });
+async function ProductsTable() {
+  const data = await getAdminProducts();
   const products = data.content;
   if (products.length === 0) {
     return (
@@ -157,7 +154,7 @@ async function ProductsTable({ countryId }: { countryId?: number }) {
       </div>
     );
   }
-  const categories = await getCategories(countryId);
+  const categories = await getCategories();
   const sizes = await getAdminSizes();
 
   return (
@@ -196,7 +193,7 @@ async function ProductsTable({ countryId }: { countryId?: number }) {
                   </div>
                 </TableCell>
                 <TableCell className="text-right">
-                  <div className="flex max-w-[200px] flex-wrap gap-1">
+                  <div className="flex max-w-50 flex-wrap gap-1">
                     {product.categoryNames && product.categoryNames.length > 0 ? (
                       product.categoryNames.slice(0, 2).map((catName) => (
                         <Badge variant="outline" key={catName} className="text-xs">

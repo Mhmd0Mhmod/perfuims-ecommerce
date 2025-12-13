@@ -1,6 +1,6 @@
 "use client";
 
-import { addCategory, updateCategory } from "@/app/[locale]/admin/categories/actions";
+import { addCategory, updateCategory } from "@/app/admin/categories/actions";
 import { Button } from "@/components/ui/button";
 import { DialogFooter } from "@/components/ui/dialog";
 import {

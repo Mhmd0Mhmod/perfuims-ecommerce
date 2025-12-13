@@ -70,21 +70,21 @@ function HeroShopPage() {
 
             {/* Stats Cards */}
             <div className="flex justify-start gap-4 pt-4">
-              <Card className="max-w-[120px] flex-1">
+              <Card className="max-w-30 flex-1">
                 <CardContent className="p-4 text-center">
                   <p className="text-primary text-3xl font-bold">+500</p>
                   <Separator className="my-2" />
                   <p className="text-muted-foreground text-xs">منتج فاخر</p>
                 </CardContent>
               </Card>
-              <Card className="max-w-[120px] flex-1">
+              <Card className="max-w-30 flex-1">
                 <CardContent className="p-4 text-center">
                   <p className="text-primary text-3xl font-bold">+10K</p>
                   <Separator className="my-2" />
                   <p className="text-muted-foreground text-xs">عميل سعيد</p>
                 </CardContent>
               </Card>
-              <Card className="max-w-[120px] flex-1">
+              <Card className="max-w-30 flex-1">
                 <CardContent className="p-4 text-center">
                   <p className="text-primary text-3xl font-bold">4.9★</p>
                   <Separator className="my-2" />
