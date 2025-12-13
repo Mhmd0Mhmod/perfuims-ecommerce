@@ -14,6 +14,10 @@ clientAuthAxios.interceptors.request.use(async (config) => {
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }
+  const country = getCookie("country");
+  if (country) {
+    config.headers["X-Country-Code"] = country;
+  }
   return config;
 });
 const publicAxios = axios.create({
@@ -22,6 +26,13 @@ const publicAxios = axios.create({
     "Content-Type": "application/json",
     "X-Country-Code": getCookie("country"),
   },
+});
+publicAxios.interceptors.request.use(async (config) => {
+  const country = getCookie("country");
+  if (country) {
+    config.headers["X-Country-Code"] = country;
+  }
+  return config;
 });
 export { publicAxios };
 export { clientAuthAxios };
