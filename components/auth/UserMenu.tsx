@@ -41,6 +41,7 @@ export function UserMenu({ user }: { user: User }) {
 
     toast.success("تم تسجيل الخروج بنجاح!", { id });
   };
+
   return (
     <DropdownMenu dir="rtl">
       <DropdownMenuTrigger asChild>

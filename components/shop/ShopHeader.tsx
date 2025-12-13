@@ -5,9 +5,12 @@ import SearchBar from "../shared/SearchBar";
 import HeaderActions from "./HeaderActions";
 import Logo from "./Logo";
 import MobileMenu from "./MobileMenu";
+import { cookies } from "next/headers";
 
 async function ShopHeader() {
   const countries = await getCountries();
+  const cookiesStore = await cookies();
+  const countryCookie = cookiesStore.get("country")?.value;
   return (
     <>
       <div className="container mx-auto px-4">
@@ -16,7 +19,7 @@ async function ShopHeader() {
           <Logo />
           <SearchBar className="hidden max-w-md flex-1 lg:flex" />
           <div className="flex items-center gap-4">
-            <SelectCountry countries={countries || []} />
+            <SelectCountry countries={countries || []} defaultCountry={countryCookie} />
             <HeaderActions />
           </div>
         </div>

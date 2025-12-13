@@ -22,7 +22,7 @@ function ProductsGrid({ limit = 4 }: { limit?: number }) {
   }
   return (
     <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-      {products?.content.slice(0, limit).map((product) => (
+      {products?.content?.slice(0, limit).map((product) => (
         <ProductCard key={product.id} product={product} />
       ))}
     </div>

@@ -1,10 +1,11 @@
 "use server";
-import axiosInstance from "@/lib/axios";
+import AxiosServerInstance from "@/lib/axios-server";
 import { throwingError } from "@/lib/utils";
 import axios from "axios";
 
 export async function getAdminCountries() {
   try {
+    const axiosInstance = await AxiosServerInstance();
     const response = await axiosInstance.get<Country[]>("admin/countries");
     const countriesWithFlags = await Promise.all(
       response.data.map(async (country: Country) => ({

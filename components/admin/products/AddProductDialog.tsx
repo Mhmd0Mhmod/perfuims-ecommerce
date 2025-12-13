@@ -39,6 +39,10 @@ function AddProductDialog({ product, categories, sizes }: AddProductDialogProps)
         }
       : {
           name: "",
+          imageUrl: "",
+          description: "",
+          categoryIds: [],
+          variants: [],
         },
   });
 

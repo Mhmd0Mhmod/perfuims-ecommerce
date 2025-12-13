@@ -4,8 +4,8 @@ import { useRouter } from "next/navigation";
 import { useCallback } from "react";
 
 export function useSelectedCountry() {
+  const selectedCountry = getCookie("country");
   const router = useRouter();
-  const selectedCountry = getCookie("country") as string;
   const setSelectedCountry = useCallback(
     (code: string) => {
       setCookie("country", code);

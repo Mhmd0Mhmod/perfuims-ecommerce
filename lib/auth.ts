@@ -1,10 +1,10 @@
-import { publicAxiosInstance } from "@/lib/axios";
 import { Roles } from "@/types/roles";
 import { AxiosError } from "axios";
 import NextAuth, { CredentialsSignin, User } from "next-auth";
 import { JWT } from "next-auth/jwt";
 import Credentials from "next-auth/providers/credentials";
 import { signInSchema } from "../lib/zod";
+import { publicAxios } from "./axios-client";
 
 declare module "next-auth" {
   /**
@@ -47,7 +47,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       authorize: async (credentials) => {
         try {
           const validatedCredentials = signInSchema.parse(credentials);
-          const { data } = await publicAxiosInstance.post<{ token: string; userDetails: User }>(
+          const { data } = await publicAxios.post<{ token: string; userDetails: User }>(
             "auth/login",
             validatedCredentials,
           );

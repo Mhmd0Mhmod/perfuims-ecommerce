@@ -1,12 +1,12 @@
 import { ProductsState } from "@/context/ProductsContext";
-import { publicAxiosInstance } from "@/lib/axios";
 import { throwingError } from "@/lib/utils";
 import { Product } from "@/types/product";
 import { getCountryFlag } from "../admin/countries/helpers";
+import { publicAxios } from "@/lib/axios-client";
 
 export async function getAllCategories() {
   try {
-    const response = await publicAxiosInstance.get<Category[]>("/categories");
+    const response = await publicAxios.get<Category[]>("/categories");
     return response.data;
   } catch (error) {
     throw throwingError(error);
@@ -15,13 +15,12 @@ export async function getAllCategories() {
 
 export async function getProducts(params: Partial<ProductsState>): Promise<Pagination<Product>> {
   try {
-    const response = await publicAxiosInstance.get<Pagination<Product>>("/products", {
+    const response = await publicAxios.get<Pagination<Product>>("/products", {
       params: {
         ...params,
-        q: params.searchTerm,
+        q: params?.searchTerm || "",
       },
     });
-
     return response.data;
   } catch (error) {
     throw throwingError(error);
@@ -30,7 +29,7 @@ export async function getProducts(params: Partial<ProductsState>): Promise<Pagin
 
 export async function getCountries() {
   try {
-    const response = await publicAxiosInstance.get<Country[]>("/countries");
+    const response = await publicAxios.get<Country[]>("/countries");
     const countriesWithFlags = await Promise.all(
       response.data.map(async (country: Country) => ({
         ...country,

@@ -1,6 +1,6 @@
 "use server";
 
-import axiosInstance from "@/lib/axios";
+import { default as AxiosServerInstance } from "@/lib/axios-server";
 import { ErrorResponse } from "@/lib/utils";
 import { AddProductSchema } from "@/lib/zod";
 import { Product } from "@/types/product";
@@ -8,6 +8,8 @@ import { revalidatePath } from "next/cache";
 
 export async function addProduct(data: AddProductSchema): Promise<ApiResponse<Product>> {
   try {
+    const axiosInstance = await AxiosServerInstance();
+
     const response = await axiosInstance.post<Product>("admin/products", data);
     revalidatePath("/admin/products");
     return {
@@ -26,6 +28,7 @@ export async function updateProduct(
   data: Partial<AddProductSchema>,
 ): Promise<ApiResponse<Product>> {
   try {
+    const axiosInstance = await AxiosServerInstance();
     const response = await axiosInstance.patch<Product>(`admin/products/${productId}`, data);
     revalidatePath("/admin/products");
     return {
@@ -41,6 +44,7 @@ export async function updateProduct(
 
 export async function deleteProduct(productId: number): Promise<ApiResponse> {
   try {
+    const axiosInstance = await AxiosServerInstance();
     const response = await axiosInstance.delete(`admin/products/${productId}`);
     revalidatePath("/admin/products");
     return {

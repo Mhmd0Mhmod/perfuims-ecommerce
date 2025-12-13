@@ -1,11 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
-import { publicAxiosInstance } from "./lib/axios";
+import { publicAxios } from "./lib/axios-client";
 
 export async function proxy(request: NextRequest) {
   const countryCode = request.cookies.get("country")?.value;
   const response = NextResponse.next();
   if (!countryCode) {
-    const countries = await publicAxiosInstance.get("/countries", {
+    const countries = await publicAxios.get("/countries", {
       fetchOptions: {
         next: {
           revalidate: 86400, // 24 hours
@@ -17,5 +17,10 @@ export async function proxy(request: NextRequest) {
   } else {
     response.cookies.set("country", countryCode);
   }
+
   return response;
 }
+
+export const config = {
+  matcher: ["/((?!api|_next/static|_next/image|favicon.ico).*)"],
+};
