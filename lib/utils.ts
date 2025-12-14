@@ -63,3 +63,18 @@ export function ErrorResponse<T = void>(error: unknown): ApiResponse<T> {
     message: "An unexpected error occurred",
   };
 }
+
+export function formatCurrency({
+  amount,
+  code,
+  currency,
+}: {
+  amount: number;
+  code: string;
+  currency: string;
+}): string {
+  return new Intl.NumberFormat(`ar-${code}`, {
+    style: "currency",
+    currency: currency,
+  }).format(amount);
+}

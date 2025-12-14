@@ -4,7 +4,6 @@ export function useCategories() {
   const query = useQuery({
     queryKey: ["categories-home"],
     queryFn: getAllCategories,
-    staleTime: "static",
   });
   return query;
 }

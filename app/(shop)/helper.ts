@@ -42,3 +42,18 @@ export async function getCountries() {
     throw throwingError(error);
   }
 }
+
+export async function getCountryByCode(code: string) {
+  try {
+    const response = await publicAxios.get<Country[]>(`/countries`);
+    const country = response.data.find((c) => c.code === code);
+    if (!country) {
+      throw new Error("Country not found");
+    }
+    const flagUrl = (await getCountryFlag(country.name)) || "/placeholder-flag.svg";
+    const countryWithFlag = { ...country, flagUrl };
+    return countryWithFlag;
+  } catch (error) {
+    throw throwingError(error);
+  }
+}

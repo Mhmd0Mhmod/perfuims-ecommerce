@@ -5,6 +5,7 @@ import type { Metadata } from "next";
 import { SessionProvider } from "next-auth/react";
 import { Cairo, Playfair_Display } from "next/font/google";
 import "./globals.css";
+import { CartProvider } from "@/context/CartContext";
 const playfairDisplay = Playfair_Display({
   variable: "--font-playfair",
   subsets: ["latin"],
@@ -33,9 +34,11 @@ export default function RootLayout({
       <body className={`${playfairDisplay.variable} ${cairo.variable} antialiased`}>
         <QueryContext>
           <SessionProvider>
-            {children}
-            <Toaster position="bottom-right" />
-            <ReactQueryDevtools initialIsOpen={false} />
+            <CartProvider>
+              {children}
+              <Toaster position="bottom-right" />
+              <ReactQueryDevtools initialIsOpen={false} />
+            </CartProvider>
           </SessionProvider>
         </QueryContext>
       </body>

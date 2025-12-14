@@ -1,10 +1,14 @@
+"use client";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { formatCurrency } from "@/lib/utils";
 import { Product } from "@/types/product";
-import { Heart, ShoppingCart } from "lucide-react";
+import { Heart } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import AddToCartButton from "./AddToCartButton";
+import { useSelectedCountry } from "@/hooks/use-selected-country";
 
 interface ProductCardProps {
   product: Product;
@@ -12,6 +16,8 @@ interface ProductCardProps {
 
 function ProductCard({ product }: ProductCardProps) {
   const isAvailable = product.variants?.some((vari) => vari.isAvailable);
+  const { selectedCountryEntry: countryEntry } = useSelectedCountry();
+
   return (
     <Card className="group overflow-hidden p-0 transition-shadow hover:shadow-lg">
       <CardHeader className="relative p-0">
@@ -55,28 +61,40 @@ function ProductCard({ product }: ProductCardProps) {
           {product.variants.length > 0 && (
             <div className="flex items-center gap-1">
               <span className="text-primary text-lg font-bold">
-                {Math.min(...product.variants.map(v => v.price))}
+                {countryEntry &&
+                  formatCurrency({
+                    amount: Math.min(...product.variants.map((v) => v.price)),
+                    currency: countryEntry.currency,
+                    code: countryEntry.code,
+                  })}
               </span>
-              {Math.min(...product.variants.map(v => v.price)) !== Math.max(...product.variants.map(v => v.price)) && (
+              {Math.min(...product.variants.map((v) => v.price)) !==
+                Math.max(...product.variants.map((v) => v.price)) && (
                 <>
                   <span className="text-muted-foreground text-sm">-</span>
                   <span className="text-primary text-lg font-bold">
-                    {Math.max(...product.variants.map(v => v.price))}
+                    {countryEntry &&
+                      formatCurrency({
+                        amount: Math.max(...product.variants.map((v) => v.price)),
+                        currency: countryEntry.currency,
+                        code: countryEntry.code,
+                      })}
                   </span>
                 </>
               )}
-              <span className="text-muted-foreground text-sm">ر.س</span>
             </div>
           )}
         </div>
       </CardContent>
       <CardFooter className="p-4 pt-0">
-        <Button asChild className="w-full" disabled={!isAvailable}>
+        {isAvailable && <AddToCartButton product={product} />}
+        {!isAvailable && (
           <Link href={`/products/${product.id}`}>
-            <ShoppingCart className="ml-2 h-4 w-4" />
-            {isAvailable ? "أضف للسلة" : "عرض المنتج"}
+            <Button variant="outline" className="w-full">
+              عرض المنتج
+            </Button>
           </Link>
-        </Button>
+        )}
       </CardFooter>
     </Card>
   );
