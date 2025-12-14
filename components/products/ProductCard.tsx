@@ -9,6 +9,7 @@ import Image from "next/image";
 import Link from "next/link";
 import AddToCartButton from "./AddToCartButton";
 import { useSelectedCountry } from "@/hooks/use-selected-country";
+import { useRouter } from "next/navigation";
 
 interface ProductCardProps {
   product: Product;
@@ -17,6 +18,10 @@ interface ProductCardProps {
 function ProductCard({ product }: ProductCardProps) {
   const isAvailable = product.variants?.some((vari) => vari.isAvailable);
   const { selectedCountryEntry: countryEntry } = useSelectedCountry();
+  const router = useRouter();
+  const handleCardClick = () => {
+    router.push(`/products/${product.id}`);
+  };
 
   return (
     <Card className="group overflow-hidden p-0 transition-shadow hover:shadow-lg">
@@ -25,6 +30,7 @@ function ProductCard({ product }: ProductCardProps) {
           <Image
             src={product.imageUrl}
             alt={product.name}
+            onClick={handleCardClick}
             fill
             className="object-cover transition-transform group-hover:scale-105"
           />
