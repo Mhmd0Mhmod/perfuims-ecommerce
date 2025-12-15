@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { getAdminOfferById } from "../helper";
+import { getAdminProducts } from "@/app/admin/products/helper";
 import { notFound } from "next/navigation";
 
 interface EditOfferPageProps {
@@ -19,6 +20,9 @@ async function EditOfferPage({ params }: EditOfferPageProps) {
   } catch {
     notFound();
   }
+
+  const productsData = await getAdminProducts();
+  const products = productsData.content;
 
   return (
     <div className="container mx-auto space-y-6 p-6">
@@ -42,7 +46,7 @@ async function EditOfferPage({ params }: EditOfferPageProps) {
           <CardDescription>قم بتعديل المعلومات المطلوبة لتحديث العرض</CardDescription>
         </CardHeader>
         <CardContent>
-          <AddOfferForm offer={offer} />
+          <AddOfferForm offer={offer} products={products} />
         </CardContent>
       </Card>
     </div>

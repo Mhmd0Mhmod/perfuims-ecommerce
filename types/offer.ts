@@ -9,6 +9,8 @@ export interface Offer {
   isActive: boolean;
   createdAt: string;
   updatedAt: string;
+
+  productVariantIds: number[];
 }
 
 export enum DiscountType {

@@ -96,6 +96,7 @@ export const offerSchema = z.object({
   startDate: z.date(),
   endDate: z.date(),
   isActive: z.boolean(),
+  productVariantIds: z.array(z.number()),
 });
 
 export type OfferFormValues = z.infer<typeof offerSchema>;
