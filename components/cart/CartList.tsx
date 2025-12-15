@@ -1,3 +1,4 @@
+import { CartItem } from "@/types/cart";
 import CartListItem from "./CartListItem";
 
 function CartList({ cartItems }: { cartItems: CartItem[] }) {

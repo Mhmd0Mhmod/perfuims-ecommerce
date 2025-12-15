@@ -1,6 +1,7 @@
 "use client";
 import { addToCart, clearCart, editCartItem, removeFromCart } from "@/app/(shop)/cart/actions";
 import { useCart } from "@/hooks/use-cart";
+import { CartItem } from "@/types/cart";
 import { createContext, ReactNode, useContext, useTransition } from "react";
 import { toast } from "sonner";
 
@@ -97,7 +98,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
     });
   };
   const totalPrice = cart.reduce(
-    (total, item) => total + item.productVariantPrice * item.quantity,
+    (total, item) => total + item.variantDetails.newPrice * item.quantity,
     0,
   );
   return (

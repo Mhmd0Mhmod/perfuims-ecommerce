@@ -7,6 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 
 import { useCartContext } from "@/context/CartContext";
 import { ShoppingCart, Trash2 } from "lucide-react";
+import { CartItem } from "@/types/cart";
 
 function CartListItem({ item }: { item: CartItem }) {
   const { selectedCountryEntry } = useSelectedCountry();
@@ -31,24 +32,24 @@ function CartListItem({ item }: { item: CartItem }) {
         <CardHeader className="flex w-24 min-w-20 flex-col items-center justify-center p-4">
           <div className="relative h-20 w-20">
             <Image
-              src={item.productVariantImageUrl}
-              alt={item.productVariantName}
+              src={item.variantDetails.imageUrl}
+              alt={item.variantDetails.name}
               fill
               className="rounded object-cover"
             />
           </div>
         </CardHeader>
         <CardContent className="flex flex-1 flex-col justify-between p-2">
-          <CardTitle className="mb-1 text-base font-semibold">{item.productVariantName}</CardTitle>
+          <CardTitle className="mb-1 text-base font-semibold">{item.variantDetails.name}</CardTitle>
           <div className="text-primary mb-2 flex items-center justify-between gap-2 text-lg font-bold">
             {selectedCountryEntry &&
               formatCurrency({
-                amount: item.productVariantPrice,
+                amount: item.variantDetails.newPrice,
                 currency: selectedCountryEntry?.currency,
                 code: selectedCountryEntry?.code,
               })}
             <Badge variant="outline">
-              {item.productSize} {item.productUnit}
+              {item.variantDetails.size} {item.variantDetails.unit}
             </Badge>
           </div>
           <div className="mb-1 flex items-center justify-between gap-2">

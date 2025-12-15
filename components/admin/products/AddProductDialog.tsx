@@ -35,7 +35,13 @@ function AddProductDialog({ product, categories, sizes }: AddProductDialogProps)
     defaultValues: product
       ? {
           ...product,
-          categoryIds: product.categoryIds?.map((id) => id.toString()),
+          categoryIds: product.categoryIds.map((id) => id.toString()),
+          variants: product.variants.map((variant) => ({
+            isAvailable: variant.isAvailable,
+            price: variant.newPrice,
+            size: variant.size,
+            unit: variant.unit,
+          })),
         }
       : {
           name: "",

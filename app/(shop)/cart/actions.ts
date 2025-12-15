@@ -2,6 +2,7 @@
 
 import AxiosServerInstance from "@/lib/axios-server";
 import { ErrorResponse } from "@/lib/utils";
+import { CartItem } from "@/types/cart";
 import { revalidateTag } from "next/cache";
 
 export async function getCart(): Promise<CartItem[]> {

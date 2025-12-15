@@ -9,9 +9,10 @@ import {
   SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
-  SidebarMenuItem,
+  SidebarMenuItem
 } from "@/components/ui/sidebar";
 import {
+  BadgePercent,
   FolderTree,
   Globe,
   LayoutDashboard,
@@ -19,7 +20,7 @@ import {
   Ruler,
   Settings,
   ShoppingCart,
-  Users,
+  Users
 } from "lucide-react";
 import Link from "next/link";
 import ActiveLink from "../shared/active-link";
@@ -45,6 +46,11 @@ const menuItems = [
     title: "أحجام",
     url: "/admin/sizes",
     icon: Ruler,
+  },
+  {
+    title: "العروض" ,
+    url: "/admin/offers",
+    icon: BadgePercent ,
   },
   {
     title: "الطلبات",

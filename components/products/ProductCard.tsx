@@ -23,6 +23,8 @@ function ProductCard({ product }: ProductCardProps) {
     router.push(`/products/${product.id}`);
   };
 
+  const minPrice = Math.min(...product.variants.map((v) => v.newPrice));
+  const maxPrice = Math.max(...product.variants.map((v) => v.newPrice));
   return (
     <Card className="group overflow-hidden p-0 transition-shadow hover:shadow-lg">
       <CardHeader className="relative p-0">
@@ -69,19 +71,18 @@ function ProductCard({ product }: ProductCardProps) {
               <span className="text-primary text-lg font-bold">
                 {countryEntry &&
                   formatCurrency({
-                    amount: Math.min(...product.variants.map((v) => v.price)),
+                    amount: minPrice,
                     currency: countryEntry.currency,
                     code: countryEntry.code,
                   })}
               </span>
-              {Math.min(...product.variants.map((v) => v.price)) !==
-                Math.max(...product.variants.map((v) => v.price)) && (
+              {minPrice !== maxPrice && (
                 <>
                   <span className="text-muted-foreground text-sm">-</span>
                   <span className="text-primary text-lg font-bold">
                     {countryEntry &&
                       formatCurrency({
-                        amount: Math.max(...product.variants.map((v) => v.price)),
+                        amount: maxPrice,
                         currency: countryEntry.currency,
                         code: countryEntry.code,
                       })}

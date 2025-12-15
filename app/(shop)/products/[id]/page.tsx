@@ -13,6 +13,8 @@ export default async function ProductPage({ params }: { params: Promise<{ id: st
   const product = await getProductById(id);
   const countryCode = await getCookies("country");
   const country = await getCountryByCode(countryCode!);
+  const minPrice = Math.min(...product.variants.map((v) => v.newPrice));
+  const maxPrice = Math.max(...product.variants.map((v) => v.newPrice));
 
   return (
     <div className="flex min-h-[90vh] flex-col items-center px-2 py-8">
@@ -61,23 +63,24 @@ export default async function ProductPage({ params }: { params: Promise<{ id: st
               <span className="text-primary text-2xl font-bold">
                 {country &&
                   formatCurrency({
-                    amount: Math.min(...product.variants.map((v) => v.price)),
+                    amount: minPrice,
                     currency: country.currency,
                     code: country.code,
                   })}
               </span>
 
-              <span className="text-primary text-2xl font-bold">
-                {country &&
-                  Math.min(...product.variants.map((v) => v.price)) !==
-                    Math.max(...product.variants.map((v) => v.price)) &&
-                  " - " +
-                    formatCurrency({
-                      amount: Math.max(...product.variants.map((v) => v.price)),
+              {country && minPrice !== maxPrice && (
+                <>
+                  <span className="text-muted-foreground mx-1">-</span>
+                  <span className="text-primary text-2xl font-bold">
+                    {formatCurrency({
+                      amount: maxPrice,
                       currency: country.currency,
                       code: country.code,
                     })}
-              </span>
+                  </span>
+                </>
+              )}
             </div>
           </div>
           {/* Add to Cart Sticky Card */}
@@ -105,7 +108,7 @@ export default async function ProductPage({ params }: { params: Promise<{ id: st
                       variant={variant.isAvailable ? "outline" : "destructive"}
                       className="px-2 py-1 text-xs"
                     >
-                      {variant.size} {variant.unit} - {variant.price} ر.س{" "}
+                      {variant.size} {variant.unit} - {variant.newPrice} ر.س{" "}
                       {variant.isAvailable ? "متوفر" : "غير متوفر"}
                     </Badge>
                   ))}

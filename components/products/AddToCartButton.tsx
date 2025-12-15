@@ -42,7 +42,7 @@ function AddToCartButton({ product }: { product: Product }) {
               <Badge variant="secondary">
                 {selectedCountryEntry &&
                   formatCurrency({
-                    amount: variant.price,
+                    amount: variant.newPrice,
                     currency: selectedCountryEntry.currency,
                     code: selectedCountryEntry.code,
                   })}

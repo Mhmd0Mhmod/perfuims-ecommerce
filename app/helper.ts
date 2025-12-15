@@ -1,5 +1,6 @@
 import { axiosInstance } from "@/lib/axios-client";
 import { throwingError } from "@/lib/utils";
+import { CartItem } from "@/types/cart";
 
 export async function getCart(): Promise<CartItem[]> {
   try {

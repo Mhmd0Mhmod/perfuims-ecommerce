@@ -15,6 +15,8 @@ import { Calendar, Hash, Tag, DollarSign } from "lucide-react";
 import Image from "next/image";
 
 export function ProductDetailsDialog({ product }: { product: Product }) {
+  const minPrice = Math.min(...product.variants.map((v) => v.newPrice));
+  const maxPrice = Math.max(...product.variants.map((v) => v.newPrice));
   return (
     <ScrollArea className="max-h-[70vh] px-4">
       <div className="space-y-6 pb-6 sm:max-w-[600px]">
@@ -78,16 +80,11 @@ export function ProductDetailsDialog({ product }: { product: Product }) {
               </span>
               {product.variants.length > 0 ? (
                 <div className="flex items-center gap-2">
-                  <span className="text-primary text-xl font-bold">
-                    {Math.min(...product.variants.map((v) => v.price))}
-                  </span>
-                  {Math.min(...product.variants.map((v) => v.price)) !==
-                    Math.max(...product.variants.map((v) => v.price)) && (
+                  <span className="text-primary text-xl font-bold">{minPrice}</span>
+                  {minPrice !== maxPrice && (
                     <>
                       <span className="text-muted-foreground">-</span>
-                      <span className="text-primary text-xl font-bold">
-                        {Math.max(...product.variants.map((v) => v.price))}
-                      </span>
+                      <span className="text-primary text-xl font-bold">{maxPrice}</span>
                     </>
                   )}
                   <span className="text-muted-foreground text-sm">ر.س</span>
@@ -141,7 +138,7 @@ export function ProductDetailsDialog({ product }: { product: Product }) {
                         {variant.size} {variant.unit}
                       </TableCell>
                       <TableCell className="text-right font-semibold">
-                        {variant.price} ر.س
+                        {variant.newPrice} ر.س
                       </TableCell>
                       <TableCell className="text-center">
                         {variant.isAvailable ? (

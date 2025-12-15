@@ -25,6 +25,8 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { formatDate } from "@/lib/utils";
+import { Product } from "@/types/product";
+import { Size } from "@/types/size";
 import { Package, PackageCheck, PackageX, Plus, Search } from "lucide-react";
 import Image from "next/image";
 import { Suspense } from "react";
@@ -172,80 +174,12 @@ async function ProductsTable() {
           </TableHeader>
           <TableBody>
             {products.map((product) => (
-              <TableRow key={product.id}>
-                <TableCell>
-                  <div className="flex items-center gap-3">
-                    <div className="relative h-12 w-12 overflow-hidden rounded-md">
-                      <Image
-                        src={product.imageUrl}
-                        alt={product.name}
-                        fill
-                        className="object-cover"
-                      />
-                    </div>
-                    <div className="text-right">
-                      <p className="font-medium">{product.name}</p>
-                      <p className="text-muted-foreground line-clamp-1 text-xs">
-                        {product.description}
-                      </p>
-                    </div>
-                  </div>
-                </TableCell>
-                <TableCell className="text-right">
-                  <div className="flex max-w-50 flex-wrap gap-1">
-                    {product.categoryNames && product.categoryNames.length > 0 ? (
-                      product.categoryNames.slice(0, 2).map((catName) => (
-                        <Badge variant="outline" key={catName} className="text-xs">
-                          {catName}
-                        </Badge>
-                      ))
-                    ) : (
-                      <Badge variant="secondary" className="text-xs">
-                        بدون تصنيف
-                      </Badge>
-                    )}
-                    {product.categoryNames && product.categoryNames.length > 2 && (
-                      <Badge variant="secondary" className="text-xs">
-                        +{product.categoryNames.length - 2}
-                      </Badge>
-                    )}
-                  </div>
-                </TableCell>
-                <TableCell className="text-right">
-                  {product.variants && product.variants.length > 0 ? (
-                    <VariantsPopover variants={product.variants} />
-                  ) : (
-                    <Badge variant="secondary">لا يوجد أحجام</Badge>
-                  )}
-                </TableCell>
-                <TableCell className="text-right">
-                  {product.variants && product.variants.length > 0 ? (
-                    <div className="flex items-center gap-1 font-medium">
-                      <span>{Math.min(...product.variants.map((v) => v.price))}</span>
-                      {Math.min(...product.variants.map((v) => v.price)) !==
-                        Math.max(...product.variants.map((v) => v.price)) && (
-                        <>
-                          <span className="text-muted-foreground">-</span>
-                          <span>{Math.max(...product.variants.map((v) => v.price))}</span>
-                        </>
-                      )}
-                      <span className="text-muted-foreground text-xs">ر.س</span>
-                    </div>
-                  ) : (
-                    <Badge variant="secondary" className="text-xs">
-                      غير محدد
-                    </Badge>
-                  )}
-                </TableCell>
-                <TableCell className="text-muted-foreground text-right text-sm">
-                  {formatDate(product.createdAt)}
-                </TableCell>
-                <TableCell>
-                  <div className="flex items-center justify-center gap-2">
-                    <ProductActionsMenu product={product} categories={categories} sizes={sizes} />
-                  </div>
-                </TableCell>
-              </TableRow>
+              <ProductTableRow
+                key={product.id}
+                product={product}
+                categories={categories}
+                sizes={sizes}
+              />
             ))}
           </TableBody>
         </Table>
@@ -261,4 +195,84 @@ async function ProductsTable() {
   );
 }
 
+function ProductTableRow({
+  product,
+  categories,
+  sizes,
+}: {
+  product: Product;
+  categories: Category[];
+  sizes: Size[];
+}) {
+  const minPrice = Math.min(...product.variants.map((v) => v.newPrice));
+  const maxPrice = Math.max(...product.variants.map((v) => v.newPrice));
+  return (
+    <TableRow key={product.id}>
+      <TableCell>
+        <div className="flex items-center gap-3">
+          <div className="relative h-12 w-12 overflow-hidden rounded-md">
+            <Image src={product.imageUrl} alt={product.name} fill className="object-cover" />
+          </div>
+          <div className="text-right">
+            <p className="font-medium">{product.name}</p>
+            <p className="text-muted-foreground line-clamp-1 text-xs">{product.description}</p>
+          </div>
+        </div>
+      </TableCell>
+      <TableCell className="text-right">
+        <div className="flex max-w-50 flex-wrap gap-1">
+          {product.categoryNames && product.categoryNames.length > 0 ? (
+            product.categoryNames.slice(0, 2).map((catName) => (
+              <Badge variant="outline" key={catName} className="text-xs">
+                {catName}
+              </Badge>
+            ))
+          ) : (
+            <Badge variant="secondary" className="text-xs">
+              بدون تصنيف
+            </Badge>
+          )}
+          {product.categoryNames && product.categoryNames.length > 2 && (
+            <Badge variant="secondary" className="text-xs">
+              +{product.categoryNames.length - 2}
+            </Badge>
+          )}
+        </div>
+      </TableCell>
+      <TableCell className="text-right">
+        {product.variants && product.variants.length > 0 ? (
+          <VariantsPopover variants={product.variants} />
+        ) : (
+          <Badge variant="secondary">لا يوجد أحجام</Badge>
+        )}
+      </TableCell>
+      <TableCell className="text-right">
+        {product.variants && product.variants.length > 0 ? (
+          <div className="flex items-center gap-1 font-medium">
+            <span>{minPrice}</span>
+            {minPrice !== maxPrice && (
+              <>
+                <span className="text-muted-foreground">-</span>
+                <span>{maxPrice}</span>
+              </>
+            )}
+            <span className="text-muted-foreground text-xs">ر.س</span>
+          </div>
+        ) : (
+          <Badge variant="secondary" className="text-xs">
+            غير محدد
+          </Badge>
+        )}
+      </TableCell>
+      <TableCell className="text-muted-foreground text-right text-sm">
+        {formatDate(product.createdAt)}
+      </TableCell>
+      <TableCell>
+        <div className="flex items-center justify-center gap-2">
+          <ProductActionsMenu product={product} categories={categories} sizes={sizes} />
+        </div>
+      </TableCell>
+    </TableRow>
+  );
+}
 export default ProductsPage;

@@ -51,7 +51,7 @@ export function VariantsPopover({ variants }: VariantsPopoverProps) {
                     </Badge>
                   )}
                 </div>
-                <span className="font-semibold">{variant.price} ر.س</span>
+                <span className="font-semibold">{variant.newPrice} ر.س</span>
               </div>
             ))}
           </div>
