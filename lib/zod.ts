@@ -1,4 +1,5 @@
 import { SIZES_UNITS } from "@/constants/sizes_units";
+import { DiscountType } from "@/types/offer";
 import { z } from "zod";
 
 export const signInSchema = z.object({
@@ -86,3 +87,15 @@ export const addProductSchema = z.object({
   imageUrl: z.string().url().optional(),
 });
 export type AddProductSchema = z.infer<typeof addProductSchema>;
+
+export const offerSchema = z.object({
+  title: z.string().min(2, "العنوان يجب أن يكون حرفين على الأقل"),
+  description: z.string().min(10, "الوصف يجب أن يكون 10 أحرف على الأقل"),
+  discountType: z.enum(DiscountType),
+  discountValue: z.number().min(0, "قيمة الخصم يجب أن تكون أكبر من 0"),
+  startDate: z.date(),
+  endDate: z.date(),
+  isActive: z.boolean(),
+});
+
+export type OfferFormValues = z.infer<typeof offerSchema>;
