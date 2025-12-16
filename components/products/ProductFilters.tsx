@@ -143,21 +143,6 @@ function ProductFilters() {
 
         <Separator className="mb-6" />
 
-        {/* Brands */}
-        <div className="mb-6">
-          <Label className="mb-4 block text-right">العروض </Label>
-          <div className="space-y-3">
-            {["Brand A", "Brand B", "Brand C", "Brand D", "Brand E"].map((brand) => (
-              <div key={brand} className="flex items-center gap-2">
-                <Checkbox id={brand} />
-                <Label htmlFor={brand} className="cursor-pointer">
-                  {brand}
-                </Label>
-              </div>
-            ))}
-          </div>
-        </div>
-
         {/* Reset Button */}
         <Button variant="outline" className="w-full" onClick={handleReset}>
           إعادة تعيين الفلاتر

@@ -18,17 +18,13 @@ function AddToCartButton({ product }: { product: Product }) {
   }, [add, selectedVariantId]);
 
   return (
-    <div className="flex items-center gap-4">
-      <Button className="flex-1" onClick={onAdd}>
-        <ShoppingCart className="ml-2 h-4 w-4" />
-        أضف للسلة
-      </Button>
+    <div className="flex w-full flex-col items-center gap-4">
       <Select
         defaultValue={product.variants[0].id.toString()}
         onValueChange={(value) => setSelectedVariantId(Number(value))}
         value={selectedVariantId.toString()}
       >
-        <SelectTrigger>
+        <SelectTrigger className="w-full">
           <SelectValue />
         </SelectTrigger>
         <SelectContent>
@@ -46,11 +42,25 @@ function AddToCartButton({ product }: { product: Product }) {
                     currency: selectedCountryEntry.currency,
                     code: selectedCountryEntry.code,
                   })}
+                {variant.oldPrice && variant.oldPrice > variant.newPrice && (
+                  <span className="text-muted-foreground mr-1 text-[10px] line-through opacity-70">
+                    {selectedCountryEntry &&
+                      formatCurrency({
+                        amount: variant.oldPrice,
+                        currency: selectedCountryEntry.currency,
+                        code: selectedCountryEntry.code,
+                      })}
+                  </span>
+                )}
               </Badge>
             </SelectItem>
           ))}
         </SelectContent>
       </Select>
+      <Button className="w-full" onClick={onAdd}>
+        <ShoppingCart className="ml-2 h-4 w-4" />
+        أضف للسلة
+      </Button>
     </div>
   );
 }

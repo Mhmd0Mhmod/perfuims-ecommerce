@@ -41,13 +41,26 @@ function CartListItem({ item }: { item: CartItem }) {
         </CardHeader>
         <CardContent className="flex flex-1 flex-col justify-between p-2">
           <CardTitle className="mb-1 text-base font-semibold">{item.variantDetails.name}</CardTitle>
-          <div className="text-primary mb-2 flex items-center justify-between gap-2 text-lg font-bold">
-            {selectedCountryEntry &&
-              formatCurrency({
-                amount: item.variantDetails.newPrice,
-                currency: selectedCountryEntry?.currency,
-                code: selectedCountryEntry?.code,
-              })}
+          <div className="mb-2 flex items-center justify-between gap-2">
+            {selectedCountryEntry && (
+              <>
+                <span className="text-primary text-lg font-bold">
+                  {formatCurrency({
+                    amount: item.variantDetails.newPrice,
+                    currency: selectedCountryEntry?.currency,
+                    code: selectedCountryEntry?.code,
+                  })}
+                </span>
+                <del className="text-muted-foreground">
+                  {item.variantDetails.oldPrice &&
+                    formatCurrency({
+                      amount: item.variantDetails.oldPrice,
+                      currency: selectedCountryEntry?.currency,
+                      code: selectedCountryEntry?.code,
+                    })}
+                </del>
+              </>
+            )}
             <Badge variant="outline">
               {item.variantDetails.size} {item.variantDetails.unit}
             </Badge>
