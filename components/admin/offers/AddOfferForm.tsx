@@ -45,6 +45,7 @@ import { toast } from "sonner";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import React from "react";
+import { useRouter } from "next/navigation";
 
 interface AddOfferFormProps {
   offer?: Offer;
@@ -53,7 +54,7 @@ interface AddOfferFormProps {
 
 export default function AddOfferForm({ offer, products }: AddOfferFormProps) {
   const isEditing = !!offer;
-
+  const router = useRouter();
   const form = useForm<OfferFormValues>({
     resolver: zodResolver(offerSchema),
     defaultValues: {
@@ -87,11 +88,9 @@ export default function AddOfferForm({ offer, products }: AddOfferFormProps) {
     const productVariantIds = product.variants.map((v) => v.id);
 
     if (checked) {
-      // Add all variants that aren't already selected
       const newIds = productVariantIds.filter((id) => !current.includes(id));
       form.setValue("productVariantIds", [...current, ...newIds]);
     } else {
-      // Remove all variants of this product
       form.setValue(
         "productVariantIds",
         current.filter((id) => !productVariantIds.includes(id)),
@@ -125,6 +124,8 @@ export default function AddOfferForm({ offer, products }: AddOfferFormProps) {
         toast.success(result.message, { id: loadingId });
         if (!isEditing) {
           form.reset();
+        } else {
+          router.replace("/admin/offers");
         }
       } else {
         toast.error(result.message || "حدث خطأ", { id: loadingId });

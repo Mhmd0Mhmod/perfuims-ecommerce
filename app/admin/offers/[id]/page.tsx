@@ -45,9 +45,7 @@ async function EditOfferPage({ params }: EditOfferPageProps) {
           <CardTitle>بيانات العرض</CardTitle>
           <CardDescription>قم بتعديل المعلومات المطلوبة لتحديث العرض</CardDescription>
         </CardHeader>
-        <CardContent>
-          <AddOfferForm offer={offer} products={products} />
-        </CardContent>
+        <CardContent><AddOfferForm offer={offer} products={products} /></CardContent>
       </Card>
     </div>
   );
