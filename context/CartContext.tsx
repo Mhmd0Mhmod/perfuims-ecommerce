@@ -33,7 +33,6 @@ export function CartProvider({ children }: { children: ReactNode }) {
           toast.success("تمت إضافة المنتج للسلة بنجاح!", { id });
         } else {
           toast.error("حدث خطأ أثناء إضافة المنتج للسلة.", { id });
-          console.dir(reponse);
         }
       } catch {
         toast.error("حدث خطأ أثناء إضافة المنتج للسلة.", { id });
@@ -51,7 +50,6 @@ export function CartProvider({ children }: { children: ReactNode }) {
             toast.success("تم حذف المنتج من السلة بنجاح!", { id });
           } else {
             toast.error("حدث خطأ أثناء حذف المنتج من السلة.", { id });
-            console.dir(response);
           }
         })
         .catch(() => {
@@ -70,7 +68,6 @@ export function CartProvider({ children }: { children: ReactNode }) {
             toast.success("تم تعديل المنتج في السلة بنجاح!", { id });
           } else {
             toast.error("حدث خطأ أثناء تعديل المنتج في السلة.", { id });
-            console.dir(response);
           }
         })
         .catch(() => {
@@ -89,7 +86,6 @@ export function CartProvider({ children }: { children: ReactNode }) {
             toast.success("تم تفريغ السلة بنجاح!", { id });
           } else {
             toast.error("حدث خطأ أثناء تفريغ السلة.", { id });
-            console.dir(response);
           }
         })
         .catch(() => {

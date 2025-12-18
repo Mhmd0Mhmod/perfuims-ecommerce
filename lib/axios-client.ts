@@ -10,10 +10,8 @@ const publicAxios = axios.create({
   },
 });
 publicAxios.interceptors.request.use(async (config) => {
-  let country = getCookie("country");
-  if (!country) {
-    country = await getCookies("country");
-  }
+  const country = getCookie("country");
+
   if (country) {
     config.headers["X-Country-Code"] = country;
   }
@@ -27,10 +25,8 @@ const axiosInstance = axios.create({
   },
 });
 axiosInstance.interceptors.request.use(async (config) => {
-  let country = getCookie("country");
-  if (!country) {
-    country = await getCookies("country");
-  }
+  const country = getCookie("country");
+
   if (country) {
     config.headers["X-Country-Code"] = country;
   }

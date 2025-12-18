@@ -1,14 +1,11 @@
 import { getUser } from "@/app/(auth)/action";
 import { UserAvatar } from "@/components/auth/UserAvatar";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
 import { formatDate } from "@/lib/utils";
 import {
   ArrowLeft,
   Calendar,
-  Crown,
   Heart,
   Mail,
   Package,
@@ -16,7 +13,6 @@ import {
   Settings,
   ShoppingBag,
   Sparkles,
-  User,
 } from "lucide-react";
 import Link from "next/link";
 import { redirect } from "next/navigation";

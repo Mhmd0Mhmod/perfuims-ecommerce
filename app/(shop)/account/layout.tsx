@@ -1,6 +1,4 @@
 import { getUser } from "@/app/(auth)/action";
-import AnimatedCanvas from "@/components/design/AnimatedCanvas";
-import ShopHeader from "@/components/shop/ShopHeader";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";

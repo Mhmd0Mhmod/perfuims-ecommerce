@@ -34,8 +34,7 @@ export async function getAllCountries() {
       }[]
     >("https://restcountries.com/v3.1/all?fields=name,flags,currencies,cca2");
     return data;
-  } catch (error) {
-    console.error("Error fetching countries:", error);
+  } catch {
     return [];
   }
 }
