@@ -21,7 +21,9 @@ async function EditOfferPage({ params }: EditOfferPageProps) {
     notFound();
   }
 
-  const productsData = await getAdminProducts();
+  const productsData = await getAdminProducts({
+    displayAll: true,
+  });
   const products = productsData.content;
 
   return (
@@ -45,7 +47,9 @@ async function EditOfferPage({ params }: EditOfferPageProps) {
           <CardTitle>بيانات العرض</CardTitle>
           <CardDescription>قم بتعديل المعلومات المطلوبة لتحديث العرض</CardDescription>
         </CardHeader>
-        <CardContent><AddOfferForm offer={offer} products={products} /></CardContent>
+        <CardContent>
+          <AddOfferForm offer={offer} products={products} />
+        </CardContent>
       </Card>
     </div>
   );

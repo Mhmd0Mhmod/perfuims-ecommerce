@@ -24,13 +24,14 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { formatDate } from "@/lib/utils";
+import { formatCurrency, formatDate } from "@/lib/utils";
 import { Product } from "@/types/product";
 import { Size } from "@/types/size";
 import { Package, PackageCheck, PackageX, Plus, Search } from "lucide-react";
 import Image from "next/image";
 import { Suspense } from "react";
 import { getCategories } from "../categories/helper";
+import { getCurrentCountry } from "../countries/helpers";
 import { getAdminSizes } from "../sizes/helper";
 import { getAdminProducts } from "./helper";
 
@@ -157,7 +158,7 @@ async function ProductsTable() {
   }
   const categories = await getCategories();
   const sizes = await getAdminSizes();
-
+  const countryEntry = await getCurrentCountry();
   return (
     <div className="space-y-4">
       <div className="rounded-md border">
@@ -179,6 +180,7 @@ async function ProductsTable() {
                 product={product}
                 categories={categories}
                 sizes={sizes}
+                country={countryEntry!}
               />
             ))}
           </TableBody>
@@ -199,10 +201,12 @@ function ProductTableRow({
   product,
   categories,
   sizes,
+  country,
 }: {
   product: Product;
   categories: Category[];
   sizes: Size[];
+  country: Country;
 }) {
   const minPrice = Math.min(...product.variants.map((v) => v.newPrice));
   const maxPrice = Math.max(...product.variants.map((v) => v.newPrice));
@@ -241,7 +245,7 @@ function ProductTableRow({
       </TableCell>
       <TableCell className="text-right">
         {product.variants && product.variants.length > 0 ? (
-          <VariantsPopover variants={product.variants} />
+          <VariantsPopover country={country} variants={product.variants} />
         ) : (
           <Badge variant="secondary">لا يوجد أحجام</Badge>
         )}
@@ -249,14 +253,27 @@ function ProductTableRow({
       <TableCell className="text-right">
         {product.variants && product.variants.length > 0 ? (
           <div className="flex items-center gap-1 font-medium">
-            <span>{minPrice}</span>
+            <span>
+              {country &&
+                formatCurrency({
+                  amount: minPrice,
+                  currency: country.currency,
+                  code: country.code,
+                })}
+            </span>
             {minPrice !== maxPrice && (
               <>
                 <span className="text-muted-foreground">-</span>
-                <span>{maxPrice}</span>
+                <span>
+                  {country &&
+                    formatCurrency({
+                      amount: maxPrice,
+                      currency: country.currency,
+                      code: country.code,
+                    })}
+                </span>
               </>
             )}
-            <span className="text-muted-foreground text-xs">ر.س</span>
           </div>
         ) : (
           <Badge variant="secondary" className="text-xs">

@@ -1,15 +1,17 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { ProductVariant } from "@/types/product";
-import { Check, X, Package } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
+import { formatCurrency } from "@/lib/utils";
+import { ProductVariant } from "@/types/product";
+import { Check, Package, X } from "lucide-react";
 
 interface VariantsPopoverProps {
   variants: ProductVariant[];
+  country?: Country;
 }
 
-export function VariantsPopover({ variants }: VariantsPopoverProps) {
+export function VariantsPopover({ variants, country }: VariantsPopoverProps) {
   const availableCount = variants.filter((v) => v.isAvailable).length;
 
   return (
@@ -51,7 +53,14 @@ export function VariantsPopover({ variants }: VariantsPopoverProps) {
                     </Badge>
                   )}
                 </div>
-                <span className="font-semibold">{variant.newPrice} ر.س</span>
+                <span className="font-semibold">
+                  {country &&
+                    formatCurrency({
+                      amount: variant.newPrice,
+                      currency: country.currency,
+                      code: country.code,
+                    })}
+                </span>
               </div>
             ))}
           </div>

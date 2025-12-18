@@ -37,6 +37,7 @@ function AddProductDialog({ product, categories, sizes }: AddProductDialogProps)
           ...product,
           categoryIds: product.categoryIds.map((id) => id.toString()),
           variants: product.variants.map((variant) => ({
+            id: variant.id,
             isAvailable: variant.isAvailable,
             price: variant.newPrice,
             size: variant.size,
@@ -57,7 +58,7 @@ function AddProductDialog({ product, categories, sizes }: AddProductDialogProps)
       const id = toast.loading(isEditMode ? "جارى تحديث المنتج..." : "جارى إضافة المنتج...");
       try {
         if (isEditMode) {
-          const response = await updateProduct(product!.id, data);
+          const response = await updateProduct(product!.id, data, product);
           if (response.success) {
             toast.success(response.message || "تم تحديث المنتج بنجاح", { id });
           } else {

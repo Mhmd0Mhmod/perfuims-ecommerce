@@ -6,7 +6,9 @@ import Link from "next/link";
 import { getAdminProducts } from "@/app/admin/products/helper";
 
 async function NewOfferPage() {
-  const productsData = await getAdminProducts();
+  const productsData = await getAdminProducts({
+    displayAll: true,
+  });
   const products = productsData.content;
 
   return (

@@ -1,4 +1,6 @@
 "use server";
+import { getCookies } from "@/app/(auth)/action";
+import { publicAxios } from "@/lib/axios-client";
 import AxiosServerInstance from "@/lib/axios-server";
 import { throwingError } from "@/lib/utils";
 import axios from "axios";
@@ -50,5 +52,17 @@ export async function getCountryFlag(countryName: string) {
     return null;
   } catch {
     return "/placeholder-flag.svg";
+  }
+}
+
+export async function getCurrentCountry(): Promise<Country | null> {
+  try {
+    const code = await getCookies("country");
+    const response = await publicAxios.get<Country[]>(`/countries`);
+    const countries = response.data;
+    const country = countries.find((c) => c.code === code);
+    return country || countries.find((country) => country.isDefault) || null;
+  } catch {
+    return null;
   }
 }

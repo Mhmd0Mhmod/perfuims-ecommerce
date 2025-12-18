@@ -64,8 +64,8 @@ async function AccountPage() {
     <div className="space-y-8">
       {/* Hero Profile Section */}
       <div className="relative overflow-hidden rounded-2xl">
-        {/* Gradient Background */}
-        <div className="from-primary/20 via-primary/10 to-background absolute inset-0 bg-gradient-to-br" />
+        {/* linear Background */}
+        <div className="from-primary/20 via-primary/10 to-background absolute inset-0 bg-linear-to-br" />
         <div className="bg-primary/5 absolute -top-24 -right-24 h-48 w-48 rounded-full blur-3xl" />
         <div className="bg-secondary/10 absolute -bottom-24 -left-24 h-48 w-48 rounded-full blur-3xl" />
 
@@ -73,7 +73,7 @@ async function AccountPage() {
           <div className="flex flex-col items-center gap-6 sm:flex-row sm:items-start">
             {/* Avatar Section */}
             <div className="relative">
-              <div className="from-primary to-primary/60 absolute -inset-1 rounded-full bg-gradient-to-br opacity-75 blur" />
+              <div className="from-primary to-primary/60 absolute -inset-1 rounded-full bg-linear-to-br opacity-75 blur" />
               <div className="relative">
                 <UserAvatar
                   user={user}
@@ -140,9 +140,9 @@ async function AccountPage() {
           {QUICK_LINKS.map((link) => (
             <Link key={link.href} href={link.href} className="group">
               <Card className="relative h-full overflow-hidden border-0 shadow-md transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
-                {/* Gradient Overlay on Hover */}
+                {/* linear Overlay on Hover */}
                 <div
-                  className={`absolute inset-0 bg-gradient-to-br ${link.color} opacity-0 transition-opacity duration-300 group-hover:opacity-5`}
+                  className={`absolute inset-0 bg-linear-to-br ${link.color} opacity-0 transition-opacity duration-300 group-hover:opacity-5`}
                 />
 
                 <CardHeader className="pb-3">
@@ -165,7 +165,7 @@ async function AccountPage() {
       </div>
 
       {/* Recent Activity / CTA Section */}
-      <Card className="from-primary/5 to-secondary/5 overflow-hidden border-0 bg-gradient-to-br shadow-lg">
+      <Card className="from-primary/5 to-secondary/5 overflow-hidden border-0 bg-linear-to-br shadow-lg">
         <CardContent className="flex flex-col items-center gap-4 p-8 text-center sm:flex-row sm:text-right">
           <div className="bg-primary/10 rounded-full p-4">
             <ShoppingBag className="text-primary h-8 w-8" />

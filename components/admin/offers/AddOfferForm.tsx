@@ -40,7 +40,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { format } from "date-fns";
 import { ar } from "date-fns/locale";
 import { CalendarIcon, Loader2, Package } from "lucide-react";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import { toast } from "sonner";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -69,7 +69,15 @@ export default function AddOfferForm({ offer, products }: AddOfferFormProps) {
     },
   });
 
-  const selectedVariantIds = form.watch("productVariantIds");
+  const selectedVariantIds = useWatch({
+    control: form.control,
+    name: "productVariantIds",
+  });
+
+  const watchedDiscountType = useWatch({
+    control: form.control,
+    name: "discountType",
+  });
 
   const toggleVariant = (variantId: number) => {
     const current = form.getValues("productVariantIds");
@@ -161,7 +169,7 @@ export default function AddOfferForm({ offer, products }: AddOfferFormProps) {
               <FormControl>
                 <Textarea
                   placeholder="اكتب وصفاً تفصيلياً للعرض..."
-                  className="min-h-[80px]"
+                  className="min-h-20"
                   {...field}
                 />
               </FormControl>
@@ -199,7 +207,7 @@ export default function AddOfferForm({ offer, products }: AddOfferFormProps) {
             render={({ field }) => (
               <FormItem>
                 <FormLabel>
-                  {form.watch("discountType") === DiscountType.PERCENTAGE
+                  {watchedDiscountType === DiscountType.PERCENTAGE
                     ? "نسبة مئوية"
                     : "مبلغ ثابت"}
                 </FormLabel>

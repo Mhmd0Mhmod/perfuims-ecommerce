@@ -59,6 +59,7 @@ export type AddSizeSchema = z.infer<typeof addSizeSchema>;
 
 export const addProductVariantSchema = z
   .object({
+    id: z.number().optional(),
     sizeId: z.string().optional().nullable(),
     size: z.number().optional().nullable(),
     unit: z.string().optional().nullable(),

@@ -1,3 +1,4 @@
+"use client";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -9,14 +10,16 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { formatDate } from "@/lib/utils";
+import { useSelectedCountry } from "@/hooks/use-selected-country";
+import { formatCurrency, formatDate } from "@/lib/utils";
 import { Product } from "@/types/product";
-import { Calendar, Hash, Tag, DollarSign } from "lucide-react";
+import { Calendar, DollarSign, Hash, Tag } from "lucide-react";
 import Image from "next/image";
 
 export function ProductDetailsDialog({ product }: { product: Product }) {
   const minPrice = Math.min(...product.variants.map((v) => v.newPrice));
   const maxPrice = Math.max(...product.variants.map((v) => v.newPrice));
+  const { selectedCountryEntry } = useSelectedCountry();
   return (
     <ScrollArea className="max-h-[70vh] px-4">
       <div className="space-y-6 pb-6 sm:max-w-[600px]">
@@ -80,14 +83,27 @@ export function ProductDetailsDialog({ product }: { product: Product }) {
               </span>
               {product.variants.length > 0 ? (
                 <div className="flex items-center gap-2">
-                  <span className="text-primary text-xl font-bold">{minPrice}</span>
+                  <span className="text-primary text-xl font-bold">
+                    {selectedCountryEntry &&
+                      formatCurrency({
+                        amount: minPrice,
+                        currency: selectedCountryEntry.currency,
+                        code: selectedCountryEntry.code,
+                      })}
+                  </span>
                   {minPrice !== maxPrice && (
                     <>
                       <span className="text-muted-foreground">-</span>
-                      <span className="text-primary text-xl font-bold">{maxPrice}</span>
+                      <span className="text-primary text-xl font-bold">
+                        {selectedCountryEntry &&
+                          formatCurrency({
+                            amount: maxPrice,
+                            currency: selectedCountryEntry.currency,
+                            code: selectedCountryEntry.code,
+                          })}
+                      </span>
                     </>
                   )}
-                  <span className="text-muted-foreground text-sm">ر.س</span>
                 </div>
               ) : (
                 <Badge variant="secondary">غير محدد</Badge>
@@ -138,7 +154,12 @@ export function ProductDetailsDialog({ product }: { product: Product }) {
                         {variant.size} {variant.unit}
                       </TableCell>
                       <TableCell className="text-right font-semibold">
-                        {variant.newPrice} ر.س
+                        {selectedCountryEntry &&
+                          formatCurrency({
+                            amount: variant.newPrice,
+                            currency: selectedCountryEntry.currency,
+                            code: selectedCountryEntry.code,
+                          })}
                       </TableCell>
                       <TableCell className="text-center">
                         {variant.isAvailable ? (

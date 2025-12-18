@@ -1,4 +1,4 @@
-import { getCookies, getToken } from "@/app/(auth)/action";
+import { getToken } from "@/app/(auth)/action";
 import axios from "axios";
 import { getCookie } from "cookies-next/client";
 
@@ -37,4 +37,4 @@ axiosInstance.interceptors.request.use(async (config) => {
   return config;
 });
 
-export { publicAxios, axiosInstance };
+export { axiosInstance, publicAxios };
