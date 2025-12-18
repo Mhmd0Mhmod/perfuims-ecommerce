@@ -100,3 +100,17 @@ export const offerSchema = z.object({
 });
 
 export type OfferFormValues = z.infer<typeof offerSchema>;
+
+export const checkoutSchema = z.object({
+  fullName: z.string({ message: "الاسم الكامل مطلوب" }).min(3, "يجب أن يكون 3 أحرف على الأقل"),
+  email: z.string({ message: "البريد الإلكتروني مطلوب" }).email("بريد إلكتروني غير صالح"),
+  phoneNumber: z
+    .string({ message: "رقم الهاتف مطلوب" })
+    .regex(/^\d{1,14}$/, "رقم الهاتف غير صالح")
+    .min(10, "يجب أن يكون 10 أرقام على الأقل"),
+  city: z.string({ message: "المدينة مطلوبة" }).min(2, "يجب أن تكون حرفين على الأقل"),
+  address: z.string({ message: "العنوان التفصيلي مطلوب" }).min(5, "يجب أن يكون 5 أحرف على الأقل"),
+  paymentMethod: z.enum(["COD", "CARD"], { message: "يجب اختيار طريقة الدفع" }),
+});
+
+export type CheckoutSchema = z.infer<typeof checkoutSchema>;

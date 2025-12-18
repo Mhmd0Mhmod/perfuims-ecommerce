@@ -1,4 +1,4 @@
-import { getToken } from "@/app/(auth)/action";
+import { getCookies, getToken } from "@/app/(auth)/action";
 import axios from "axios";
 import { getCookie } from "cookies-next/client";
 
@@ -10,7 +10,10 @@ const publicAxios = axios.create({
   },
 });
 publicAxios.interceptors.request.use(async (config) => {
-  const country = getCookie("country");
+  let country = getCookie("country");
+  if (!country) {
+    country = await getCookies("country");
+  }
   if (country) {
     config.headers["X-Country-Code"] = country;
   }
@@ -24,7 +27,10 @@ const axiosInstance = axios.create({
   },
 });
 axiosInstance.interceptors.request.use(async (config) => {
-  const country = getCookie("country");
+  let country = getCookie("country");
+  if (!country) {
+    country = await getCookies("country");
+  }
   if (country) {
     config.headers["X-Country-Code"] = country;
   }
