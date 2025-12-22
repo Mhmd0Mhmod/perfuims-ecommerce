@@ -28,10 +28,10 @@ const QUICK_LINKS = [
     iconColor: "text-blue-500",
   },
   {
-    href: "/account/wishlist",
-    label: "المفضلة",
-    description: "منتجاتك المحفوظة للشراء لاحقاً",
-    icon: Heart,
+    href: "/account/cart",
+    label: "سله الشراء",
+    description: "",
+    icon: ShoppingBag,
     color: "from-rose-500 to-rose-600",
     bgColor: "bg-rose-500/10",
     iconColor: "text-rose-500",
@@ -49,7 +49,7 @@ const QUICK_LINKS = [
 
 const STATS = [
   { label: "الطلبات", value: "12", icon: ShoppingBag },
-  { label: "المفضلة", value: "8", icon: Heart },
+  { label: "سله الشراء", value: "8", icon: ShoppingBag },
   { label: "المراجعات", value: "5", icon: Sparkles },
 ];
 

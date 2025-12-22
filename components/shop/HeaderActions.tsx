@@ -5,7 +5,6 @@ import UserMenu from "../auth/UserMenu";
 import CartButton from "../cart/CartButton";
 import { Button } from "../ui/button";
 import { Skeleton } from "../ui/skeleton";
-import WishlistButton from "../wishlist/WishlistButton";
 
 function HeaderActions() {
   const { data: session, status } = useSession();
@@ -34,11 +33,7 @@ function HeaderActions() {
 
   return (
     <div className="flex items-center gap-2">
-      {/* Wishlist */}
-      <WishlistButton />
-      {/* Cart */}
       <CartButton />
-      {/* User Menu */}
       <UserMenu user={session.user} />
     </div>
   );
