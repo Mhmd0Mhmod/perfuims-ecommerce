@@ -12,7 +12,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from ".
 function AddToCartButton({ product }: { product: Product }) {
   const { add } = useCartContext();
   const [selectedVariantId, setSelectedVariantId] = useState(product.variants[0].id);
-  const { selectedCountryEntry } = useSelectedCountry();
+  const { selectedCountry } = useSelectedCountry();
   const onAdd = useCallback(() => {
     add(selectedVariantId, 1);
   }, [add, selectedVariantId]);
@@ -36,19 +36,17 @@ function AddToCartButton({ product }: { product: Product }) {
                 </span>
               </div>
               <Badge variant="secondary">
-                {selectedCountryEntry &&
+                {selectedCountry &&
                   formatCurrency({
                     amount: variant.newPrice,
-                    currency: selectedCountryEntry.currency,
-                    code: selectedCountryEntry.code,
+                    code: selectedCountry,
                   })}
                 {variant.oldPrice && variant.oldPrice > variant.newPrice && (
                   <span className="text-muted-foreground mr-1 text-[10px] line-through opacity-70">
-                    {selectedCountryEntry &&
+                    {selectedCountry &&
                       formatCurrency({
                         amount: variant.oldPrice,
-                        currency: selectedCountryEntry.currency,
-                        code: selectedCountryEntry.code,
+                        code: selectedCountry,
                       })}
                   </span>
                 )}

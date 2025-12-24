@@ -19,7 +19,7 @@ import Image from "next/image";
 export function ProductDetailsDialog({ product }: { product: Product }) {
   const minPrice = Math.min(...product.variants.map((v) => v.newPrice));
   const maxPrice = Math.max(...product.variants.map((v) => v.newPrice));
-  const { selectedCountryEntry } = useSelectedCountry();
+  const { selectedCountry } = useSelectedCountry();
   return (
     <ScrollArea className="max-h-[70vh] px-4">
       <div className="space-y-6 pb-6 sm:max-w-[600px]">
@@ -84,22 +84,20 @@ export function ProductDetailsDialog({ product }: { product: Product }) {
               {product.variants.length > 0 ? (
                 <div className="flex items-center gap-2">
                   <span className="text-primary text-xl font-bold">
-                    {selectedCountryEntry &&
+                    {selectedCountry &&
                       formatCurrency({
                         amount: minPrice,
-                        currency: selectedCountryEntry.currency,
-                        code: selectedCountryEntry.code,
+                        code: selectedCountry,
                       })}
                   </span>
                   {minPrice !== maxPrice && (
                     <>
                       <span className="text-muted-foreground">-</span>
                       <span className="text-primary text-xl font-bold">
-                        {selectedCountryEntry &&
+                        {selectedCountry &&
                           formatCurrency({
                             amount: maxPrice,
-                            currency: selectedCountryEntry.currency,
-                            code: selectedCountryEntry.code,
+                            code: selectedCountry,
                           })}
                       </span>
                     </>
@@ -154,11 +152,10 @@ export function ProductDetailsDialog({ product }: { product: Product }) {
                         {variant.size} {variant.unit}
                       </TableCell>
                       <TableCell className="text-right font-semibold">
-                        {selectedCountryEntry &&
+                        {selectedCountry &&
                           formatCurrency({
                             amount: variant.newPrice,
-                            currency: selectedCountryEntry.currency,
-                            code: selectedCountryEntry.code,
+                            code: selectedCountry,
                           })}
                       </TableCell>
                       <TableCell className="text-center">

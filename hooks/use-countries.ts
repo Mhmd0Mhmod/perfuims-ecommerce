@@ -1,8 +1,8 @@
 import { getCountries } from "@/app/(shop)/helper";
 import { useQuery } from "@tanstack/react-query";
 
-export function useCountries(onSuccess?: (countries: Country[]) => void) {
-  const query = useQuery<Country[]>({
+export function useCountries(onSuccess?: (countries: PublicCountry[]) => void) {
+  const query = useQuery<PublicCountry[]>({
     queryKey: ["countries"],
     queryFn: async () => {
       const response = await getCountries();

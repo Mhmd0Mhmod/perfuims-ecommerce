@@ -6,6 +6,7 @@ import Link from "next/link";
 import { getAdminOfferById } from "../helper";
 import { getAdminProducts } from "@/app/admin/products/helper";
 import { notFound } from "next/navigation";
+import { Product } from "@/types/product";
 
 interface EditOfferPageProps {
   params: Promise<{ id: string }>;
@@ -21,10 +22,9 @@ async function EditOfferPage({ params }: EditOfferPageProps) {
     notFound();
   }
 
-  const productsData = await getAdminProducts({
+  const productsData = (await getAdminProducts({
     displayAll: true,
-  });
-  const products = productsData.content;
+  })) as Product[];
 
   return (
     <div className="container mx-auto space-y-6 p-6">
@@ -48,7 +48,7 @@ async function EditOfferPage({ params }: EditOfferPageProps) {
           <CardDescription>قم بتعديل المعلومات المطلوبة لتحديث العرض</CardDescription>
         </CardHeader>
         <CardContent>
-          <AddOfferForm offer={offer} products={products} />
+          <AddOfferForm offer={offer} products={productsData} />
         </CardContent>
       </Card>
     </div>

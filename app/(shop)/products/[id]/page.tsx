@@ -1,4 +1,4 @@
-import { getCurrentCountry } from "@/app/admin/countries/helpers";
+import { getCurrentCountryServer } from "@/app/admin/countries/helpers";
 import AddToCartButton from "@/components/products/AddToCartButton";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -10,7 +10,7 @@ import { getProductById } from "./helper";
 export default async function ProductPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   const product = await getProductById(id);
-  const country = await getCurrentCountry();
+  const country = await getCurrentCountryServer();
   const minPrice = Math.min(...product.variants.map((v) => v.newPrice));
   const maxPrice = Math.max(...product.variants.map((v) => v.newPrice));
 

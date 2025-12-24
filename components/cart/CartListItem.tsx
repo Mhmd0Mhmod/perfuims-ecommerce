@@ -10,7 +10,7 @@ import { ShoppingCart, Trash2 } from "lucide-react";
 import { CartItem } from "@/types/cart";
 
 function CartListItem({ item }: { item: CartItem }) {
-  const { selectedCountryEntry } = useSelectedCountry();
+  const { selectedCountry } = useSelectedCountry();
   const { edit, remove } = useCartContext();
 
   const updateQuantity = async (newQty: number) => {
@@ -42,21 +42,19 @@ function CartListItem({ item }: { item: CartItem }) {
         <CardContent className="flex flex-1 flex-col justify-between p-2">
           <CardTitle className="mb-1 text-base font-semibold">{item.variantDetails.name}</CardTitle>
           <div className="mb-2 flex items-center justify-between gap-2">
-            {selectedCountryEntry && (
+            {selectedCountry && (
               <>
                 <span className="text-primary text-lg font-bold">
                   {formatCurrency({
                     amount: item.variantDetails.newPrice,
-                    currency: selectedCountryEntry?.currency,
-                    code: selectedCountryEntry?.code,
+                    code: selectedCountry,
                   })}
                 </span>
                 <del className="text-muted-foreground">
                   {item.variantDetails.oldPrice &&
                     formatCurrency({
                       amount: item.variantDetails.oldPrice,
-                      currency: selectedCountryEntry?.currency,
-                      code: selectedCountryEntry?.code,
+                      code: selectedCountry,
                     })}
                 </del>
               </>
