@@ -1,16 +1,16 @@
 import { NextRequest, NextResponse } from "next/server";
-import { publicAxios } from "./lib/axios-client";
+import axios from "axios";
 
 export async function proxy(request: NextRequest) {
   const countryCode = request.cookies.get("country")?.value;
   const response = NextResponse.next();
   if (!countryCode) {
-    const countries = await publicAxios.get("/countries", {
+    const countries = await axios.get("/api/countries", {
       fetchOptions: {
         next: {
-          revalidate: 86400, // 24 hours
-        },
-      },
+          revalidate: 86400 // 24 hours
+        }
+      }
     });
     const defaultCountry = countries.data.find((c: Country) => c.isDefault);
     response.cookies.set("country", defaultCountry.code);

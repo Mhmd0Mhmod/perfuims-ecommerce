@@ -8,7 +8,7 @@ import useCountryByCode from "./use-country-by-code";
 export function useSelectedCountry() {
   const queryClient = useQueryClient();
   const selectedCountry = getCookie("country");
-  const { data: selectedCountryEntry } = useCountryByCode(selectedCountry as string);
+  const { data: selectedCountryEntry } = useCountryByCode(selectedCountry!);
   const router = useRouter();
   const setSelectedCountry = useCallback(
     (code: string) => {
@@ -18,6 +18,7 @@ export function useSelectedCountry() {
     },
     [router, queryClient],
   );
+
   return {
     selectedCountry,
     selectedCountryEntry,

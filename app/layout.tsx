@@ -34,11 +34,9 @@ export default function RootLayout({
       <body className={`${playfairDisplay.variable} ${cairo.variable} antialiased`}>
         <QueryContext>
           <SessionProvider>
-            <CartProvider>
-              {children}
-              <Toaster position="bottom-right" />
-              <ReactQueryDevtools initialIsOpen={false} />
-            </CartProvider>
+            {children}
+            <Toaster position="bottom-right" />
+            <ReactQueryDevtools initialIsOpen={false} />
           </SessionProvider>
         </QueryContext>
       </body>

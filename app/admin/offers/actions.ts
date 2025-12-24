@@ -1,6 +1,6 @@
 "use server";
 
-import AxiosServerInstance from "@/lib/axios-server";
+import { authFetcher } from "@/lib/authFetcher";
 import { ErrorResponse } from "@/lib/utils";
 import { DiscountType } from "@/types/offer";
 import { revalidatePath } from "next/cache";
@@ -17,8 +17,7 @@ interface OfferFormData {
 
 export async function createOffer(data: OfferFormData): Promise<ApiResponse> {
   try {
-    const axiosInstance = await AxiosServerInstance();
-    const response = await axiosInstance.post("admin/offers", data);
+    const response = await authFetcher.post("admin/offers", data);
     revalidatePath("/admin/offers");
 
     return {
@@ -33,8 +32,7 @@ export async function createOffer(data: OfferFormData): Promise<ApiResponse> {
 
 export async function updateOffer(id: number, data: OfferFormData): Promise<ApiResponse> {
   try {
-    const axiosInstance = await AxiosServerInstance();
-    const response = await axiosInstance.patch(`admin/offers/${id}`, data);
+    const response = await authFetcher.patch(`admin/offers/${id}`, data);
     revalidatePath(`/admin/offers/${id}`);
     return {
       success: true,
@@ -47,8 +45,7 @@ export async function updateOffer(id: number, data: OfferFormData): Promise<ApiR
 
 export async function deleteOffer(id: number): Promise<ApiResponse> {
   try {
-    const axiosInstance = await AxiosServerInstance();
-    await axiosInstance.delete(`admin/offers/${id}`);
+    await authFetcher.delete(`admin/offers/${id}`);
     revalidatePath("/admin/offers");
     return {
       success: true,
@@ -61,8 +58,7 @@ export async function deleteOffer(id: number): Promise<ApiResponse> {
 
 export async function toggleOfferStatus(id: number, isActive: boolean): Promise<ApiResponse> {
   try {
-    const axiosInstance = await AxiosServerInstance();
-    await axiosInstance.patch(`admin/offers/${id}/status`, { isActive });
+    await authFetcher.patch(`admin/offers/${id}/status`, { isActive });
     revalidatePath("/admin/offers");
     return {
       success: true,

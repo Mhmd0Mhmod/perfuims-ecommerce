@@ -1,7 +1,6 @@
 "use server";
 
-import AxiosServerInstance from "@/lib/axios-server";
-import axiosInstance from "@/lib/axios-server";
+import { authFetcher } from "@/lib/authFetcher";
 import { ErrorResponse } from "@/lib/utils";
 import { AddSizeSchema } from "@/lib/zod";
 import { Size } from "@/types/size";
@@ -9,9 +8,7 @@ import { revalidatePath } from "next/cache";
 
 export async function addSize(data: AddSizeSchema): Promise<ApiResponse<Size>> {
   try {
-    const axiosInstance = await AxiosServerInstance();
-
-    const response = await axiosInstance.post<Size>("admin/sizes", data);
+    const response = await authFetcher.post<Size>("admin/sizes", data);
     revalidatePath("/admin/sizes");
     return {
       data: response.data,
@@ -29,8 +26,7 @@ export async function updateSize(
   data: Partial<AddSizeSchema>,
 ): Promise<ApiResponse<Size>> {
   try {
-    const axiosInstance = await AxiosServerInstance();
-    const response = await axiosInstance.patch<Size>(`admin/sizes/${sizeId}`, data);
+    const response = await authFetcher.patch<Size>(`admin/sizes/${sizeId}`, data);
     revalidatePath("/admin/sizes");
     return {
       data: response.data,
@@ -45,8 +41,7 @@ export async function updateSize(
 
 export async function deleteSize(sizeId: string): Promise<ApiResponse> {
   try {
-    const axiosInstance = await AxiosServerInstance();
-    const response = await axiosInstance.delete(`admin/sizes/${sizeId}`);
+    const response = await authFetcher.delete(`admin/sizes/${sizeId}`);
     revalidatePath("/admin/sizes");
     return {
       status: response.status,

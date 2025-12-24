@@ -1,6 +1,6 @@
 "use server";
 
-import { default as AxiosServerInstance } from "@/lib/axios-server";
+import { authFetcher } from "@/lib/authFetcher";
 import { ErrorResponse } from "@/lib/utils";
 import { AddProductSchema } from "@/lib/zod";
 import { Product } from "@/types/product";
@@ -8,9 +8,7 @@ import { revalidatePath } from "next/cache";
 
 export async function addProduct(data: AddProductSchema): Promise<ApiResponse<Product>> {
   try {
-    const axiosInstance = await AxiosServerInstance();
-
-    const response = await axiosInstance.post<Product>("admin/products", data);
+    const response = await authFetcher.post<Product>("admin/products", data);
     revalidatePath("/admin/products");
     return {
       data: response.data,
@@ -69,8 +67,6 @@ export async function updateProduct(
   defaultValues?: Product,
 ): Promise<ApiResponse<Product>> {
   try {
-    const axiosInstance = await AxiosServerInstance();
-
     // If we have variants in data and defaultValues, we can detect changes
     if (data.variants && defaultValues?.variants) {
       const { toAdd, toUpdate, toDelete } = checkVariantChanges(
@@ -78,26 +74,26 @@ export async function updateProduct(
         data.variants,
       );
       if (toAdd.length) {
-        const response = await axiosInstance.post(
+        const response = await authFetcher.post(
           `admin/product-variants/by-product/${defaultValues.id}`,
           toAdd,
         );
       }
       if (toUpdate.length) {
         const promises = toUpdate.map((variant) =>
-          axiosInstance.patch(`admin/product-variants/${variant.id}`, variant),
+          authFetcher.patch(`admin/product-variants/${variant.id}`, variant),
         );
         await Promise.all(promises);
       }
       if (toDelete.length) {
         const promises = toDelete.map((variantId) =>
-          axiosInstance.delete(`admin/product-variants/${variantId}`),
+          authFetcher.delete(`admin/product-variants/${variantId}`),
         );
         await Promise.all(promises);
       }
     }
 
-    const response = await axiosInstance.patch<Product>(`admin/products/${productId}`, data);
+    const response = await authFetcher.patch<Product>(`admin/products/${productId}`, data);
 
     revalidatePath("/admin/products");
     return {
@@ -113,8 +109,7 @@ export async function updateProduct(
 
 export async function deleteProduct(productId: number): Promise<ApiResponse> {
   try {
-    const axiosInstance = await AxiosServerInstance();
-    const response = await axiosInstance.delete(`admin/products/${productId}`);
+    const response = await authFetcher.delete(`admin/products/${productId}`);
     revalidatePath("/admin/products");
     return {
       status: response.status,

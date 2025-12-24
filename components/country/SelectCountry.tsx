@@ -7,41 +7,40 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useSelectedCountry } from "@/hooks/use-selected-country";
-import Image from "next/image";
-import { useCallback } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 function SelectCountry({
   countries,
-  defaultCountry,
+  selectedCountryCode,
 }: {
-  countries: Country[];
-  defaultCountry?: string;
+  countries: PublicCountry[];
+  selectedCountryCode?: string;
 }) {
-  const { setSelectedCountry } = useSelectedCountry();
+  const { setSelectedCountry, selectedCountry } = useSelectedCountry();
+  const [value, setValue] = useState<string>(selectedCountryCode || "");
   const onCountryChange = useCallback(
     (code: string) => {
       setSelectedCountry(code);
     },
     [setSelectedCountry],
   );
+
+  useEffect(() => {
+    setValue(selectedCountry || "");
+  }, [selectedCountry]);
+
   return (
     <div className="flex items-center justify-end gap-4">
-      <Select defaultValue={defaultCountry || ""} onValueChange={onCountryChange}>
+      <Select value={value} onValueChange={onCountryChange}>
         <SelectTrigger>
           <SelectValue placeholder="🌐" />
         </SelectTrigger>
         <SelectContent>
           {countries?.map((country) => (
-            <SelectItem key={country.id} value={country.code}>
+            <SelectItem key={country.cca2} value={country.cca2}>
               <div className="flex items-center gap-2">
-                <Image
-                  src={country.flagUrl}
-                  alt={`${country.name} flag`}
-                  width={24}
-                  height={16}
-                  className="rounded-sm object-cover"
-                />
-                <span>{country.name}</span>
+                <span>{country.flag}</span>
+                <span>{country.name.common}</span>
               </div>
             </SelectItem>
           ))}

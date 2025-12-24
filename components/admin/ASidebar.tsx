@@ -1,4 +1,4 @@
-import { getUser } from "@/app/(auth)/action";
+import { getUser } from "@/app/(auth)/helper";
 import {
   Sidebar,
   SidebarContent,

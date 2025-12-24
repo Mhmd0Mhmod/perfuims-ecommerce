@@ -1,4 +1,4 @@
-import { getUser } from "@/app/(auth)/action";
+import { getUser } from "@/app/(auth)/helper";
 import { UserAvatar } from "@/components/auth/UserAvatar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -6,7 +6,6 @@ import { formatDate } from "@/lib/utils";
 import {
   ArrowLeft,
   Calendar,
-  Heart,
   Mail,
   Package,
   Phone,
@@ -50,7 +49,6 @@ const QUICK_LINKS = [
 const STATS = [
   { label: "الطلبات", value: "12", icon: ShoppingBag },
   { label: "سله الشراء", value: "8", icon: ShoppingBag },
-  { label: "المراجعات", value: "5", icon: Sparkles },
 ];
 
 async function AccountPage() {

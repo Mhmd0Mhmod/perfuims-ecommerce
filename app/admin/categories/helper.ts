@@ -1,10 +1,9 @@
-import AxiosServerInstance from "@/lib/axios-server";
+import { authFetcher } from "@/lib/authFetcher";
 import { throwingError } from "@/lib/utils";
 
 export async function getCategories(): Promise<Category[]> {
   try {
-    const axiosInstance = await AxiosServerInstance();
-    const response = await axiosInstance.get<Category[]>("admin/categories");
+    const response = await authFetcher.get<Category[]>("/admin/categories");
     return response.data;
   } catch (error) {
     throw throwingError(error);

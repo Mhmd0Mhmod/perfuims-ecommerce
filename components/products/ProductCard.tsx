@@ -25,8 +25,6 @@ function ProductCard({ product }: ProductCardProps) {
 
   const minPrice = Math.min(...product.variants.map((v) => v.newPrice));
   const maxPrice = Math.max(...product.variants.map((v) => v.newPrice));
-  const minPriceVariant = product.variants.find((v) => v.newPrice === minPrice);
-  const maxPriceVariant = product.variants.find((v) => v.newPrice === maxPrice);
 
   return (
     <Card className="group gap-2 overflow-hidden p-0 transition-shadow hover:shadow-lg">
@@ -138,7 +136,6 @@ function ProductPriceDisplay({
           {countryEntry &&
             formatCurrency({
               amount: minPrice,
-              currency: countryEntry.currency,
               code: countryEntry.code,
             })}
         </span>
@@ -151,7 +148,6 @@ function ProductPriceDisplay({
               {countryEntry &&
                 formatCurrency({
                   amount: maxPrice,
-                  currency: countryEntry.currency,
                   code: countryEntry.code,
                 })}
             </span>

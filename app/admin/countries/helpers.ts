@@ -1,68 +1,41 @@
-"use server";
-import { getCookies } from "@/app/(auth)/action";
-import { publicAxios } from "@/lib/axios-client";
-import AxiosServerInstance from "@/lib/axios-server";
+import { getCookies } from "@/app/(auth)/helper";
+import { authFetcher } from "@/lib/authFetcher";
+import { fetcher } from "@/lib/fetcher";
 import { throwingError } from "@/lib/utils";
 import axios from "axios";
 
-export async function getAdminCountries() {
+export async function getAdminCountriesServer() {
   try {
-    const axiosInstance = await AxiosServerInstance();
-    const response = await axiosInstance.get<Country[]>("admin/countries");
-    const countriesWithFlags = await Promise.all(
-      response.data.map(async (country: Country) => ({
-        ...country,
-        flagUrl: (await getCountryFlag(country.name)) || "/placeholder-flag.svg",
-      })),
+    const response = await authFetcher.get<Country[]>("/admin/countries");
+    const { data } = await axios.get(
+      `https://restcountries.com/v3.1/alpha?fields=name,flag,currencies,cca2&fullText=true&codes=${response.data.map((e) => e.code).join(",")}`,
     );
-
-    return countriesWithFlags;
+    return response.data.map((e, i) => {
+      return {
+        ...e,
+        flag: data[i].flag,
+      };
+    });
   } catch (error) {
     throw throwingError(error);
   }
 }
 
-export async function getAllCountries() {
+export async function getAdminCountries() {
   try {
-    const { data } = await axios.get<
-      {
-        id: number;
-        name: {
-          common: string;
-        };
-        currencies: Record<string, unknown>;
-        flags: { svg: string };
-        cca2: string;
-      }[]
-    >("https://restcountries.com/v3.1/all?fields=name,flags,currencies,cca2");
-    return data;
-  } catch {
-    return [];
+    const response = await axios.get<Country[]>("/api/admin/countries");
+    return response.data;
+  } catch (error) {
+    throw throwingError(error);
   }
 }
-export async function getCountryFlag(countryName: string) {
+export async function getCurrentCountryServer() {
   try {
-    const response = await axios.get(
-      `https://restcountries.com/v3.1/name/${encodeURIComponent(countryName)}?fields=flags`,
-    );
-    const countryData = response.data;
-    if (Array.isArray(countryData) && countryData.length > 0) {
-      return countryData[0].flags.svg;
-    }
-    return null;
-  } catch {
-    return "/placeholder-flag.svg";
-  }
-}
-
-export async function getCurrentCountry(): Promise<Country | null> {
-  try {
-    const code = await getCookies("country");
-    const response = await publicAxios.get<Country[]>(`/countries`);
-    const countries = response.data;
-    const country = countries.find((c) => c.code === code);
-    return country || countries.find((country) => country.isDefault) || null;
-  } catch {
-    return null;
+    const countryCode = await getCookies("country");
+    const { data: countries } = await fetcher.get<Country[]>("countries/");
+    const country = countries.find((country) => country.code === countryCode);
+    return country;
+  } catch (error) {
+    throw throwingError(error);
   }
 }

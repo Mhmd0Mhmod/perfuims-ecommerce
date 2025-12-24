@@ -1,5 +1,5 @@
 import { ProductsState } from "@/context/ProductsContext";
-import AxiosServerInstance from "@/lib/axios-server";
+import { authFetcher } from "@/lib/authFetcher";
 import { throwingError } from "@/lib/utils";
 import { Product } from "@/types/product";
 
@@ -7,18 +7,15 @@ export async function getAdminProducts(
   params?: Partial<ProductsState> & {
     displayAll: boolean;
   },
-): Promise<Pagination<Product>> {
+): Promise<Pagination<Product> | Product[]> {
   try {
-    const axiosInstance = await AxiosServerInstance();
-
-    const { data } = await axiosInstance.get<Pagination<Product>>("admin/products", {
-      params: {
-        ...params,
-        q: params?.searchTerm || "",
-      },
+    const { data } = await authFetcher.get<Product[] | Pagination<Product>>("/admin/products", {
+      params,
     });
-
-    return data;
+    if (params?.displayAll) {
+      return data as Product[];
+    }
+    return data as Pagination<Product>;
   } catch (error) {
     throw throwingError(error);
   }

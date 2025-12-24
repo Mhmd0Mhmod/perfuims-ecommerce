@@ -2,10 +2,20 @@ interface Country {
   id: number;
   name: string;
   currency: string;
-  flagUrl: string;
+  flag: string;
   code: string;
   isDefault: boolean;
   isActive: boolean;
   createdAt: string;
   updatedAt: string;
+}
+interface PublicCountry {
+  name: {
+    common: string;
+    official: string;
+    nativeName: { [key: string]: { official: string; common: string } };
+  };
+  cca2: string;
+  currencies: { [key: string]: { name: string; symbol: string } };
+  flag: string;
 }

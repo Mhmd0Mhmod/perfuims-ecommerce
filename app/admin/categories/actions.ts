@@ -1,14 +1,13 @@
 "use server";
 
-import AxiosServerInstance from "@/lib/axios-server";
 import { ErrorResponse } from "@/lib/utils";
 import { AddCategorySchema } from "@/lib/zod";
 import { revalidatePath } from "next/cache";
+import { authFetcher } from "@/lib/authFetcher";
 
 export async function addCategory(data: AddCategorySchema): Promise<ApiResponse<Category>> {
   try {
-    const axiosInstance = await AxiosServerInstance();
-    const response = await axiosInstance.post<Category>("admin/categories", data);
+    const response = await authFetcher.post<Category>("admin/categories", data);
     revalidatePath("/admin/categories");
     return {
       data: response.data,
@@ -26,8 +25,7 @@ export async function updateCategory(
   data: Partial<AddCategorySchema>,
 ): Promise<ApiResponse<Category>> {
   try {
-    const axiosInstance = await AxiosServerInstance();
-    const response = await axiosInstance.patch<Category>(`admin/categories/${categoryId}`, data);
+    const response = await authFetcher.patch<Category>(`admin/categories/${categoryId}`, data);
     revalidatePath(`/admin/categories/${categoryId}`);
     revalidatePath("/admin/categories");
     return {
@@ -43,8 +41,7 @@ export async function updateCategory(
 
 export async function deleteCategory(categoryId: number): Promise<ApiResponse> {
   try {
-    const axiosInstance = await AxiosServerInstance();
-    const response = await axiosInstance.delete(`admin/categories/${categoryId}`);
+    const response = await authFetcher.delete(`admin/categories/${categoryId}`);
     revalidatePath("/admin/categories");
     return {
       status: response.status,

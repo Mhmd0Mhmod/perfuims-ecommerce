@@ -13,10 +13,10 @@ import {
 import { Skeleton } from "@/components/ui/skeleton";
 import { Plus } from "lucide-react";
 import { Suspense } from "react";
-import { getAdminCountries } from "../countries/helpers";
+import { getAdminCountriesServer } from "../countries/helpers";
 import { getCategories } from "./helper";
 async function AddCategory() {
-  const countries = await getAdminCountries();
+  const countries = await getAdminCountriesServer();
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -73,7 +73,7 @@ function CategoriesPage() {
 
 async function CategoriesList() {
   const categories = await getCategories();
-  const countries = await getAdminCountries();
+  const countries = await getAdminCountriesServer();
 
   if (categories.length === 0) {
     <Card>

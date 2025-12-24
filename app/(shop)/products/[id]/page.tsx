@@ -62,7 +62,7 @@ export default async function ProductPage({ params }: { params: Promise<{ id: st
                 {country &&
                   formatCurrency({
                     amount: minPrice,
-                    currency: country.currency,
+
                     code: country.code,
                   })}
               </span>
@@ -73,7 +73,7 @@ export default async function ProductPage({ params }: { params: Promise<{ id: st
                   <span className="text-primary text-2xl font-bold">
                     {formatCurrency({
                       amount: maxPrice,
-                      currency: country.currency,
+
                       code: country.code,
                     })}
                   </span>

@@ -1,11 +1,12 @@
 import { getCart } from "@/app/helper";
-import { getUser } from "@/app/(auth)/action";
+import { getUser } from "@/app/(auth)/helper";
 import CheckoutForm from "@/components/shop/checkout/CheckoutForm";
 import { redirect } from "next/navigation";
 import { CreditCard } from "lucide-react";
+import { getCartServer } from "@/app/helper";
 
 export default async function CheckoutPage() {
-  const [cartItems, user] = await Promise.all([getCart(), getUser()]);
+  const [cartItems, user] = await Promise.all([getCartServer(), getUser()]);
 
   if (cartItems.length === 0) {
     redirect("/cart");

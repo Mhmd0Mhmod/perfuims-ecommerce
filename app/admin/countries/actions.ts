@@ -1,15 +1,13 @@
 "use server";
 
-import AxiosServerInstance from "@/lib/axios-server";
+import { authFetcher } from "@/lib/authFetcher";
 import { ErrorResponse } from "@/lib/utils";
 import { AddCountrySchema } from "@/lib/zod";
 import { revalidatePath } from "next/cache";
 
 export async function addCountry(data: AddCountrySchema): Promise<ApiResponse<Country>> {
   try {
-    const axiosInstance = await AxiosServerInstance();
-
-    const response = await axiosInstance.post<Country>("admin/countries", data);
+    const response = await authFetcher.post<Country>("admin/countries", data);
     revalidatePath("/admin/countries");
     return {
       data: response.data,
@@ -27,8 +25,7 @@ export async function updateCountry(
   data: Partial<AddCountrySchema>,
 ): Promise<ApiResponse<Country>> {
   try {
-    const axiosInstance = await AxiosServerInstance();
-    const response = await axiosInstance.patch<Country>(`admin/countries/${countryId}`, data);
+    const response = await authFetcher.patch<Country>(`admin/countries/${countryId}`, data);
     revalidatePath(`/admin/countries/${countryId}`);
     revalidatePath("/admin/countries");
     return {
@@ -41,10 +38,10 @@ export async function updateCountry(
     return ErrorResponse(error);
   }
 }
+
 export async function deleteCountry(countryId: number): Promise<ApiResponse> {
   try {
-    const axiosInstance = await AxiosServerInstance();
-    const respone = await axiosInstance.delete(`admin/countries/${countryId}`);
+    const respone = await authFetcher.delete(`admin/countries/${countryId}`);
     revalidatePath("/admin/countries");
     return {
       status: respone.status,

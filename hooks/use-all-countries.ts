@@ -1,12 +1,11 @@
 "use client";
-import { getAllCountries } from "@/app/admin/countries/helpers";
 import { useQuery } from "@tanstack/react-query";
+import { getCountries } from "@/app/(shop)/helper";
 
 const useAllCountries = () =>
   useQuery({
     queryKey: ["countries"],
-    queryFn: getAllCountries,
+    queryFn: getCountries,
     staleTime: "static",
-    initialData: [],
   });
 export { useAllCountries };

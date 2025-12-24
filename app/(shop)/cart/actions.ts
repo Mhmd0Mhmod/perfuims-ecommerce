@@ -1,14 +1,13 @@
 "use server";
 
-import AxiosServerInstance from "@/lib/axios-server";
+import { authFetcher } from "@/lib/authFetcher";
 import { ErrorResponse } from "@/lib/utils";
 import { CartItem } from "@/types/cart";
 import { revalidateTag } from "next/cache";
 
 export async function getCart(): Promise<CartItem[]> {
   try {
-    const axiosInstance = await AxiosServerInstance();
-    const response = await axiosInstance.get("/cart");
+    const response = await authFetcher.get("/cart");
     revalidateTag("cart", "default");
     return response.data;
   } catch {
@@ -24,8 +23,7 @@ export async function addToCart({
   quantity: number;
 }): Promise<ApiResponse<CartItem>> {
   try {
-    const axiosInstance = await AxiosServerInstance();
-    const response = await axiosInstance.post("/cart", {
+    const response = await authFetcher.post("/cart", {
       productVariantId,
       quantity,
     });
@@ -43,8 +41,7 @@ export async function addToCart({
 
 export async function removeFromCart(productVariantId: number) {
   try {
-    const axiosInstance = await AxiosServerInstance();
-    const response = await axiosInstance.delete(`/cart/${productVariantId}`);
+    const response = await authFetcher.delete(`/cart/${productVariantId}`);
     revalidateTag("cart", "default");
     return {
       success: true,
@@ -59,8 +56,7 @@ export async function removeFromCart(productVariantId: number) {
 
 export async function editCartItem(productVariantId: number, quantity: number) {
   try {
-    const axiosInstance = await AxiosServerInstance();
-    const response = await axiosInstance.patch(`/cart/${productVariantId}`, {
+    const response = await authFetcher.patch(`/cart/${productVariantId}`, {
       quantity,
     });
     revalidateTag("cart", "default");
@@ -80,8 +76,7 @@ export async function editCartItem(productVariantId: number, quantity: number) {
 
 export async function clearCart() {
   try {
-    const axiosInstance = await AxiosServerInstance();
-    const response = await axiosInstance.delete("/cart");
+    const response = await authFetcher.delete("/cart");
     revalidateTag("cart", "default");
     return {
       success: true,

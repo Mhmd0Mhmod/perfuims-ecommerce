@@ -14,10 +14,10 @@ import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";
 import { CheckCircle2, Globe, Plus, Search, XCircle } from "lucide-react";
 import { Suspense } from "react";
-import { getAdminCountries } from "./helpers";
+import { getAdminCountriesServer } from "./helpers";
 
 async function StatsCards() {
-  const countries = await getAdminCountries();
+  const countries = await getAdminCountriesServer();
   const activeCountries = countries.filter((c: Country) => c.isActive).length;
   const inactiveCountries = countries.filter((c: Country) => !c.isActive).length;
 
@@ -91,7 +91,7 @@ function CountriesListSkeleton() {
 }
 
 async function CountriesList() {
-  const countries = await getAdminCountries();
+  const countries = await getAdminCountriesServer();
 
   return (
     <>

@@ -1,3 +1,4 @@
+import { getCookies } from "@/app/(auth)/helper";
 import AddProductDialog from "@/components/admin/products/AddProductDialog";
 import { ProductActionsMenu } from "@/components/admin/products/ProductActionsMenu";
 import { VariantsPopover } from "@/components/admin/products/VariantsPopover";
@@ -31,7 +32,6 @@ import { Package, PackageCheck, PackageX, Plus, Search } from "lucide-react";
 import Image from "next/image";
 import { Suspense } from "react";
 import { getCategories } from "../categories/helper";
-import { getCurrentCountry } from "../countries/helpers";
 import { getAdminSizes } from "../sizes/helper";
 import { getAdminProducts } from "./helper";
 
@@ -102,7 +102,7 @@ function ProductsPage() {
 }
 
 async function ProductStatsCards() {
-  const data = await getAdminProducts();
+  const data = (await getAdminProducts()) as Pagination<Product>;
   const products = data.content;
   const totalProducts = data.totalElements;
   const availableProducts = products.filter((p) => p.variants?.some((v) => v.isAvailable)).length;
@@ -145,7 +145,7 @@ async function ProductStatsCards() {
 }
 
 async function ProductsTable() {
-  const data = await getAdminProducts();
+  const data = (await getAdminProducts()) as Pagination<Product>;
   const products = data.content;
   if (products.length === 0) {
     return (
@@ -156,9 +156,11 @@ async function ProductsTable() {
       </div>
     );
   }
-  const categories = await getCategories();
-  const sizes = await getAdminSizes();
-  const countryEntry = await getCurrentCountry();
+  const [categories, sizes, countryCode] = await Promise.all([
+    getCategories(),
+    getAdminSizes(),
+    getCookies("country"),
+  ]);
   return (
     <div className="space-y-4">
       <div className="rounded-md border">
@@ -180,7 +182,7 @@ async function ProductsTable() {
                 product={product}
                 categories={categories}
                 sizes={sizes}
-                country={countryEntry!}
+                countryCode={countryCode!}
               />
             ))}
           </TableBody>
@@ -201,12 +203,12 @@ function ProductTableRow({
   product,
   categories,
   sizes,
-  country,
+  countryCode,
 }: {
   product: Product;
   categories: Category[];
   sizes: Size[];
-  country: Country;
+  countryCode: string;
 }) {
   const minPrice = Math.min(...product.variants.map((v) => v.newPrice));
   const maxPrice = Math.max(...product.variants.map((v) => v.newPrice));
@@ -245,7 +247,7 @@ function ProductTableRow({
       </TableCell>
       <TableCell className="text-right">
         {product.variants && product.variants.length > 0 ? (
-          <VariantsPopover country={country} variants={product.variants} />
+          <VariantsPopover countryCode={countryCode} variants={product.variants} />
         ) : (
           <Badge variant="secondary">لا يوجد أحجام</Badge>
         )}
@@ -254,22 +256,20 @@ function ProductTableRow({
         {product.variants && product.variants.length > 0 ? (
           <div className="flex items-center gap-1 font-medium">
             <span>
-              {country &&
+              {countryCode &&
                 formatCurrency({
                   amount: minPrice,
-                  currency: country.currency,
-                  code: country.code,
+                  code: countryCode,
                 })}
             </span>
             {minPrice !== maxPrice && (
               <>
                 <span className="text-muted-foreground">-</span>
                 <span>
-                  {country &&
+                  {countryCode &&
                     formatCurrency({
                       amount: maxPrice,
-                      currency: country.currency,
-                      code: country.code,
+                      code: countryCode,
                     })}
                 </span>
               </>

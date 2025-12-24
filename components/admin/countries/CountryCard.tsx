@@ -2,7 +2,6 @@ import ActiveBadge from "@/components/shared/active-badge";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Calendar } from "lucide-react";
-import Image from "next/image";
 import DeleteCountryButton from "./DeleteCountryButton";
 import EditCountryButton from "./EditCountryButton";
 function CountryCard({ country }: { country: Country }) {
@@ -11,8 +10,8 @@ function CountryCard({ country }: { country: Country }) {
       <CardHeader>
         <div className="flex items-start justify-between">
           <div className="flex flex-1 items-center gap-3">
-            <div className="relative rounded-sm border">
-              <Image src={country.flagUrl} alt={`${country.name} Flag`} width={40} height={30} />
+            <div>
+              <span className={"text-5xl"}>{country.flag}</span>
             </div>
             <div className="flex-1 text-right">
               <CardTitle className="text-xl">{country.name}</CardTitle>

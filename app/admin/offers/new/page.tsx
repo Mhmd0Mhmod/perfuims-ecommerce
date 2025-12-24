@@ -1,15 +1,15 @@
+import { getAdminProducts } from "@/app/admin/products/helper";
 import AddOfferForm from "@/components/admin/offers/AddOfferForm";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Product } from "@/types/product";
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
-import { getAdminProducts } from "@/app/admin/products/helper";
 
 async function NewOfferPage() {
-  const productsData = await getAdminProducts({
+  const products = (await getAdminProducts({
     displayAll: true,
-  });
-  const products = productsData.content;
+  })) as Product[];
 
   return (
     <div className="container mx-auto space-y-6 p-6">

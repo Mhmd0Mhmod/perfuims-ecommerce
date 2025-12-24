@@ -42,7 +42,7 @@ function AddCountryForm({ country }: { country?: Country }) {
   const edit = useCallback(
     async (data: AddCountrySchema) => {
       const id = toast.loading("جارى تعديل الدولة...");
-      const result = await updateCountry(country!.id, data);
+      const result = await updateCountry(country?.id!, data);
       if ("success" in result && result.success) {
         toast.success(result.message || "تمت إضافة الدولة بنجاح", { id });
       } else {

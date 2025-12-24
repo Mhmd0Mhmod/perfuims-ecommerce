@@ -12,14 +12,7 @@ function CountriesCombox({
   value: string | undefined;
   onChange: (name: string, code: string) => void;
 }) {
-  const { data, isLoading: isCountriesLoading } = useAllCountries();
-  const countries = data?.map((country) => ({
-    name: country.name.common,
-    code: country.cca2,
-    currency: Object.keys(country.currencies)[0],
-    flag: country.flags.svg,
-  }));
-
+  const { data: countries, isLoading: isCountriesLoading } = useAllCountries();
   return (
     <ComboBox>
       <ComboBox.Trigger>
@@ -38,14 +31,18 @@ function CountriesCombox({
         <ComboBox.List emptyState="لم يتم العثور على دولة.">
           {countries?.map((country) => (
             <ComboBox.Item
-              key={country.name}
-              value={country.name}
-              onSelect={() => onChange(country.name, country.code)}
+              key={country.cca2}
+              value={country.name.common}
+              onSelect={() => onChange(country.name.common, country.cca2)}
             >
               <Check
-                className={cn("mr-2 h-4 w-4", value === country.name ? "opacity-100" : "opacity-0")}
+                className={cn(
+                  "mr-2 h-4 w-4",
+                  value === country.name.common ? "opacity-100" : "opacity-0",
+                )}
               />
-              {country.name}
+              <span>{country.flag}</span>
+              <span>{country.name.common}</span>
             </ComboBox.Item>
           ))}
         </ComboBox.List>

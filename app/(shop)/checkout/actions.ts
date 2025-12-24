@@ -1,14 +1,13 @@
 "use server";
 
-import AxiosServerInstance from "@/lib/axios-server";
 import { ErrorResponse } from "@/lib/utils";
 import { CheckoutSchema } from "@/lib/zod";
 import { revalidateTag } from "next/cache";
+import { authFetcher } from "@/lib/authFetcher";
 
 export async function createOrderAction(formData: CheckoutSchema): Promise<ApiResponse> {
   try {
-    const axiosInstance = await AxiosServerInstance();
-    const response = await axiosInstance.post("/orders", formData);
+    const response = await authFetcher.post("/orders", formData);
     revalidateTag("cart", "default");
     return {
       success: true,

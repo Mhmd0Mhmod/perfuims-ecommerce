@@ -1,14 +1,13 @@
 "use server";
 
-import AxiosServerInstance from "@/lib/axios-server";
+import { authFetcher } from "@/lib/authFetcher";
 import { ErrorResponse } from "@/lib/utils";
 import { RegisterSchema } from "@/lib/zod";
 import { User } from "next-auth";
 
 export async function registerAction(formData: RegisterSchema): Promise<ApiResponse<User>> {
   try {
-    const axiosInstance = await AxiosServerInstance();
-    const response = await axiosInstance.post("auth/register", formData);
+    const response = await authFetcher.post("auth/register", formData);
     return {
       data: response.data,
       status: response.status,

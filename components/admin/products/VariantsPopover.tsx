@@ -8,10 +8,10 @@ import { Check, Package, X } from "lucide-react";
 
 interface VariantsPopoverProps {
   variants: ProductVariant[];
-  country?: Country;
+  countryCode?: string;
 }
 
-export function VariantsPopover({ variants, country }: VariantsPopoverProps) {
+export function VariantsPopover({ variants, countryCode }: VariantsPopoverProps) {
   const availableCount = variants.filter((v) => v.isAvailable).length;
 
   return (
@@ -54,11 +54,10 @@ export function VariantsPopover({ variants, country }: VariantsPopoverProps) {
                   )}
                 </div>
                 <span className="font-semibold">
-                  {country &&
+                  {countryCode &&
                     formatCurrency({
                       amount: variant.newPrice,
-                      currency: country.currency,
-                      code: country.code,
+                      code: countryCode,
                     })}
                 </span>
               </div>

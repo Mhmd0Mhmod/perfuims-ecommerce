@@ -1,17 +1,16 @@
-import { getCountries } from "@/app/(shop)/helper";
-import CategoryBar from "../categories/CategoryBar";
+import { getCountriesServer } from "@/app/(shop)/helper";
 import SelectCountry from "../country/SelectCountry";
 import SearchBar from "../shared/SearchBar";
 import HeaderActions from "./HeaderActions";
 import Logo from "./Logo";
-import MobileMenu from "./MobileMenu";
-import { getCookies } from "@/app/(auth)/action";
-import { NavLinks } from "./NavLinks";
+import Menu from "./Menu";
+import { getCookies } from "@/app/(auth)/helper";
 
 async function ShopHeader() {
-  const countries = await getCountries();
-  const code = await getCookies("country");
-
+  const [countries, selectedCountryCode] = await Promise.all([
+    getCountriesServer(),
+    getCookies("country"),
+  ]);
   return (
     <header className="bg-background sticky top-0 z-50 w-full border-b shadow-sm">
       <div className="container mx-auto px-4">
@@ -19,12 +18,9 @@ async function ShopHeader() {
         <div className="flex h-16 items-center justify-between gap-4">
           {/* Logo & Mobile Menu Group */}
           <div className="flex items-center gap-2">
-            <MobileMenu countries={countries || []} defaultCountry={code} />
+            <Menu countries={countries} />
             <Logo />
           </div>
-
-          {/* Desktop Navigation */}
-          {/* <NavLinks className="hidden lg:flex lg:gap-8" /> */}
 
           {/* Search Bar - Desktop */}
           <SearchBar className="hidden max-w-sm flex-1 lg:flex" />
@@ -32,7 +28,7 @@ async function ShopHeader() {
           {/* Actions Group */}
           <div className="flex items-center gap-2 md:gap-4">
             <div className="hidden md:block">
-              <SelectCountry countries={countries || []} defaultCountry={code} />
+              <SelectCountry countries={countries} selectedCountryCode={selectedCountryCode} />
             </div>
             <HeaderActions />
           </div>
@@ -41,13 +37,6 @@ async function ShopHeader() {
         {/* Search Bar - Mobile & Tablet */}
         <div className="pb-4 lg:hidden">
           <SearchBar className="w-full" />
-        </div>
-      </div>
-
-      {/* Secondary Desktop Navbar (Categories) */}
-      <div className="border-muted/30 border-t">
-        <div className="container mx-auto hidden overflow-x-auto px-4 md:block">
-          <CategoryBar />
         </div>
       </div>
     </header>

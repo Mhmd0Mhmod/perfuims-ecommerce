@@ -32,7 +32,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Textarea } from "@/components/ui/textarea";
-import { cn } from "@/lib/utils";
+import { cn, formatCurrency } from "@/lib/utils";
 import { OfferFormValues, offerSchema } from "@/lib/zod";
 import { DiscountType, Offer } from "@/types/offer";
 import { Product } from "@/types/product";
@@ -46,6 +46,7 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import React from "react";
 import { useRouter } from "next/navigation";
+import { getCookie } from "cookies-next/client";
 
 interface AddOfferFormProps {
   offer?: Offer;
@@ -142,6 +143,7 @@ export default function AddOfferForm({ offer, products }: AddOfferFormProps) {
       toast.error("حدث خطأ غير متوقع", { id: loadingId });
     }
   }
+  const countryCode = getCookie("country");
 
   return (
     <Form {...form}>
@@ -207,9 +209,7 @@ export default function AddOfferForm({ offer, products }: AddOfferFormProps) {
             render={({ field }) => (
               <FormItem>
                 <FormLabel>
-                  {watchedDiscountType === DiscountType.PERCENTAGE
-                    ? "نسبة مئوية"
-                    : "مبلغ ثابت"}
+                  {watchedDiscountType === DiscountType.PERCENTAGE ? "نسبة مئوية" : "مبلغ ثابت"}
                 </FormLabel>
                 <FormControl>
                   <Input
@@ -388,7 +388,13 @@ export default function AddOfferForm({ offer, products }: AddOfferFormProps) {
                             <TableCell className="text-sm">
                               {variant.size} {variant.unit}
                             </TableCell>
-                            <TableCell className="text-sm">{variant.newPrice} ر.س</TableCell>
+                            <TableCell className="text-sm">
+                              {countryCode &&
+                                formatCurrency({
+                                  amount: variant.newPrice,
+                                  code: countryCode,
+                                })}
+                            </TableCell>
                             <TableCell className="text-center">
                               <Checkbox
                                 checked={selectedVariantIds.includes(variant.id)}
