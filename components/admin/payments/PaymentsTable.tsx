@@ -74,64 +74,53 @@ function PaymentsTable() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {payments.length > 0 ? (
-              payments.map((payment: Payment) => {
-                const statusConfig = PAYMENT_STATUS_CONFIG[payment.paymentStatus] || {
-                  label: payment.paymentStatus,
-                  variant: "secondary",
-                };
+            {payments.map((payment: Payment) => {
+              const statusConfig = PAYMENT_STATUS_CONFIG[payment.paymentStatus] || {
+                label: payment.paymentStatus,
+                variant: "secondary",
+              };
 
-                return (
-                  <TableRow key={payment.paymentId} className="hover:bg-muted/50">
-                    <TableCell>
-                      <div className="font-mono text-sm">{payment.transactionId}</div>
-                    </TableCell>
-                    <TableCell>
-                      <div className="text-muted-foreground text-sm">
-                        {formatDate(payment.paymentDate, "short")}
-                      </div>
-                    </TableCell>
-                    <TableCell>
-                      <Button variant="link" className="h-auto p-0 font-medium" asChild>
-                        <Link href={`/admin/orders/${payment.orderId}`}>#{payment.orderId}</Link>
-                      </Button>
-                    </TableCell>
-                    <TableCell>
-                      <div className="text-sm">#{payment.userId}</div>
-                    </TableCell>
-                    <TableCell>
-                      <div className="font-semibold">
-                        {/* Assuming Egypt currency as default since code isn't in payment object. Ideally fetch or use context. */}
-                        {formatCurrency({
-                          amount: payment.amount,
-                          code: "EG",
-                        })}
-                      </div>
-                    </TableCell>
-                    <TableCell>
-                      <div className="flex items-center gap-2">
-                        <CreditCard className="text-muted-foreground h-4 w-4" />
-                        <span className="text-sm">{payment.paymentMethodType}</span>
-                      </div>
-                    </TableCell>
-                    <TableCell className="text-center">
-                      <div className="flex justify-center">
-                        <Badge variant={statusConfig.variant}>{statusConfig.label}</Badge>
-                      </div>
-                    </TableCell>
-                  </TableRow>
-                );
-              })
-            ) : (
-              <TableRow>
-                <TableCell colSpan={7} className="h-32 text-center">
-                  <div className="flex flex-col items-center justify-center gap-2">
-                    <ShoppingCart className="text-muted-foreground h-10 w-10" />
-                    <p className="text-muted-foreground">لا توجد مدفوعات حالياً</p>
-                  </div>
-                </TableCell>
-              </TableRow>
-            )}
+              return (
+                <TableRow key={payment.paymentId} className="hover:bg-muted/50">
+                  <TableCell>
+                    <div className="font-mono text-sm">{payment.transactionId}</div>
+                  </TableCell>
+                  <TableCell>
+                    <div className="text-muted-foreground text-sm">
+                      {formatDate(payment.paymentDate, "short")}
+                    </div>
+                  </TableCell>
+                  <TableCell>
+                    <Button variant="link" className="h-auto p-0 font-medium" asChild>
+                      <Link href={`/admin/orders/${payment.orderId}`}>#{payment.orderId}</Link>
+                    </Button>
+                  </TableCell>
+                  <TableCell>
+                    <div className="text-sm">#{payment.userId}</div>
+                  </TableCell>
+                  <TableCell>
+                    <div className="font-semibold">
+                      {/* Assuming Egypt currency as default since code isn't in payment object. Ideally fetch or use context. */}
+                      {formatCurrency({
+                        amount: payment.amount,
+                        code: "EG",
+                      })}
+                    </div>
+                  </TableCell>
+                  <TableCell>
+                    <div className="flex items-center gap-2">
+                      <CreditCard className="text-muted-foreground h-4 w-4" />
+                      <span className="text-sm">{payment.paymentMethodType}</span>
+                    </div>
+                  </TableCell>
+                  <TableCell className="text-center">
+                    <div className="flex justify-center">
+                      <Badge variant={statusConfig.variant}>{statusConfig.label}</Badge>
+                    </div>
+                  </TableCell>
+                </TableRow>
+              );
+            })}
           </TableBody>
         </Table>
       </div>
