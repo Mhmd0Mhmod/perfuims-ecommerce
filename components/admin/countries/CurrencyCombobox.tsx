@@ -29,7 +29,6 @@ function CurrencyCombobox({
       }
     }
   }, [name, data, onChange]);
-
   return (
     <ComboBox>
       <ComboBox.Trigger>

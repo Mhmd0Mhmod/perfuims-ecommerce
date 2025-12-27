@@ -4,7 +4,7 @@ import { Order } from "@/types/order";
 
 export async function getUserOrders() {
   try {
-    const { data } = await authFetcher.get<Pagination<Order>>("/orders/my");
+    const { data } = await authFetcher.get<Pagination<Order>>("/orders");
     return data;
   } catch (error) {
     throw throwingError(error);

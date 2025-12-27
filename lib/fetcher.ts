@@ -1,4 +1,3 @@
-import { getToken } from "@/app/(auth)/helper";
 import axios from "axios";
 
 const fetcher = axios.create({

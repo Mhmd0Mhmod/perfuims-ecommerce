@@ -10,7 +10,7 @@ function CountriesCombox({
   onChange,
 }: {
   value: string | undefined;
-  onChange: (name: string, code: string) => void;
+  onChange: (country: PublicCountry) => void;
 }) {
   const { data: countries, isLoading: isCountriesLoading } = useAllCountries();
   return (
@@ -33,7 +33,7 @@ function CountriesCombox({
             <ComboBox.Item
               key={country.cca2}
               value={country.name.common}
-              onSelect={() => onChange(country.name.common, country.cca2)}
+              onSelect={() => onChange(country)}
             >
               <Check
                 className={cn(

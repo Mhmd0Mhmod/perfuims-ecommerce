@@ -7,7 +7,7 @@ export function usePagination<T>({
   queryKey: string[] | (string | number)[];
   queryFn: (page: number) => Promise<Pagination<T>>;
 }) {
-  const [page, setPage] = useState(1);
+  const [page, setPage] = useState(0);
   const [items, setItems] = useState<T[]>([]);
   const { data } = useQuery({
     queryKey: [...queryKey, page],

@@ -1,6 +1,10 @@
 "use client";
+import { useCartContext } from "@/context/CartContext";
 import { Barcode, ShoppingCart, Trash2 } from "lucide-react";
+import Link from "next/link";
+import { Badge } from "../ui/badge";
 import { Button } from "../ui/button";
+import { ScrollArea } from "../ui/scroll-area";
 import {
   Sheet,
   SheetClose,
@@ -10,12 +14,8 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "../ui/sheet";
-import { Badge } from "../ui/badge";
-import { useCartContext } from "@/context/CartContext";
 import CartList from "./CartList";
 import ClearCartButton from "./ClearCartButton";
-import { ScrollArea } from "../ui/scroll-area";
-import Link from "next/link";
 
 function CartButton() {
   const { items } = useCartContext();
@@ -41,17 +41,21 @@ function CartButton() {
           <ScrollArea className="max-h-[70vh]">
             <CartList cartItems={items} />
           </ScrollArea>
-          <div className="grid grid-cols-2 gap-2">
-            <Button asChild variant={"outline"}>
-              <Link href="/checkout">
-                <Barcode className="mr-2 h-4 w-4" />
-                إتمام الشراء
-              </Link>
-            </Button>
-            <ClearCartButton>
-              <Trash2 className="mr-2 h-4 w-4" />
-              إفراغ السلة
-            </ClearCartButton>
+          <div className="grid grid-cols-1 gap-2">
+            {items.length > 0 && (
+              <Button asChild variant={"outline"}>
+                <Link href="/checkout">
+                  <Barcode className="mr-2 h-4 w-4" />
+                  إتمام الشراء
+                </Link>
+              </Button>
+            )}
+            {items.length > 0 && (
+              <ClearCartButton>
+                <Trash2 className="mr-2 h-4 w-4" />
+                إفراغ السلة
+              </ClearCartButton>
+            )}
           </div>
         </div>
       </SheetContent>

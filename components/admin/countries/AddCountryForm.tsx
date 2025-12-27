@@ -2,6 +2,7 @@
 
 import { addCountry, updateCountry } from "@/app/admin/countries/actions";
 import SubmitButton from "@/components/shared/submit-button";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
   Form,
   FormControl,
@@ -12,22 +13,32 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Switch } from "@/components/ui/switch";
+import { PAYMENT_METHODS } from "@/constants/payment_methods";
 import { AddCountrySchema, addCountrySchema } from "@/lib/zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useCallback } from "react";
+import { useCallback, useMemo } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import CountriesCombox from "./CountriesCombox";
 import CurrencyCombobox from "./CurrencyCombobox";
 
 function AddCountryForm({ country }: { country?: Country }) {
+  const formatedCountry = useMemo(() => {
+    return {
+      ...country,
+      paymentMethodIds: country?.paymentMethods?.map((paymentMethod) => paymentMethod.id) || [],
+    };
+  }, [country]);
   const form = useForm<AddCountrySchema>({
     resolver: zodResolver(addCountrySchema),
-    defaultValues: country || {
+    defaultValues: formatedCountry || {
       name: "",
       code: "",
       currency: "",
       isActive: true,
+      isDefault: false,
+      flag: "",
+      paymentMethodIds: [],
     },
   });
   const add = useCallback(async (data: AddCountrySchema) => {
@@ -44,9 +55,9 @@ function AddCountryForm({ country }: { country?: Country }) {
       const id = toast.loading("جارى تعديل الدولة...");
       const result = await updateCountry(country?.id!, data);
       if ("success" in result && result.success) {
-        toast.success(result.message || "تمت إضافة الدولة بنجاح", { id });
+        toast.success(result.message || "تمت تعديل الدولة بنجاح", { id });
       } else {
-        toast.error(result.message || "حدث خطأ أثناء إضافة الدولة.", { id });
+        toast.error(result.message || "حدث خطأ أثناء تعديل الدولة.", { id });
       }
     },
     [country],
@@ -62,6 +73,21 @@ function AddCountryForm({ country }: { country?: Country }) {
     },
     [add, edit, country],
   );
+  const onCountryChange = useCallback((country: PublicCountry) => {
+    form.setValue("name", country.name.common);
+    form.setValue("code", country.cca2);
+    form.setValue("currency", Object.keys(country.currencies)[0]);
+    form.setValue("flag", country.flag);
+  }, []);
+  const onPaymentMethodChange = useCallback(
+    (value: number[], paymentMethodId: number, checked: boolean) => {
+      const newValue = checked
+        ? [...value, paymentMethodId]
+        : value.filter((id) => id !== paymentMethodId);
+      return newValue;
+    },
+    [],
+  );
 
   return (
     <Form {...form}>
@@ -74,13 +100,7 @@ function AddCountryForm({ country }: { country?: Country }) {
             <FormItem className="flex flex-col">
               <FormLabel>الدولة</FormLabel>
               <FormControl>
-                <CountriesCombox
-                  value={field.value}
-                  onChange={(name, code) => {
-                    field.onChange(name);
-                    form.setValue("code", code);
-                  }}
-                />
+                <CountriesCombox value={field.value} onChange={onCountryChange} />
               </FormControl>
               <FormDescription>اختر الدولة من القائمة</FormDescription>
               <FormMessage />
@@ -104,7 +124,26 @@ function AddCountryForm({ country }: { country?: Country }) {
           )}
         />
 
-        {/* Is Active Switch */}
+        {/* Is Default Switch */}
+        <FormField
+          control={form.control}
+          name="isDefault"
+          render={({ field }) => (
+            <FormItem className="flex flex-row items-center justify-between rounded-md border p-4">
+              <div className="space-y-0.5">
+                <FormLabel>الافتراضي</FormLabel>
+                <FormDescription>هل تريد تعيين هذه الدولة كافتراضية؟</FormDescription>
+              </div>
+              <FormControl>
+                <Switch
+                  className="flex-row-reverse"
+                  checked={field.value}
+                  onCheckedChange={field.onChange}
+                />
+              </FormControl>
+            </FormItem>
+          )}
+        />
         <FormField
           control={form.control}
           name="isActive"
@@ -125,7 +164,48 @@ function AddCountryForm({ country }: { country?: Country }) {
           )}
         />
 
-        <SubmitButton label="إضافة دولة" labelOnLoading="جارى الاضافه..." />
+        <div className="mb-4">
+          <h2 className="text-base">طرق الدفع</h2>
+          <p className="text-muted-foreground text-sm">اختر طرق الدفع المتاحة لهذه الدولة</p>
+        </div>
+        <div className="grid grid-cols-2 gap-4">
+          {PAYMENT_METHODS.map((paymentMethod) => (
+            <FormField
+              key={paymentMethod.id}
+              control={form.control}
+              name="paymentMethodIds"
+              render={({ field }) => {
+                return (
+                  <FormItem
+                    key={paymentMethod.id}
+                    className="flex items-start space-y-0 space-x-3 rounded-md border p-4 shadow-sm"
+                  >
+                    <FormControl>
+                      <Checkbox
+                        checked={field.value?.includes(paymentMethod.id)}
+                        onCheckedChange={(checked: boolean) =>
+                          field.onChange(
+                            onPaymentMethodChange(field.value, paymentMethod.id, checked),
+                          )
+                        }
+                      />
+                    </FormControl>
+                    <div className="mr-2 space-y-1 leading-none">
+                      <FormLabel className="font-Cairo font-normal">
+                        {paymentMethod.displayName}
+                      </FormLabel>
+                    </div>
+                  </FormItem>
+                );
+              }}
+            />
+          ))}
+        </div>
+
+        <SubmitButton
+          label={country ? "تعديل الدولة" : "إضافة دولة"}
+          labelOnLoading={country ? "جارى التعديل..." : "جارى الإضافة..."}
+        />
       </form>
     </Form>
   );

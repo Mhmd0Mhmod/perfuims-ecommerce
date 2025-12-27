@@ -1,11 +1,12 @@
-import axios from "axios";
+import { fetcher } from "@/lib/fetcher";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(request: NextRequest) {
   try {
     const code = request.cookies.get("country")?.value;
-    const { data } = await axios.get<Country>(`/api/countries/${code}`);
-    return NextResponse.json(data, {
+    const { data } = await fetcher.get<Country[]>(`/countries`);
+    const country = data.find((country) => country.code === code);
+    return NextResponse.json(country, {
       status: 200,
       headers: { "Content-Type": "application/json" },
     });

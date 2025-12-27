@@ -67,17 +67,13 @@ export async function updateProduct(
   defaultValues?: Product,
 ): Promise<ApiResponse<Product>> {
   try {
-    // If we have variants in data and defaultValues, we can detect changes
     if (data.variants && defaultValues?.variants) {
       const { toAdd, toUpdate, toDelete } = checkVariantChanges(
         defaultValues.variants,
         data.variants,
       );
       if (toAdd.length) {
-        const response = await authFetcher.post(
-          `admin/product-variants/by-product/${defaultValues.id}`,
-          toAdd,
-        );
+        await authFetcher.post(`admin/product-variants/by-product/${defaultValues.id}`, toAdd);
       }
       if (toUpdate.length) {
         const promises = toUpdate.map((variant) =>

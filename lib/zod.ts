@@ -36,6 +36,9 @@ export const addCountrySchema = z.object({
   code: z.string().length(2, { message: "رمز الدولة يجب أن يكون حرفين" }),
   currency: z.string(),
   isActive: z.boolean(),
+  flag: z.string(),
+  isDefault: z.boolean(),
+  paymentMethodIds: z.array(z.number()),
 });
 export type AddCountrySchema = z.infer<typeof addCountrySchema>;
 

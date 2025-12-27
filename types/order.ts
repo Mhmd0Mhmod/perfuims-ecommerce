@@ -1,10 +1,26 @@
 interface Order {
-  orderId: never;
+  orderId: string;
   orderNumber: string;
   totalAmount: number;
   status: OrderStatus;
   countryCode: string;
+  shippingAddress: null;
+  phoneNumber: null;
+  user: {
+    userId: number;
+    name: string;
+    email: string;
+    phoneNumber: string;
+    shippingAddress: string;
+  };
+  payment: {
+    paymentMethodId: number;
+    paymentMethodName: string;
+    paymentStatus: PaymentStatus;
+    transactionId: string;
+  };
   items: OrderItem[];
+  createdAt: string | null;
 }
 interface OrderItem {
   productVariantId: number;
@@ -20,20 +36,14 @@ const ORDER_STATUS = {
   DELIVERED: "DELIVERED",
   CANCELLED: "CANCELLED",
 } as const;
-
 type OrderStatus = (typeof ORDER_STATUS)[keyof typeof ORDER_STATUS];
-
-export type { Order, OrderItem, OrderStatus };
+const PAYMENT_STATUS = {
+  PENDING: "PENDING",
+  COMPLETED: "COMPLETED",
+  FAILED: "FAILED",
+  REFUNDED: "REFUNDED",
+} as const;
+type PaymentStatus = (typeof PAYMENT_STATUS)[keyof typeof PAYMENT_STATUS];
+export type { Order, OrderItem, OrderStatus, PaymentStatus };
 export { ORDER_STATUS };
-
-class OrderAPI {
-  static async fetchAdminOrders(): Promise<Pagination<Order>> {
-    const response = await fetch("/api/admin/orders", {
-      method: "GET",
-    });
-    const data = await response.json();
-
-    return data;
-  }
-}
-export { OrderAPI };
+export { PAYMENT_STATUS };

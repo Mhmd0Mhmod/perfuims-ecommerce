@@ -21,6 +21,7 @@ import {
   Settings,
   ShoppingCart,
   Users,
+  CreditCard,
 } from "lucide-react";
 import Link from "next/link";
 import ActiveLink from "../shared/active-link";
@@ -56,6 +57,11 @@ const menuItems = [
     title: "الطلبات",
     url: "/admin/orders",
     icon: ShoppingCart,
+  },
+  {
+    title: "المدفوعات",
+    url: "/admin/payments",
+    icon: CreditCard,
   },
   {
     title: "العملاء",

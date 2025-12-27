@@ -2,12 +2,14 @@ interface Country {
   id: number;
   name: string;
   currency: string;
-  flag: string;
   code: string;
+  contactNumber: string;
+  flag: string;
   isDefault: boolean;
   isActive: boolean;
   createdAt: string;
   updatedAt: string;
+  paymentMethods: PaymentMethod[];
 }
 interface PublicCountry {
   name: {
