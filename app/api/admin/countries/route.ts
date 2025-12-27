@@ -1,4 +1,5 @@
 import { fetcher } from "@/lib/fetcher";
+import { Country } from "@/types/country";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(_request: NextRequest) {

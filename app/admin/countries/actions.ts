@@ -3,6 +3,7 @@
 import { authFetcher } from "@/lib/authFetcher";
 import { ErrorResponse } from "@/lib/utils";
 import { AddCountrySchema } from "@/lib/zod";
+import { Country } from "@/types/country";
 import { revalidatePath } from "next/cache";
 
 export async function addCountry(data: AddCountrySchema): Promise<ApiResponse<Country>> {

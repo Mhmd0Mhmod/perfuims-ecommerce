@@ -1,6 +1,7 @@
 import { ProductsState } from "@/context/ProductsContext";
 import { fetcher } from "@/lib/fetcher";
 import { throwingError } from "@/lib/utils";
+import { Country, PublicCountry } from "@/types/country";
 import { Product } from "@/types/product";
 import axios from "axios";
 

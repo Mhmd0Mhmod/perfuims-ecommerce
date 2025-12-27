@@ -1,3 +1,4 @@
+import { PublicCountry } from "@/types/country";
 import axios from "axios";
 import { NextRequest, NextResponse } from "next/server";
 

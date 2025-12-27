@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { fetcher } from "./lib/fetcher";
+import { Country } from "./types/country";
 
 export async function proxy(request: NextRequest) {
   const countryCode = request.cookies.get("country")?.value;

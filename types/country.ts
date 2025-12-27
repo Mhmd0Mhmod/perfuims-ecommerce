@@ -1,4 +1,6 @@
-interface Country {
+import { PaymentMethod } from "./payment";
+
+export interface Country {
   id: number;
   name: string;
   currency: string;
@@ -11,7 +13,7 @@ interface Country {
   updatedAt: string;
   paymentMethods: PaymentMethod[];
 }
-interface PublicCountry {
+export interface PublicCountry {
   name: {
     common: string;
     official: string;

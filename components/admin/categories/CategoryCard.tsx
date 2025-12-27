@@ -33,6 +33,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { AddCategoryDialog } from "./AddCategoryDialog";
+import { Country } from "@/types/country";
 
 export function CategoryCard({
   category,

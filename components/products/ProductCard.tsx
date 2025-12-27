@@ -10,6 +10,7 @@ import Link from "next/link";
 import AddToCartButton from "./AddToCartButton";
 import { useSelectedCountry } from "@/hooks/use-selected-country";
 import { useRouter } from "next/navigation";
+import { Country } from "@/types/country";
 
 interface ProductCardProps {
   product: Product;
@@ -71,7 +72,7 @@ function ProductCard({ product }: ProductCardProps) {
             <ProductPriceDisplay
               minPrice={minPrice}
               maxPrice={maxPrice}
-              countryEntry={countryEntry}
+              countryEntry={countryEntry!}
             />
           )}
         </div>
@@ -127,7 +128,7 @@ function ProductPriceDisplay({
 }: {
   minPrice: number;
   maxPrice: number;
-  countryEntry: Country | undefined;
+  countryEntry: Country;
 }) {
   return (
     <div className="flex w-full items-center justify-end gap-1">

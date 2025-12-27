@@ -3,6 +3,7 @@ import ComboBox from "@/components/shared/combo-box";
 import { Button } from "@/components/ui/button";
 import { useAllCountries } from "@/hooks/use-all-countries";
 import { cn } from "@/lib/utils";
+import { PublicCountry } from "@/types/country";
 import { Check, ChevronsUpDown } from "lucide-react";
 
 function CountriesCombox({

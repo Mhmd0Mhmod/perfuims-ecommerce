@@ -7,6 +7,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useSelectedCountry } from "@/hooks/use-selected-country";
+import { PublicCountry } from "@/types/country";
 import { useCallback, useEffect, useState } from "react";
 
 function SelectCountry({

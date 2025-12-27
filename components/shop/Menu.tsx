@@ -10,6 +10,7 @@ import { Separator } from "../ui/separator";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "../ui/sheet";
 import Logo from "./Logo";
 import { NavLinks } from "./NavLinks";
+import { PublicCountry } from "@/types/country";
 
 function MenuComponent({
   countries,

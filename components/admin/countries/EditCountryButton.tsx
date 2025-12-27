@@ -8,6 +8,7 @@ import {
 } from "@/components/ui/dialog";
 import { Edit2 } from "lucide-react";
 import AddCountryForm from "./AddCountryForm";
+import { Country } from "@/types/country";
 
 function EditCountryButton({ country }: { country: Country }) {
   return (

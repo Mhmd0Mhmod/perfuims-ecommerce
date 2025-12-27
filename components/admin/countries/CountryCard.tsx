@@ -4,6 +4,7 @@ import { Separator } from "@/components/ui/separator";
 import { Calendar } from "lucide-react";
 import DeleteCountryButton from "./DeleteCountryButton";
 import EditCountryButton from "./EditCountryButton";
+import { Country } from "@/types/country";
 function CountryCard({ country }: { country: Country }) {
   return (
     <Card className="transition-shadow hover:shadow-lg">

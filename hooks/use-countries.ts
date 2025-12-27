@@ -1,4 +1,5 @@
 import { getCountries } from "@/app/(shop)/helper";
+import { PublicCountry } from "@/types/country";
 import { useQuery } from "@tanstack/react-query";
 
 export function useCountries(onSuccess?: (countries: PublicCountry[]) => void) {

@@ -15,6 +15,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { CheckCircle2, Globe, Plus, Search, XCircle } from "lucide-react";
 import { Suspense } from "react";
 import { getAdminCountriesServer } from "./helpers";
+import { Country } from "@/types/country";
 
 async function StatsCards() {
   const countries = await getAdminCountriesServer();

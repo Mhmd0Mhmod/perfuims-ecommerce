@@ -21,6 +21,7 @@ import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import CountriesCombox from "./CountriesCombox";
 import CurrencyCombobox from "./CurrencyCombobox";
+import { Country, PublicCountry } from "@/types/country";
 
 function AddCountryForm({ country }: { country?: Country }) {
   const formatedCountry = useMemo(() => {

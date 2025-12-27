@@ -1,11 +1,17 @@
+import { PaymentStatus } from "./order";
+
 export interface Payment {
   paymentId: number;
   orderId: number;
   userId: number;
   paymentMethodType: string;
-  paymentStatus: "PENDING" | "COMPLETED" | "FAILED" | "REFUNDED";
+  paymentStatus: PaymentStatus;
   amount: number;
   transactionId: string;
   createdAt: string;
   paymentDate: string;
+}
+export interface PaymentMethod {
+  id: number;
+  name: string;
 }

@@ -1,8 +1,8 @@
 import { fetcher } from "@/lib/fetcher";
-import axios from "axios";
+import { Country } from "@/types/country";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function GET(request: NextRequest) {
+export async function GET(_request: NextRequest) {
   try {
     const { data: myCountries } = await fetcher.get<Country[]>("/countries");
 
