@@ -114,7 +114,7 @@ export const checkoutSchema = z.object({
     .min(10, "يجب أن يكون 10 أرقام على الأقل"),
   city: z.string({ message: "المدينة مطلوبة" }).min(2, "يجب أن تكون حرفين على الأقل"),
   address: z.string({ message: "العنوان التفصيلي مطلوب" }).min(5, "يجب أن يكون 5 أحرف على الأقل"),
-  paymentMethod: z.enum(["COD", "CARD"], { message: "يجب اختيار طريقة الدفع" }),
+  paymentMethodId: z.number(),
 });
 
 export type CheckoutSchema = z.infer<typeof checkoutSchema>;

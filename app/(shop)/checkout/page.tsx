@@ -4,9 +4,14 @@ import CheckoutForm from "@/components/shop/checkout/CheckoutForm";
 import { redirect } from "next/navigation";
 import { CreditCard } from "lucide-react";
 import { getCartServer } from "@/app/helper";
+import { getCurrentCountryServer } from "@/app/admin/countries/helpers";
 
 export default async function CheckoutPage() {
-  const [cartItems, user] = await Promise.all([getCartServer(), getUser()]);
+  const [cartItems, user, country] = await Promise.all([
+    getCartServer(),
+    getUser(),
+    getCurrentCountryServer(),
+  ]);
 
   if (cartItems.length === 0) {
     redirect("/cart");
@@ -20,7 +25,7 @@ export default async function CheckoutPage() {
       </div>
 
       <div className="mx-auto max-w-7xl">
-        <CheckoutForm cartItems={cartItems} user={user} />
+        <CheckoutForm cartItems={cartItems} user={user} country={country!} />
       </div>
 
       <div className="mt-12 flex flex-col items-center justify-center gap-4 text-center">
