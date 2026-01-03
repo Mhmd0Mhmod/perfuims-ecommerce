@@ -14,6 +14,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { addProductSchema, AddProductSchema } from "@/lib/zod";
 import { Product } from "@/types/product";
+import { Category } from "@/types/category";
 import { Size } from "@/types/size";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useCallback } from "react";

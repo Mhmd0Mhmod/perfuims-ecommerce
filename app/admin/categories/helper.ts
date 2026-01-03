@@ -1,4 +1,5 @@
 import { authFetcher } from "@/lib/authFetcher";
+import { Category } from "@/types/category";
 import { throwingError } from "@/lib/utils";
 
 export async function getCategories(): Promise<Category[]> {

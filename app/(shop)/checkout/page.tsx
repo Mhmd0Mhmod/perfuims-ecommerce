@@ -1,10 +1,9 @@
-import { getCart } from "@/app/helper";
 import { getUser } from "@/app/(auth)/helper";
-import CheckoutForm from "@/components/shop/checkout/CheckoutForm";
-import { redirect } from "next/navigation";
-import { CreditCard } from "lucide-react";
-import { getCartServer } from "@/app/helper";
 import { getCurrentCountryServer } from "@/app/admin/countries/helpers";
+import { getCartServer } from "@/app/helper";
+import CheckoutForm from "@/components/shop/checkout/CheckoutForm";
+import { CreditCard } from "lucide-react";
+import { redirect } from "next/navigation";
 
 export default async function CheckoutPage() {
   const [cartItems, user, country] = await Promise.all([

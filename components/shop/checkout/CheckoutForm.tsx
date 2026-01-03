@@ -24,7 +24,7 @@ import { Banknote, ChevronLeft, CreditCard, Package, Truck } from "lucide-react"
 import { User } from "next-auth";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import { toast } from "sonner";
 interface CheckoutFormProps {
   cartItems: CartItem[];
@@ -38,12 +38,12 @@ export default function CheckoutForm({ cartItems, user, country }: CheckoutFormP
   const form = useForm<CheckoutSchema>({
     resolver: zodResolver(checkoutSchema),
     defaultValues: {
-      fullName: user?.name || "",
+      fullName: user?.fullName || "",
       email: user?.email || "",
-      phoneNumber: "",
+      phoneNumber: user?.phoneNumber || "",
       city: "",
       address: "",
-      paymentMethodId: 1,
+      paymentMethodId: 2,
     },
   });
 
@@ -51,7 +51,7 @@ export default function CheckoutForm({ cartItems, user, country }: CheckoutFormP
     (acc, item) => acc + item.variantDetails.newPrice * item.quantity,
     0,
   );
-  const total = subtotal; // Add shipping logic if needed
+  const total = subtotal;
 
   async function onSubmit(values: CheckoutSchema) {
     const result = await createOrderAction(values);
@@ -62,7 +62,10 @@ export default function CheckoutForm({ cartItems, user, country }: CheckoutFormP
       toast.error(result.message || "حدث خطأ ما أثناء إتمام الطلب");
     }
   }
-  const paymentMethodID = form.watch("paymentMethodId");
+  const paymentMethodID = useWatch({
+    control: form.control,
+    name: "paymentMethodId",
+  });
   const isCardPayment = paymentMethodID === 1;
   return (
     <div className="grid grid-cols-1 gap-8 md:grid-cols-2" dir="rtl">

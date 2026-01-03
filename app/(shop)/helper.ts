@@ -1,7 +1,9 @@
 import { ProductsState } from "@/context/ProductsContext";
 import { fetcher } from "@/lib/fetcher";
 import { throwingError } from "@/lib/utils";
+import { Category } from "@/types/category";
 import { Country, PublicCountry } from "@/types/country";
+import { Offer } from "@/types/offer";
 import { Product } from "@/types/product";
 import axios from "axios";
 
@@ -53,6 +55,14 @@ export async function getCountriesServer() {
 export async function getCountryByCode(code: string) {
   try {
     const { data } = await axios.get<Country>(`/api/countries/${code}`);
+    return data;
+  } catch (error) {
+    throw throwingError(error);
+  }
+}
+export async function getOffers() {
+  try {
+    const { data } = await axios.get<Offer[]>("/api/offers");
     return data;
   } catch (error) {
     throw throwingError(error);

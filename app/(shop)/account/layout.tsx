@@ -19,11 +19,6 @@ const ACCOUNT_NAV_ITEMS = [
     icon: Package,
   },
   {
-    href: "/account/wishlist",
-    label: "المفضلة",
-    icon: Heart,
-  },
-  {
     href: "/account/settings",
     label: "الإعدادات",
     icon: Settings,
@@ -70,7 +65,7 @@ async function AccountLayout({ children }: { children: React.ReactNode }) {
           <Card className="mb-6">
             <CardContent className="flex gap-2 overflow-x-auto p-2">
               {ACCOUNT_NAV_ITEMS.map((item) => (
-                <Button key={item.href} variant="ghost" size="sm" asChild className="flex-shrink-0">
+                <Button key={item.href} variant="ghost" size="sm" asChild className="shrink-0">
                   <Link href={item.href} className="flex items-center gap-2">
                     <item.icon className="h-4 w-4" />
                     {item.label}

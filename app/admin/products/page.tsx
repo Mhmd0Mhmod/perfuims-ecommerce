@@ -27,6 +27,7 @@ import {
 } from "@/components/ui/table";
 import { formatCurrency, formatDate } from "@/lib/utils";
 import { Product } from "@/types/product";
+import { Category } from "@/types/category";
 import { Size } from "@/types/size";
 import { Package, PackageCheck, PackageX, Plus, Search } from "lucide-react";
 import Image from "next/image";

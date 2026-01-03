@@ -33,15 +33,10 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { AddCategoryDialog } from "./AddCategoryDialog";
+import { Category } from "@/types/category";
 import { Country } from "@/types/country";
 
-export function CategoryCard({
-  category,
-  countries,
-}: {
-  category: Category;
-  countries: Country[];
-}) {
+export function CategoryCard({ category }: { category: Category }) {
   const handleDelete = async () => {
     const id = toast.loading("جارى حذف التصنيف...");
     try {
@@ -62,15 +57,28 @@ export function CategoryCard({
         <div className="flex items-start justify-between">
           <div className="space-y-1">
             <CardTitle>{category.name}</CardTitle>
-            <CardDescription>{category.countryName}</CardDescription>
           </div>
           <Badge variant={category.isActive ? "default" : "secondary"}>
             {category.isActive ? "نشط" : "غير نشط"}
           </Badge>
         </div>
       </CardHeader>
-      <CardContent>
+      <CardContent className="space-y-4">
         <p className="text-muted-foreground text-sm">{category.description || "لا يوجد وصف"}</p>
+        {category.subcategories && category.subcategories.length > 0 && (
+          <div className="space-y-2">
+            <h4 className="text-sm font-semibold">
+              التصنيفات الفرعية ({category.subcategories.length}):
+            </h4>
+            <div className="flex flex-wrap gap-1">
+              {category.subcategories.map((sub) => (
+                <Badge key={sub.id} variant="secondary" className="text-[10px]">
+                  {sub.name}
+                </Badge>
+              ))}
+            </div>
+          </div>
+        )}
       </CardContent>
       <CardFooter className="flex justify-end gap-2">
         <Dialog>
@@ -84,7 +92,7 @@ export function CategoryCard({
               <DialogTitle>تعديل التصنيف</DialogTitle>
               <DialogDescription>عدل بيانات التصنيف هنا. انقر حفظ عند الانتهاء.</DialogDescription>
             </DialogHeader>
-            <AddCategoryDialog category={category} countries={countries} />
+            <AddCategoryDialog category={category} />
           </DialogContent>
         </Dialog>
 

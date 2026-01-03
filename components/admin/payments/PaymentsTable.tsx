@@ -12,9 +12,9 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { usePagination } from "@/hooks/use-PaginationL";
-import { cn, formatCurrency, formatDate } from "@/lib/utils";
+import { formatCurrency, formatDate } from "@/lib/utils";
 import { Payment } from "@/types/payment";
-import { CreditCard, Eye, ShoppingCart } from "lucide-react";
+import { CreditCard } from "lucide-react";
 import Link from "next/link";
 import InfiniteScroll from "react-infinite-scroll-component";
 

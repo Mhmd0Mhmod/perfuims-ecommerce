@@ -7,7 +7,11 @@ import { authFetcher } from "@/lib/authFetcher";
 
 export async function createOrderAction(formData: CheckoutSchema): Promise<ApiResponse> {
   try {
-    const response = await authFetcher.post("/orders", formData);
+    const response = await authFetcher.post("/orders", {
+      paymentMethodId: formData.paymentMethodId,
+      shippingAddress: formData.address + ", " + formData.city,
+      phoneNumber: formData.phoneNumber,
+    });
     revalidateTag("cart", "default");
     return {
       success: true,

@@ -4,15 +4,18 @@ import TableSkeleton from "@/components/shared/table-skeleton";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { OrderStatus } from "@/types/order";
-import { CheckCircle, Clock, Package, Search, Truck, XCircle } from "lucide-react";
+import { CheckCircle, Clock, Package, Search, ShoppingCart, Truck, XCircle } from "lucide-react";
 import { Suspense } from "react";
+import { getAdminOrderStatus } from "./helper";
 
 function OrdersPage() {
   return (
     <div className="container mx-auto space-y-6 p-6">
       {/* Stats Cards */}
       <Suspense fallback={<StatsSkeleton length={4} />}>
-        <div className="grid gap-4 md:grid-cols-4">{/* <OrderStatsCard /> */}</div>
+        <div className="grid gap-4 md:grid-cols-4">
+          <OrderStatsCard />
+        </div>
       </Suspense>
 
       {/* Main Table Card */}
@@ -39,57 +42,60 @@ function OrdersPage() {
   );
 }
 
-// async function OrderStatsCard() {
-//   const orders = await getAdminOrders();
-//   const totalOrders = orders.totalElements;
-//   const pendingOrders = orders.content.filter((o: Order) => o.status === "PENDING").length;
-//   const shippedOrders = orders.content.filter((o: Order) => o.status === "SHIPPED").length;
-//   const deliveredOrders = orders.content.filter((o: Order) => o.status === "DELIVERED").length;
-
-//   return (
-//     <>
-//       <Card>
-//         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-//           <CardTitle className="text-sm font-medium">إجمالي الطلبات</CardTitle>
-//           <ShoppingCart className="text-muted-foreground h-4 w-4" />
-//         </CardHeader>
-//         <CardContent>
-//           <div className="text-2xl font-bold">{totalOrders}</div>
-//           <p className="text-muted-foreground text-xs">جميع الطلبات المستلمة</p>
-//         </CardContent>
-//       </Card>
-//       <Card>
-//         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-//           <CardTitle className="text-sm font-medium">قيد الانتظار</CardTitle>
-//           <Clock className="text-muted-foreground h-4 w-4" />
-//         </CardHeader>
-//         <CardContent>
-//           <div className="text-2xl font-bold">{pendingOrders}</div>
-//           <p className="text-muted-foreground text-xs">طلبات تحتاج معالجة</p>
-//         </CardContent>
-//       </Card>
-//       <Card>
-//         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-//           <CardTitle className="text-sm font-medium">تم الشحن</CardTitle>
-//           <Truck className="text-muted-foreground h-4 w-4" />
-//         </CardHeader>
-//         <CardContent>
-//           <div className="text-2xl font-bold">{shippedOrders}</div>
-//           <p className="text-muted-foreground text-xs">طلبات في الطريق</p>
-//         </CardContent>
-//       </Card>
-//       <Card>
-//         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-//           <CardTitle className="text-sm font-medium">تم التسليم</CardTitle>
-//           <Package className="text-muted-foreground h-4 w-4" />
-//         </CardHeader>
-//         <CardContent>
-//           <div className="text-2xl font-bold">{deliveredOrders}</div>
-//           <p className="text-muted-foreground text-xs">طلبات مكتملة</p>
-//         </CardContent>
-//       </Card>
-//     </>
-//   );
-// }
+async function OrderStatsCard() {
+  const orders = await getAdminOrderStatus();
+  const {
+    cancelledOrders,
+    confirmedOrders,
+    deliveredOrders,
+    pendingOrders,
+    shippedOrders,
+    totalOrders,
+  } = orders;
+  return (
+    <>
+      <Card>
+        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+          <CardTitle className="text-sm font-medium">إجمالي الطلبات</CardTitle>
+          <ShoppingCart className="text-muted-foreground h-4 w-4" />
+        </CardHeader>
+        <CardContent>
+          <div className="text-2xl font-bold">{totalOrders || 0}</div>
+          <p className="text-muted-foreground text-xs">جميع الطلبات المستلمة</p>
+        </CardContent>
+      </Card>
+      <Card>
+        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+          <CardTitle className="text-sm font-medium">قيد الانتظار</CardTitle>
+          <Clock className="text-muted-foreground h-4 w-4" />
+        </CardHeader>
+        <CardContent>
+          <div className="text-2xl font-bold">{pendingOrders}</div>
+          <p className="text-muted-foreground text-xs">طلبات تحتاج معالجة</p>
+        </CardContent>
+      </Card>
+      <Card>
+        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+          <CardTitle className="text-sm font-medium">تم الشحن</CardTitle>
+          <Truck className="text-muted-foreground h-4 w-4" />
+        </CardHeader>
+        <CardContent>
+          <div className="text-2xl font-bold">{shippedOrders}</div>
+          <p className="text-muted-foreground text-xs">طلبات في الطريق</p>
+        </CardContent>
+      </Card>
+      <Card>
+        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+          <CardTitle className="text-sm font-medium">تم التسليم</CardTitle>
+          <Package className="text-muted-foreground h-4 w-4" />
+        </CardHeader>
+        <CardContent>
+          <div className="text-2xl font-bold">{deliveredOrders}</div>
+          <p className="text-muted-foreground text-xs">طلبات مكتملة</p>
+        </CardContent>
+      </Card>
+    </>
+  );
+}
 
 export default OrdersPage;

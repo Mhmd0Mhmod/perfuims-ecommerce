@@ -13,36 +13,25 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { Separator } from "@/components/ui/separator";
 import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
 import { AddCategorySchema, addCategorySchema } from "@/lib/zod";
-import { Country } from "@/types/country";
+import { Category } from "@/types/category";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Plus, Trash2 } from "lucide-react";
 import { useCallback } from "react";
-import { useForm } from "react-hook-form";
+import { useFieldArray, useForm } from "react-hook-form";
 import { toast } from "sonner";
 
-export function AddCategoryDialog({
-  category,
-  countries,
-}: {
-  category?: Category;
-  countries: Country[];
-}) {
+export function AddCategoryDialog({ category }: { category?: Category }) {
   const form = useForm<AddCategorySchema>({
     resolver: zodResolver(addCategorySchema),
     defaultValues: category || {
       name: "",
       description: "",
-      countryId: 0,
       isActive: true,
+      subcategories: [],
     },
   });
 
@@ -82,86 +71,154 @@ export function AddCategoryDialog({
     },
     [category, addNewCategory, editCategory],
   );
+  const { append, fields, remove } = useFieldArray({
+    control: form.control,
+    name: "subcategories",
+  });
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-        <FormField
-          control={form.control}
-          name="name"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>اسم التصنيف</FormLabel>
-              <FormControl>
-                <Input placeholder="أدخل اسم التصنيف..." {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+        <div className="max-h-[60vh] space-y-4 overflow-y-auto">
+          <FormField
+            control={form.control}
+            name="name"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>اسم التصنيف</FormLabel>
+                <FormControl>
+                  <Input placeholder="أدخل اسم التصنيف..." {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
 
-        <FormField
-          control={form.control}
-          name="description"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>الوصف</FormLabel>
-              <FormControl>
-                <Textarea placeholder="أدخل وصف التصنيف..." {...field} value={field.value ?? ""} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+          <FormField
+            control={form.control}
+            name="description"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>الوصف</FormLabel>
+                <FormControl>
+                  <Textarea
+                    placeholder="أدخل وصف التصنيف..."
+                    {...field}
+                    value={field.value ?? ""}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
 
-        <FormField
-          control={form.control}
-          name="countryId"
-          render={({ field }) => (
-            <FormItem className="flex flex-col">
-              <FormLabel>الدولة</FormLabel>
-              <FormControl>
-                <Select {...field} value={String(field.value || "")} onValueChange={field.onChange}>
-                  <SelectTrigger className="w-full" dir="rtl">
-                    <SelectValue placeholder="اختر الدولة..." {...field} />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {countries?.map((country) => (
-                      <SelectItem key={country.id} value={country.id.toString()}>
-                        {country.name}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </FormControl>
-              <FormDescription>اختر الدولة التابع لها هذا التصنيف</FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+          <FormField
+            control={form.control}
+            name="isActive"
+            render={({ field }) => (
+              <FormItem className="flex flex-row items-center justify-between rounded-md border p-4">
+                <div className="space-y-0.5 text-right">
+                  <FormLabel>نشط</FormLabel>
+                  <FormDescription>هل تريد تفعيل هذا التصنيف؟</FormDescription>
+                </div>
+                <FormControl>
+                  <Switch
+                    className="flex-row-reverse"
+                    checked={field.value}
+                    onCheckedChange={field.onChange}
+                  />
+                </FormControl>
+              </FormItem>
+            )}
+          />
 
-        <FormField
-          control={form.control}
-          name="isActive"
-          render={({ field }) => (
-            <FormItem className="flex flex-row items-center justify-between rounded-md border p-4">
-              <div className="space-y-0.5">
-                <FormLabel>نشط</FormLabel>
-                <FormDescription>هل تريد تفعيل هذا التصنيف؟</FormDescription>
+          <Separator />
+
+          <div className="space-y-4">
+            <div className="flex items-center justify-between">
+              <h3 className="text-lg font-medium">التصنيفات الفرعية</h3>
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                onClick={() => append({ name: "", description: "", isActive: true })}
+              >
+                <Plus className="ml-2 h-4 w-4" />
+                إضافة تصنيف فرعي
+              </Button>
+            </div>
+
+            {fields.map((field, index) => (
+              <div key={field.id} className="relative space-y-4 rounded-lg border p-4">
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="icon"
+                  className="text-destructive mr-auto flex h-8 w-8 items-center justify-center"
+                  onClick={() => remove(index)}
+                >
+                  <Trash2 className="h-4 w-4" />
+                </Button>
+
+                <div className="grid gap-4">
+                  <FormField
+                    control={form.control}
+                    name={`subcategories.${index}.name`}
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>اسم التصنيف الفرعي</FormLabel>
+                        <FormControl>
+                          <Input placeholder="أدخل الاسم..." {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+
+                  <FormField
+                    control={form.control}
+                    name={`subcategories.${index}.description`}
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>الوصف</FormLabel>
+                        <FormControl>
+                          <Textarea
+                            placeholder="أدخل الوصف..."
+                            {...field}
+                            value={field.value ?? ""}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+
+                  <FormField
+                    control={form.control}
+                    name={`subcategories.${index}.isActive`}
+                    render={({ field }) => (
+                      <FormItem className="flex flex-row items-center justify-between rounded-md border p-3">
+                        <div className="space-y-0.5 text-right">
+                          <FormLabel className="text-sm">نشط</FormLabel>
+                        </div>
+                        <FormControl>
+                          <Switch
+                            className="scale-75 flex-row-reverse"
+                            checked={field.value}
+                            onCheckedChange={field.onChange}
+                          />
+                        </FormControl>
+                      </FormItem>
+                    )}
+                  />
+                </div>
               </div>
-              <FormControl>
-                <Switch
-                  className="flex-row-reverse"
-                  checked={field.value}
-                  onCheckedChange={field.onChange}
-                />
-              </FormControl>
-            </FormItem>
-          )}
-        />
+            ))}
+          </div>
+        </div>
 
         <DialogFooter>
-          <Button type="submit" disabled={form.formState.isSubmitting}>
+          <Button type="submit" className="w-full" disabled={form.formState.isSubmitting}>
             {form.formState.isSubmitting ? "جاري الحفظ..." : "حفظ"}
           </Button>
         </DialogFooter>

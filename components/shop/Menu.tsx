@@ -11,6 +11,9 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "../u
 import Logo from "./Logo";
 import { NavLinks } from "./NavLinks";
 import { PublicCountry } from "@/types/country";
+import { SubCategory } from "@/types/category";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "../ui/accordion";
+import { useOffers } from "@/hooks/use-offers";
 
 function MenuComponent({
   countries,
@@ -20,6 +23,7 @@ function MenuComponent({
   selecedCountryCode?: string;
 }) {
   const { data: categories, isFetching } = useCategories();
+  const { data: offers } = useOffers();
   const [open, setOpen] = useState(false);
 
   return (
@@ -40,24 +44,67 @@ function MenuComponent({
           <div className="flex flex-col gap-4">
             {/* Categories */}
             <div className="space-y-4">
-              <h3 className="text-muted-foreground text-xs font-bold tracking-widest uppercase">
+              <h3 className="text-muted-foreground pt-4 text-xs font-bold tracking-widest uppercase">
                 الأقسام
               </h3>
               <div className="flex flex-col gap-3">
-                {categories?.map((category) => (
-                  <Link
-                    key={category.id}
-                    href={`/products?category=${category.id}`}
-                    onClick={() => setOpen(false)}
-                    className="hover:text-primary py-1 text-lg font-medium transition-colors"
-                  >
-                    {category.name}
-                  </Link>
-                ))}
-                {isFetching &&
-                  Array.from({ length: 5 }).map((_, i) => (
-                    <div key={i} className="bg-muted h-6 w-24 animate-pulse rounded" />
-                  ))}
+                <Accordion type="single" collapsible className="w-full">
+                  <AccordionItem value="offers">
+                    <AccordionTrigger>العروض</AccordionTrigger>
+                    <AccordionContent>
+                      <div className="mt-1 mr-2 flex flex-col gap-2 border-r pr-4">
+                        {offers?.map((offer) => (
+                          <Link
+                            key={offer.id}
+                            href={`/products?offer=${offer.id}`}
+                            onClick={() => setOpen(false)}
+                            className="hover:text-primary py-1 text-base transition-colors"
+                          >
+                            {offer.title}
+                          </Link>
+                        ))}
+                      </div>
+                    </AccordionContent>
+                  </AccordionItem>
+
+                  {categories?.map((category) => {
+                    const hasSubcategories =
+                      category.subcategories && category.subcategories.length > 0;
+
+                    if (hasSubcategories) {
+                      return (
+                        <AccordionItem key={category.id} value={category.id.toString()}>
+                          <AccordionTrigger>{category.name}</AccordionTrigger>
+                          <AccordionContent>
+                            <div className="mt-1 mr-2 flex flex-col gap-2 border-r pr-4">
+                              {category.subcategories.map((sub: SubCategory) => (
+                                <Link
+                                  key={sub.id}
+                                  href={`/products?category=${sub.id}`}
+                                  onClick={() => setOpen(false)}
+                                  className="hover:text-primary py-1 text-base transition-colors"
+                                >
+                                  {sub.name}
+                                </Link>
+                              ))}
+                            </div>
+                          </AccordionContent>
+                        </AccordionItem>
+                      );
+                    }
+
+                    return (
+                      <Link
+                        key={category.id}
+                        href={`/products?category=${category.id}`}
+                        onClick={() => setOpen(false)}
+                        className="hover:text-primary flex items-center py-2 text-lg font-medium transition-colors"
+                      >
+                        {category.name}
+                      </Link>
+                    );
+                  })}
+                </Accordion>
               </div>
             </div>
           </div>

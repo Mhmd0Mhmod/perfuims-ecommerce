@@ -34,6 +34,10 @@ export type RegisterSchema = z.infer<typeof registerSchema>;
 export const addCountrySchema = z.object({
   name: z.string(),
   code: z.string().length(2, { message: "رمز الدولة يجب أن يكون حرفين" }),
+  contactNumber: z
+    .string()
+    .min(3, { message: "رقم الهاتف يجب أن يكون 3 أرقام على الأقل" })
+    .max(14, { message: "رقم الهاتف يجب أن يكون 14 أرقام على الأقل" }),
   currency: z.string(),
   isActive: z.boolean(),
   flag: z.string(),
@@ -47,8 +51,18 @@ export const addCategorySchema = z.object({
     message: "اسم التنصيف يجب ان يكون 3 احرف علي الاقل",
   }),
   description: z.string().nullable(),
-  countryId: z.number().or(z.string()),
   isActive: z.boolean(),
+  subcategories: z
+    .array(
+      z.object({
+        name: z.string({ message: "اسم التصنيف الفرعي مطلوب" }).min(3, {
+          message: "اسم التصنيف الفرعي يجب ان يكون 3 احرف علي الاقل",
+        }),
+        description: z.string().nullable(),
+        isActive: z.boolean(),
+      }),
+    )
+    .optional(),
 });
 export type AddCategorySchema = z.infer<typeof addCategorySchema>;
 
@@ -110,7 +124,7 @@ export const checkoutSchema = z.object({
   email: z.string({ message: "البريد الإلكتروني مطلوب" }).email("بريد إلكتروني غير صالح"),
   phoneNumber: z
     .string({ message: "رقم الهاتف مطلوب" })
-    .regex(/^\d{1,14}$/, "رقم الهاتف غير صالح")
+    .regex(/^\+?\d{1,14}$/, "رقم الهاتف غير صالح")
     .min(10, "يجب أن يكون 10 أرقام على الأقل"),
   city: z.string({ message: "المدينة مطلوبة" }).min(2, "يجب أن تكون حرفين على الأقل"),
   address: z.string({ message: "العنوان التفصيلي مطلوب" }).min(5, "يجب أن يكون 5 أحرف على الأقل"),
@@ -118,3 +132,31 @@ export const checkoutSchema = z.object({
 });
 
 export type CheckoutSchema = z.infer<typeof checkoutSchema>;
+
+export const updateProfileSchema = z.object({
+  fullName: z
+    .string({ message: "الاسم الكامل مطلوب" })
+    .min(3, { message: "الاسم الكامل يجب أن يكون 3 أحرف على الأقل" }),
+  email: z
+    .string({ message: "البريد الإلكتروني مطلوب" })
+    .regex(/^[^\s@]+@[^\s@]+\.[^\s@]+$/, { message: "البريد الإلكتروني غير صالح" }),
+  phoneNumber: z
+    .string({ message: "رقم الهاتف مطلوب" })
+    .regex(/^\d{1,14}$/, { message: "رقم الهاتف غير صالح" })
+    .min(10, { message: "رقم الهاتف يجب أن يكون 10 أرقام على الأقل" }),
+});
+export type UpdateProfileSchema = z.infer<typeof updateProfileSchema>;
+
+export const storeSettingsSchema = z.object({
+  storeName: z.string().min(2, "اسم المتجر يجب أن يكون حرفين على الأقل"),
+  storeDescription: z.string().optional(),
+  contactEmail: z.string().email("بريد إلكتروني غير صالح"),
+  contactPhone: z.string().min(10, "رقم الهاتف يجب أن يكون 10 أرقام على الأقل"),
+  address: z.string().optional(),
+  facebookUrl: z.string().url().optional().or(z.literal("")),
+  instagramUrl: z.string().url().optional().or(z.literal("")),
+  whatsappNumber: z.string().optional(),
+  isMaintenanceMode: z.boolean(),
+});
+
+export type StoreSettingsSchema = z.infer<typeof storeSettingsSchema>;

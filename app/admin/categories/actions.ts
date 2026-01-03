@@ -4,6 +4,7 @@ import { ErrorResponse } from "@/lib/utils";
 import { AddCategorySchema } from "@/lib/zod";
 import { revalidatePath } from "next/cache";
 import { authFetcher } from "@/lib/authFetcher";
+import { Category } from "@/types/category";
 
 export async function addCategory(data: AddCategorySchema): Promise<ApiResponse<Category>> {
   try {

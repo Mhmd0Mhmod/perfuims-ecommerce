@@ -2,7 +2,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { OrderStatus } from "@/types/order";
+import { ORDER_STATUS, OrderStatus } from "@/types/order";
 import {
   ArrowRight,
   CheckCircle,
@@ -16,6 +16,7 @@ import {
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getUserOrderById } from "../helper";
+import { formatCurrency } from "@/lib/utils";
 
 const ORDER_STATUS_CONFIG: Record<
   OrderStatus,
@@ -79,7 +80,7 @@ async function OrderDetailsPage({ params }: { params: Promise<{ id: string }> })
   }
 
   const statusConfig = ORDER_STATUS_CONFIG[order.status];
-  const isCancelled = order.status === "CANCELLED";
+  const isCancelled = order.status === ORDER_STATUS.CANCELLED;
   const currentStepIndex = ORDER_STEPS.indexOf(order.status);
 
   return (
@@ -214,17 +215,13 @@ async function OrderDetailsPage({ params }: { params: Promise<{ id: string }> })
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="flex items-center justify-between">
-              <span className="text-muted-foreground">المجموع الفرعي</span>
-              <span>{order.items.reduce((sum, item) => sum + item.subtotal, 0).toFixed(2)}</span>
-            </div>
-            <div className="flex items-center justify-between">
-              <span className="text-muted-foreground">الشحن</span>
-              <span className="text-green-600">مجاني</span>
-            </div>
-            <Separator />
-            <div className="flex items-center justify-between">
               <span className="text-lg font-semibold">المجموع الكلي</span>
-              <span className="text-primary text-xl font-bold">{order.totalAmount.toFixed(2)}</span>
+              <span className="text-primary text-xl font-bold">
+                {formatCurrency({
+                  amount: order.totalAmount,
+                  code: order.countryCode,
+                })}
+              </span>
             </div>
           </CardContent>
         </Card>

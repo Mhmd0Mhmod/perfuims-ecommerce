@@ -10,7 +10,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { cn } from "@/lib/utils";
+import { cn, formatCurrency } from "@/lib/utils";
 import { Order, OrderStatus } from "@/types/order";
 import {
   ArrowLeft,
@@ -25,6 +25,7 @@ import {
 import Link from "next/link";
 import { Suspense } from "react";
 import { getUserOrders } from "./helper";
+import { getCookies } from "@/app/(auth)/helper";
 
 const ORDER_STATUS_CONFIG: Record<
   OrderStatus,
@@ -103,7 +104,7 @@ function OrdersSkeleton() {
 }
 
 async function OrdersList() {
-  const orders = await getUserOrders();
+  const [orders, countryCode] = await Promise.all([getUserOrders(), getCookies("country")]);
 
   if (orders.content.length === 0) {
     return <EmptyOrders />;
@@ -166,7 +167,12 @@ async function OrdersList() {
                         </div>
                       </TableCell>
                       <TableCell>
-                        <div className="font-semibold">{order.totalAmount.toFixed(2)}</div>
+                        <div className="font-semibold">
+                          {formatCurrency({
+                            amount: order.totalAmount,
+                            code: countryCode!,
+                          })}
+                        </div>
                       </TableCell>
                       <TableCell>
                         <Badge variant={statusConfig.variant} className="gap-1">
@@ -177,7 +183,7 @@ async function OrdersList() {
                       <TableCell className="text-center">
                         <Button variant="ghost" size="sm" asChild>
                           <Link
-                            href={`/account/orders/${order.orderNumber}`}
+                            href={`/account/orders/${order.orderId}`}
                             className="flex items-center gap-1"
                           >
                             <Eye className="h-4 w-4" />

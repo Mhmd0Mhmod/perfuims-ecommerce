@@ -13,10 +13,8 @@ import {
 import { Skeleton } from "@/components/ui/skeleton";
 import { Plus } from "lucide-react";
 import { Suspense } from "react";
-import { getAdminCountriesServer } from "../countries/helpers";
 import { getCategories } from "./helper";
-async function AddCategory() {
-  const countries = await getAdminCountriesServer();
+function AddCategory() {
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -26,13 +24,13 @@ async function AddCategory() {
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-131.25">
-        <DialogHeader>
+        <DialogHeader className="sm:text-right">
           <DialogTitle>إضافة تصنيف جديد</DialogTitle>
           <DialogDescription>
             أدخل بيانات التصنيف الجديد هنا. انقر حفظ عند الانتهاء.
           </DialogDescription>
         </DialogHeader>
-        <AddCategoryDialog countries={countries} />
+        <AddCategoryDialog />
       </DialogContent>
     </Dialog>
   );
@@ -73,21 +71,20 @@ function CategoriesPage() {
 
 async function CategoriesList() {
   const categories = await getCategories();
-  const countries = await getAdminCountriesServer();
-
   if (categories.length === 0) {
-    <Card>
-      <CardHeader>
-        <CardTitle>لا توجد تصنيفات</CardTitle>
-        <CardDescription>ابدأ بإضافة تصنيف جديد باستخدام الزر أعلاه</CardDescription>
-      </CardHeader>
-    </Card>;
+    return (
+      <Card>
+        <CardHeader>
+          <CardTitle>لا توجد تصنيفات</CardTitle>
+          <CardDescription>ابدأ بإضافة تصنيف جديد باستخدام الزر أعلاه</CardDescription>
+        </CardHeader>
+      </Card>
+    );
   }
-
   return (
     <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
       {categories.map((category) => (
-        <CategoryCard key={category.id} category={category} countries={countries} />
+        <CategoryCard key={category.id} category={category} />
       ))}
     </div>
   );
