@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { AxiosError } from "axios";
 import { fetcher } from "@/lib/fetcher";
+import { Category } from "@/types/category";
 
 export async function GET(request: NextRequest) {
   try {

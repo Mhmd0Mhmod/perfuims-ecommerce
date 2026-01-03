@@ -1,4 +1,5 @@
 import { fetcher } from "@/lib/fetcher";
+import { Category } from "@/types/category";
 import { NextRequest } from "next/server";
 
 export async function GET(request: NextRequest) {
