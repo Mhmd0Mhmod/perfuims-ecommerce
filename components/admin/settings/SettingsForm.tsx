@@ -35,15 +35,12 @@ export function SettingsForm({ initialData }: { initialData: StoreSettingsSchema
   const form = useForm<StoreSettingsSchema>({
     resolver: zodResolver(storeSettingsSchema),
     defaultValues: {
-      storeName: initialData.storeName || "",
-      storeDescription: initialData.storeDescription || "",
       contactEmail: initialData.contactEmail || "",
       contactPhone: initialData.contactPhone || "",
       address: initialData.address || "",
       facebookUrl: initialData.facebookUrl || "",
       instagramUrl: initialData.instagramUrl || "",
       whatsappNumber: initialData.whatsappNumber || "",
-      isMaintenanceMode: initialData.isMaintenanceMode ?? false,
     },
   });
 
@@ -65,11 +62,7 @@ export function SettingsForm({ initialData }: { initialData: StoreSettingsSchema
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
         <Tabs defaultValue="general" className="w-full" dir="rtl">
-          <TabsList className="grid w-full grid-cols-3">
-            <TabsTrigger value="general" className="flex items-center gap-2">
-              <Settings2 className="h-4 w-4" />
-              <span>إعدادات عامة</span>
-            </TabsTrigger>
+          <TabsList className="grid w-full grid-cols-2">
             <TabsTrigger value="contact" className="flex items-center gap-2">
               <Phone className="h-4 w-4" />
               <span>معلومات التواصل</span>
@@ -79,62 +72,6 @@ export function SettingsForm({ initialData }: { initialData: StoreSettingsSchema
               <span>التواصل الاجتماعي</span>
             </TabsTrigger>
           </TabsList>
-
-          <TabsContent value="general" className="mt-4 space-y-4">
-            <Card>
-              <CardHeader className="text-right">
-                <CardTitle>المعلومات الأساسية</CardTitle>
-                <CardDescription>إدارة هوية المتجر والوصف العام</CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4 text-right">
-                <FormField
-                  control={form.control}
-                  name="storeName"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>اسم المتجر</FormLabel>
-                      <FormControl>
-                        <Input placeholder="أدخل اسم المتجر..." {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="storeDescription"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>وصف المتجر</FormLabel>
-                      <FormControl>
-                        <Textarea placeholder="أدخل وصفاً قصيراً للمتجر..." {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="isMaintenanceMode"
-                  render={({ field }) => (
-                    <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
-                      <div className="space-y-0.5 text-right">
-                        <FormLabel>وضع الصيانة</FormLabel>
-                        <FormDescription>تعطيل المتجر مؤقتاً للجمهور</FormDescription>
-                      </div>
-                      <FormControl>
-                        <Switch
-                          checked={field.value}
-                          onCheckedChange={field.onChange}
-                          className="flex-row-reverse"
-                        />
-                      </FormControl>
-                    </FormItem>
-                  )}
-                />
-              </CardContent>
-            </Card>
-          </TabsContent>
 
           <TabsContent value="contact" className="mt-4 space-y-4">
             <Card>

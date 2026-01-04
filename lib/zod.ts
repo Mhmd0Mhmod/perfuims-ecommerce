@@ -148,15 +148,12 @@ export const updateProfileSchema = z.object({
 export type UpdateProfileSchema = z.infer<typeof updateProfileSchema>;
 
 export const storeSettingsSchema = z.object({
-  storeName: z.string().min(2, "اسم المتجر يجب أن يكون حرفين على الأقل"),
-  storeDescription: z.string().optional(),
   contactEmail: z.string().email("بريد إلكتروني غير صالح"),
   contactPhone: z.string().min(10, "رقم الهاتف يجب أن يكون 10 أرقام على الأقل"),
   address: z.string().optional(),
   facebookUrl: z.string().url().optional().or(z.literal("")),
   instagramUrl: z.string().url().optional().or(z.literal("")),
   whatsappNumber: z.string().optional(),
-  isMaintenanceMode: z.boolean(),
 });
 
 export type StoreSettingsSchema = z.infer<typeof storeSettingsSchema>;
