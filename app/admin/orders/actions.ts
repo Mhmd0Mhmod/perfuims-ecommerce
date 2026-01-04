@@ -10,7 +10,15 @@ export async function updateOrderStatus(
   status: OrderStatus,
 ): Promise<ApiResponse> {
   try {
-    await authFetcher.patch(`/admin/orders/${orderId}/status`, { status });
+    await authFetcher.patch(
+      `/admin/orders/${orderId}/status`,
+      {},
+      {
+        params: {
+          status,
+        },
+      },
+    );
     revalidatePath("/admin/orders");
     return {
       success: true,

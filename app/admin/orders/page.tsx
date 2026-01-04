@@ -1,14 +1,21 @@
 import OrdersTable from "@/components/admin/orders/OrdersTable";
 import StatsSkeleton from "@/components/shared/stats-skeleton";
-import TableSkeleton from "@/components/shared/table-skeleton";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { OrderStatus } from "@/types/order";
-import { CheckCircle, Clock, Package, Search, ShoppingCart, Truck, XCircle } from "lucide-react";
+import { Clock, Package, Search, ShoppingCart, Truck } from "lucide-react";
 import { Suspense } from "react";
 import { getAdminOrderStatus } from "./helper";
+import FilterOrders from "@/components/admin/orders/FilterOrders";
 
-function OrdersPage() {
+async function OrdersPage({
+  searchParams,
+}: {
+  searchParams: Promise<{
+    status?: string;
+    period?: string;
+  }>;
+}) {
+  const params = await searchParams;
   return (
     <div className="container mx-auto space-y-6 p-6">
       {/* Stats Cards */}
@@ -31,11 +38,12 @@ function OrdersPage() {
                 <Search className="text-muted-foreground absolute top-1/2 right-3 h-4 w-4 -translate-y-1/2" />
                 <Input placeholder="ابحث عن طلب..." className="pr-10" />
               </div>
+              <FilterOrders />
             </div>
           </div>
         </CardHeader>
         <CardContent>
-          <OrdersTable />
+          <OrdersTable {...params} />
         </CardContent>
       </Card>
     </div>

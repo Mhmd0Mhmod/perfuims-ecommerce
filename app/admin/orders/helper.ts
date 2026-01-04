@@ -19,12 +19,14 @@ export async function getAdminOrderStatus() {
   }
 }
 
-export async function getAdminOrders(page: number) {
+export async function getAdminOrders(params: {
+  page: number;
+  status?: string;
+  period?: string;
+}): Promise<Pagination<Order>> {
   try {
     const { data } = await axios.get<Pagination<Order>>("/api/admin/orders", {
-      params: {
-        page,
-      },
+      params,
     });
     return data;
   } catch (error) {

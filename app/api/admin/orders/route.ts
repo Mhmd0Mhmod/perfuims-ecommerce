@@ -8,6 +8,8 @@ export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
   const page = searchParams.get("page") || 0;
   const countryCode = request.cookies.get("country")?.value;
+  const period = searchParams.get("period");
+  const status = searchParams.get("status");
   try {
     const token = await getToken({
       req: request,
@@ -26,6 +28,8 @@ export async function GET(request: NextRequest) {
     const { data } = await fetcher.get<Pagination<Order>>("/admin/orders", {
       params: {
         page,
+        status,
+        period,
       },
       headers: {
         "X-Country-Code": countryCode,

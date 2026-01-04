@@ -4,7 +4,7 @@ export interface Payment {
   paymentId: number;
   orderId: number;
   userId: number;
-  userName: string;
+  username: string;
   paymentMethodType: string;
   paymentStatus: PaymentStatus;
   amount: number;

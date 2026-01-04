@@ -2,11 +2,15 @@ import { getAdminOrders } from "@/app/admin/orders/helper";
 import { Order } from "@/types/order";
 import { useQuery, UseQueryResult } from "@tanstack/react-query";
 
-export function useAdminOrders(page: number): UseQueryResult<Pagination<Order>> {
+export function useAdminOrders(params: {
+  page: number;
+  status?: string;
+  period?: string;
+}): UseQueryResult<Pagination<Order>> {
   return useQuery({
-    queryKey: ["admin-orders", page],
+    queryKey: ["admin-orders", params],
     queryFn: async () => {
-      const response = await getAdminOrders(page);
+      const response = await getAdminOrders(params);
       return response;
     },
   });

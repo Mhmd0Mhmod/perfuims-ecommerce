@@ -1,4 +1,3 @@
-import { CancelOrderButton } from "@/components/admin/orders/CancelOrderButton";
 import { OrderStatusSelect } from "@/components/admin/orders/OrderStatusSelect";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -100,7 +99,6 @@ async function OrderDetailsPage({ params }: { params: Promise<{ id: string }> })
         </div>
         <div className="flex items-center gap-2">
           <OrderStatusSelect orderId={order.orderNumber} currentStatus={order.status} />
-          <CancelOrderButton orderId={order.orderNumber} disabled={isCancelled || isDelivered} />
         </div>
       </div>
 

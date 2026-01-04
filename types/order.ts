@@ -29,6 +29,35 @@ interface OrderItem {
   quantity: number;
   subtotal: number;
 }
+
+export const ORDER_STATUS_CONFIG: Record<
+  OrderStatus,
+  {
+    label: string;
+    variant: "default" | "secondary" | "destructive" | "outline";
+  }
+> = {
+  PENDING: {
+    label: "قيد الانتظار",
+    variant: "secondary",
+  },
+  CONFIRMED: {
+    label: "مؤكد",
+    variant: "default",
+  },
+  SHIPPED: {
+    label: "تم الشحن",
+    variant: "outline",
+  },
+  DELIVERED: {
+    label: "تم التسليم",
+    variant: "default",
+  },
+  CANCELLED: {
+    label: "ملغي",
+    variant: "destructive",
+  },
+} as const;
 const ORDER_STATUS = {
   PENDING: "PENDING",
   CONFIRMED: "CONFIRMED",
@@ -37,6 +66,25 @@ const ORDER_STATUS = {
   CANCELLED: "CANCELLED",
 } as const;
 type OrderStatus = (typeof ORDER_STATUS)[keyof typeof ORDER_STATUS];
+export const PAYMENT_STATUS_CONFIG = {
+  PENDING: {
+    label: "قيد الانتظار",
+    variant: "secondary",
+  },
+  COMPLETED: {
+    label: "مكتمل",
+    variant: "default",
+  },
+  FAILED: {
+    label: "فشل",
+    variant: "destructive",
+  },
+  REFUNDED: {
+    label: "مسترجع",
+    variant: "outline",
+  },
+} as const;
+
 const PAYMENT_STATUS = {
   PENDING: "PENDING",
   COMPLETED: "COMPLETED",
@@ -44,6 +92,32 @@ const PAYMENT_STATUS = {
   REFUNDED: "REFUNDED",
 } as const;
 type PaymentStatus = (typeof PAYMENT_STATUS)[keyof typeof PAYMENT_STATUS];
-export type { Order, OrderItem, OrderStatus, PaymentStatus };
-export { ORDER_STATUS };
-export { PAYMENT_STATUS };
+
+export const PERIOD_OPTIONS_CONFIG = {
+  DAILY: {
+    label: "يومي",
+  },
+  WEEKLY: {
+    label: "أسبوعي",
+  },
+  MONTHLY: {
+    label: "شهري",
+  },
+  YEARLY: {
+    label: "سنوي",
+  },
+  ALL_TIME: {
+    label: "كل الوقت",
+  },
+} as const;
+const PERIOD_OPTIONS = {
+  DAILY: "DAILY",
+  WEEKLY: "WEEKLY",
+  MONTHLY: "MONTHLY",
+  YEARLY: "YEARLY",
+  ALL_TIME: "ALL_TIME",
+} as const;
+type PeriodOptions = (typeof PERIOD_OPTIONS)[keyof typeof PERIOD_OPTIONS];
+
+export type { Order, OrderItem, OrderStatus, PaymentStatus, PeriodOptions };
+export { ORDER_STATUS, PAYMENT_STATUS, PERIOD_OPTIONS };

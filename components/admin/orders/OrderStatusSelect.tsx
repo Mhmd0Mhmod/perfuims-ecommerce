@@ -53,7 +53,7 @@ export function OrderStatusSelect({ orderId, currentStatus }: OrderStatusSelectP
           variant="outline"
           size="sm"
           disabled={isPending}
-          className="min-w-[120px] justify-between"
+          className="min-w-30 justify-between"
         >
           {isPending ? (
             <Loader2 className="h-4 w-4 animate-spin" />

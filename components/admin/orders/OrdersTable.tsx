@@ -1,5 +1,4 @@
 "use client";
-import { CancelOrderButton } from "@/components/admin/orders/CancelOrderButton";
 import { OrderStatusSelect } from "@/components/admin/orders/OrderStatusSelect";
 import { PaginationClient } from "@/components/shared/pagination";
 import TableSkeleton from "@/components/shared/table-skeleton";
@@ -15,48 +14,42 @@ import {
 } from "@/components/ui/table";
 import { useAdminOrders } from "@/hooks/use-admin-orders";
 import { cn, formatCurrency, formatDate } from "@/lib/utils";
-import { Order, ORDER_STATUS, OrderStatus, PAYMENT_STATUS } from "@/types/order";
+import {
+  Order,
+  ORDER_STATUS,
+  ORDER_STATUS_CONFIG,
+  OrderStatus,
+  PAYMENT_STATUS,
+} from "@/types/order";
 import { CheckCircle, Clock, Package, Truck, XCircle } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 
-const ORDER_STATUS_CONFIG: Record<
+export const ORDER_STATUS_ICONS: Record<
   OrderStatus,
   {
-    label: string;
-    variant: "default" | "secondary" | "destructive" | "outline";
     icon: React.ReactNode;
   }
 > = {
   PENDING: {
-    label: "قيد الانتظار",
-    variant: "secondary",
     icon: <Clock className="h-3 w-3" />,
   },
   CONFIRMED: {
-    label: "مؤكد",
-    variant: "default",
     icon: <CheckCircle className="h-3 w-3" />,
   },
   SHIPPED: {
-    label: "تم الشحن",
-    variant: "outline",
     icon: <Truck className="h-3 w-3" />,
   },
   DELIVERED: {
-    label: "تم التسليم",
-    variant: "default",
     icon: <Package className="h-3 w-3" />,
   },
   CANCELLED: {
-    label: "ملغي",
-    variant: "destructive",
     icon: <XCircle className="h-3 w-3" />,
   },
-};
-function OrdersTable() {
+} as const;
+function OrdersTable({ status, period }: { status?: string; period?: string }) {
   const [page, setPage] = useState(0);
-  const { data, isFetching: isLoading } = useAdminOrders(page);
+  const { data, isFetching: isLoading } = useAdminOrders({ page, status, period });
 
   if (isLoading) {
     return (
@@ -140,7 +133,7 @@ function OrdersTable() {
                   <TableCell className="text-center">
                     <div className="flex justify-center">
                       <Badge variant={statusConfig.variant} className="gap-1">
-                        {statusConfig.icon}
+                        {ORDER_STATUS_ICONS[order.status].icon}
                         {statusConfig.label}
                       </Badge>
                     </div>
@@ -148,10 +141,6 @@ function OrdersTable() {
                   <TableCell>
                     <div className="flex items-center justify-center gap-1">
                       <OrderStatusSelect orderId={order.orderId} currentStatus={order.status} />
-                      <CancelOrderButton
-                        orderId={order.orderId}
-                        disabled={isCancelled || isDelivered}
-                      />
                     </div>
                   </TableCell>
                 </TableRow>

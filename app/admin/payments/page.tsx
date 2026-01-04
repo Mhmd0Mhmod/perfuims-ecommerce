@@ -1,11 +1,11 @@
+import { getCookies } from "@/app/(auth)/helper";
 import PaymentsTable from "@/components/admin/payments/PaymentsTable";
 import StatsSkeleton from "@/components/shared/stats-skeleton";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { formatCurrency } from "@/lib/utils";
-import { CreditCard, Banknote, CheckCircle2, Wallet, AlertCircle } from "lucide-react";
+import { Banknote, CheckCircle2, CreditCard, Wallet } from "lucide-react";
 import { Suspense } from "react";
 import { getAdminPaymentsStatus } from "./helper";
-import { getCookies } from "@/app/(auth)/helper";
 
 function PaymentsPage() {
   return (

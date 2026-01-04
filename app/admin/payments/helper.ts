@@ -3,10 +3,13 @@ import { throwingError } from "@/lib/utils";
 import { Payment } from "@/types/payment";
 import axios from "axios";
 
-export async function getAdminPayments(page: number) {
+export async function getAdminPayments(params: {
+  page: number;
+  status?: string;
+}): Promise<Pagination<Payment>> {
   try {
     const { data } = await axios.get<Pagination<Payment>>("/api/admin/payments", {
-      params: { page },
+      params,
     });
     return data;
   } catch (error) {
