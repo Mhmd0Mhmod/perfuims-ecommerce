@@ -9,10 +9,12 @@ export function usePagination<T>({
 }) {
   const [page, setPage] = useState(0);
   const [items, setItems] = useState<T[]>([]);
-  const { data } = useQuery({
+  const [pages, setPages] = useState(0);
+  const { data, isFetching, isLoading } = useQuery({
     queryKey: [...queryKey, page],
     queryFn: async () => {
       const result = await queryFn(page);
+      setPages(result.totalPages);
       setItems((prevItems) => [...prevItems, ...result.content]);
       return result;
     },
@@ -22,5 +24,14 @@ export function usePagination<T>({
   const loadMore = () => {
     setPage((prevPage) => prevPage + 1);
   };
-  return { items, hasMore, loadMore, setItems, setPage };
+  return {
+    items,
+    hasMore,
+    loadMore,
+    setItems,
+    setPage,
+    pages,
+    page,
+    isLoading: isFetching || isLoading,
+  };
 }

@@ -1,7 +1,7 @@
 "use client";
-import { getAdminOrders } from "@/app/admin/orders/helper";
 import { CancelOrderButton } from "@/components/admin/orders/CancelOrderButton";
 import { OrderStatusSelect } from "@/components/admin/orders/OrderStatusSelect";
+import { PaginationClient } from "@/components/shared/pagination";
 import TableSkeleton from "@/components/shared/table-skeleton";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -13,12 +13,12 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { usePagination } from "@/hooks/use-PaginationL";
+import { useAdminOrders } from "@/hooks/use-admin-orders";
 import { cn, formatCurrency, formatDate } from "@/lib/utils";
 import { Order, ORDER_STATUS, OrderStatus, PAYMENT_STATUS } from "@/types/order";
-import { CheckCircle, Clock, Eye, Package, ShoppingCart, Truck, XCircle } from "lucide-react";
+import { CheckCircle, Clock, Package, Truck, XCircle } from "lucide-react";
 import Link from "next/link";
-import InfiniteScroll from "react-infinite-scroll-component";
+import { useState } from "react";
 
 const ORDER_STATUS_CONFIG: Record<
   OrderStatus,
@@ -55,39 +55,35 @@ const ORDER_STATUS_CONFIG: Record<
   },
 };
 function OrdersTable() {
-  const {
-    items: orders,
-    hasMore,
-    loadMore,
-    setItems,
-    setPage,
-  } = usePagination({
-    queryFn: getAdminOrders,
-    queryKey: ["admin-orders"],
-  });
+  const [page, setPage] = useState(0);
+  const { data, isFetching: isLoading } = useAdminOrders(page);
+
+  if (isLoading) {
+    return (
+      <div className="rounded-md border">
+        <TableSkeleton rows={5} columns={7} />
+      </div>
+    );
+  }
+  const { content, totalPages } = data as Pagination<Order>;
 
   return (
-    <InfiniteScroll
-      dataLength={orders.length}
-      next={loadMore}
-      hasMore={hasMore}
-      loader={<TableSkeleton columns={6} rows={5} />}
-    >
-      <div className="rounded-md border">
-        <Table>
-          <TableHeader>
-            <TableRow className="bg-muted/50">
-              <TableHead className="text-right font-semibold">رقم الطلب</TableHead>
-              <TableHead className="text-right font-semibold">التاريخ</TableHead>
-              <TableHead className="text-right font-semibold">العميل</TableHead>
-              <TableHead className="text-right font-semibold">الدفع</TableHead>
-              <TableHead className="text-right font-semibold">المبلغ</TableHead>
-              <TableHead className="text-center font-semibold">الحالة</TableHead>
-              <TableHead className="text-center font-semibold">الإجراءات</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {orders.map((order: Order) => {
+    <div className="rounded-md border">
+      <Table>
+        <TableHeader>
+          <TableRow className="bg-muted/50">
+            <TableHead className="text-right font-semibold">رقم الطلب</TableHead>
+            <TableHead className="text-right font-semibold">التاريخ</TableHead>
+            <TableHead className="text-right font-semibold">العميل</TableHead>
+            <TableHead className="text-right font-semibold">الدفع</TableHead>
+            <TableHead className="text-right font-semibold">المبلغ</TableHead>
+            <TableHead className="text-center font-semibold">الحالة</TableHead>
+            <TableHead className="text-center font-semibold">الإجراءات</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {!isLoading &&
+            content.map((order: Order) => {
               const statusConfig = ORDER_STATUS_CONFIG[order.status];
               const isCancelled = order.status === ORDER_STATUS.CANCELLED;
               const isDelivered = order.status === ORDER_STATUS.DELIVERED;
@@ -161,10 +157,10 @@ function OrdersTable() {
                 </TableRow>
               );
             })}
-          </TableBody>
-        </Table>
-      </div>
-    </InfiniteScroll>
+        </TableBody>
+      </Table>
+      <PaginationClient totalPages={totalPages} currentPage={page} onPageChange={setPage} />
+    </div>
   );
 }
 export default OrdersTable;

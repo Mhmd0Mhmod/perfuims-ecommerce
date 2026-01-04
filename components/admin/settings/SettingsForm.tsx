@@ -61,7 +61,7 @@ export function SettingsForm({ initialData }: { initialData: StoreSettingsSchema
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-        <Tabs defaultValue="general" className="w-full" dir="rtl">
+        <Tabs defaultValue="contact" className="w-full" dir="rtl">
           <TabsList className="grid w-full grid-cols-2">
             <TabsTrigger value="contact" className="flex items-center gap-2">
               <Phone className="h-4 w-4" />

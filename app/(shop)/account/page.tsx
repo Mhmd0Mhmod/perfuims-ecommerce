@@ -46,11 +46,6 @@ const QUICK_LINKS = [
   },
 ];
 
-const STATS = [
-  { label: "الطلبات", value: "12", icon: ShoppingBag },
-  { label: "سله الشراء", value: "8", icon: ShoppingBag },
-];
-
 async function AccountPage() {
   const user = await getUser();
 
@@ -103,16 +98,6 @@ async function AccountPage() {
                   <Calendar className="h-4 w-4" />
                   عضو منذ {formatDate(user.createdAt)}
                 </span>
-              </div>
-
-              {/* Stats Row */}
-              <div className="flex items-center justify-center gap-6 sm:justify-start">
-                {STATS.map((stat) => (
-                  <div key={stat.label} className="text-center">
-                    <div className="text-primary text-xl font-bold">{stat.value}</div>
-                    <div className="text-muted-foreground text-xs">{stat.label}</div>
-                  </div>
-                ))}
               </div>
             </div>
 

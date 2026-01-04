@@ -21,7 +21,11 @@ export async function getAdminOrderStatus() {
 
 export async function getAdminOrders(page: number) {
   try {
-    const { data } = await axios.get<Pagination<Order>>("/api/admin/orders");
+    const { data } = await axios.get<Pagination<Order>>("/api/admin/orders", {
+      params: {
+        page,
+      },
+    });
     return data;
   } catch (error) {
     throw throwingError(error);
