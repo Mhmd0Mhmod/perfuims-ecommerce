@@ -7,7 +7,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { OrderStatus } from "@/types/order";
+import { ORDER_STATUS_CONFIG, OrderStatus } from "@/types/order";
 import { Check, ChevronDown, Loader2 } from "lucide-react";
 import { useState, useTransition } from "react";
 import { toast } from "sonner";
@@ -17,14 +17,6 @@ interface OrderStatusSelectProps {
   orderId: string;
   currentStatus: OrderStatus;
 }
-
-const ORDER_STATUS_OPTIONS: { value: OrderStatus; label: string }[] = [
-  { value: "PENDING", label: "قيد الانتظار" },
-  { value: "CONFIRMED", label: "مؤكد" },
-  { value: "SHIPPED", label: "تم الشحن" },
-  { value: "DELIVERED", label: "تم التسليم" },
-  { value: "CANCELLED", label: "ملغي" },
-];
 
 export function OrderStatusSelect({ orderId, currentStatus }: OrderStatusSelectProps) {
   const [isPending, startTransition] = useTransition();
@@ -44,7 +36,7 @@ export function OrderStatusSelect({ orderId, currentStatus }: OrderStatusSelectP
     });
   };
 
-  const currentLabel = ORDER_STATUS_OPTIONS.find((opt) => opt.value === status)?.label || status;
+  const currentLabel = ORDER_STATUS_CONFIG[status]?.label || status;
 
   return (
     <DropdownMenu>
@@ -66,14 +58,14 @@ export function OrderStatusSelect({ orderId, currentStatus }: OrderStatusSelectP
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
-        {ORDER_STATUS_OPTIONS.map((option) => (
+        {Object.entries(ORDER_STATUS_CONFIG).map(([value, config]) => (
           <DropdownMenuItem
-            key={option.value}
-            onClick={() => handleStatusChange(option.value)}
+            key={value}
+            onClick={() => handleStatusChange(value as OrderStatus)}
             className="flex items-center justify-between"
           >
-            {option.label}
-            {option.value === status && <Check className="mr-2 h-4 w-4" />}
+            {config.label}
+            {value === status && <Check className="mr-2 h-4 w-4" />}
           </DropdownMenuItem>
         ))}
       </DropdownMenuContent>
