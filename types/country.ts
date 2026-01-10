@@ -6,6 +6,8 @@ export interface Country {
   currency: string;
   code: string;
   contactNumber: string;
+  email: string;
+  address: string;
   flag: string;
   isDefault: boolean;
   isActive: boolean;

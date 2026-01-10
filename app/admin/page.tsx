@@ -4,24 +4,34 @@ import { OverviewChart } from "@/components/admin/overview-chart";
 import { RecentSales } from "@/components/admin/recent-sales";
 import { RecentOrdersTable } from "@/components/admin/recent-orders-table";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { getRevenueDataAr } from "@/lib/mock-data-ar";
+import { getDashboardStats } from "./helper";
+import { getCurrentCountryServer } from "./countries/helpers";
+import { YearSelector } from "@/components/shared/year-selector";
 
 export const metadata: Metadata = {
   title: "لوحة التحكم",
   description: "لوحة تحكم للمتجر",
 };
 
-export default async function DashboardPage() {
-  const revenueData = await getRevenueDataAr();
-
+export default async function DashboardPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ year?: string }>;
+}) {
+  const { year } = await searchParams;
+  const [dashboardStats, currentCountry] = await Promise.all([
+    getDashboardStats(year || new Date().getFullYear().toString()),
+    getCurrentCountryServer(),
+  ]);
   return (
     <div className="flex-1 space-y-4 p-8 pt-6">
       <div className="flex items-center justify-between space-y-2">
         <h2 className="text-3xl font-bold tracking-tight">لوحة التحكم</h2>
+        <YearSelector />
       </div>
 
       {/* Summary Stats */}
-      <DashboardStats />
+      <DashboardStats stats={dashboardStats} currentCountry={currentCountry!.code} />
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
         {/* Overview Chart */}
@@ -30,7 +40,7 @@ export default async function DashboardPage() {
             <CardTitle>نظرة عامة</CardTitle>
           </CardHeader>
           <CardContent className="pl-2">
-            <OverviewChart data={revenueData} />
+            <OverviewChart data={dashboardStats.monthlyStats} />
           </CardContent>
         </Card>
 
@@ -38,10 +48,13 @@ export default async function DashboardPage() {
         <Card className="col-span-3">
           <CardHeader>
             <CardTitle>المبيعات الأخيرة</CardTitle>
-            <CardDescription>لقد قمت بـ 265 عملية بيع هذا الشهر.</CardDescription>
+            <CardDescription>أحدث {dashboardStats.recentPayments.length} عملية دفع</CardDescription>
           </CardHeader>
           <CardContent>
-            <RecentSales />
+            <RecentSales
+              payments={dashboardStats.recentPayments}
+              countryCode={currentCountry!.code}
+            />
           </CardContent>
         </Card>
       </div>
@@ -50,10 +63,10 @@ export default async function DashboardPage() {
       <Card className="col-span-4">
         <CardHeader>
           <CardTitle>الطلبات الأخيرة</CardTitle>
-          <CardDescription>قائمة بطلباتك الأخيرة.</CardDescription>
+          <CardDescription>قائمة بآخر {dashboardStats.recentOrders.length} طلبات.</CardDescription>
         </CardHeader>
         <CardContent>
-          <RecentOrdersTable />
+          <RecentOrdersTable orders={dashboardStats.recentOrders} />
         </CardContent>
       </Card>
     </div>

@@ -1,16 +1,44 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { getStatsAr } from "@/lib/mock-data-ar";
-import { DollarSign, Users, CreditCard, Activity } from "lucide-react";
+import { DollarSign, Users, ShoppingCart, TrendingUp } from "lucide-react";
+import { DashboardStats as DashboardStatsType } from "@/types/dashboard";
+import { formatCurrency } from "@/lib/utils";
 
-const icons = [DollarSign, Users, CreditCard, Activity];
+interface DashboardStatsProps {
+  stats: DashboardStatsType;
+  currentCountry: string;
+}
 
-export async function DashboardStats() {
-  const stats = await getStatsAr();
+export async function DashboardStats({ stats, currentCountry }: DashboardStatsProps) {
+  const statsData = [
+    {
+      title: "إجمالي الإيرادات",
+      value: formatCurrency({
+        amount: stats.totalRevenue,
+        code: currentCountry,
+      }),
+      icon: DollarSign,
+    },
+    {
+      title: "المستخدمين",
+      value: `+${stats.totalUsers}`,
+      icon: Users,
+    },
+    {
+      title: "الطلبات",
+      value: `+${stats.totalOrders}`,
+      icon: ShoppingCart,
+    },
+    {
+      title: "المدفوعات",
+      value: `+${stats.totalPayments}`,
+      icon: TrendingUp,
+    },
+  ];
 
   return (
     <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-      {stats.map((stat, index) => {
-        const Icon = icons[index];
+      {statsData.map((stat) => {
+        const Icon = stat.icon;
         return (
           <Card key={stat.title}>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
@@ -19,7 +47,6 @@ export async function DashboardStats() {
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">{stat.value}</div>
-              <p className="text-muted-foreground text-xs">{stat.change}</p>
             </CardContent>
           </Card>
         );

@@ -1,16 +1,17 @@
-import { getCookies, getToken } from "@/app/(auth)/helper";
+import { getCookies } from "@/app/(auth)/helper";
 import axios from "axios";
+import { auth } from "./auth";
 
 const authFetcher = axios.create({
-  baseURL: process.env.RAILWAY_API,
+  baseURL: process.env.API,
   headers: {
     "Content-Type": "application/json",
   },
 });
 authFetcher.interceptors.request.use(async (config) => {
-  const token = await getToken();
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
+  const session = await auth();
+  if (session?.token) {
+    config.headers.Authorization = `Bearer ${session.token}`;
   }
   const countryCode = await getCookies("country");
   if (countryCode) {

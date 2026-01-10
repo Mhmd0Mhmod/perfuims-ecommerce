@@ -39,6 +39,8 @@ function AddCountryForm({ country }: { country?: Country }) {
       code: "",
       currency: "",
       contactNumber: "",
+      email: "",
+      address: "",
       isActive: true,
       isDefault: false,
       flag: "",
@@ -57,7 +59,7 @@ function AddCountryForm({ country }: { country?: Country }) {
   const edit = useCallback(
     async (data: AddCountrySchema) => {
       const id = toast.loading("جارى تعديل الدولة...");
-      const result = await updateCountry(country?.id!, data);
+      const result = await updateCountry(country!.id, data);
       if ("success" in result && result.success) {
         toast.success(result.message || "تمت تعديل الدولة بنجاح", { id });
       } else {
@@ -77,12 +79,15 @@ function AddCountryForm({ country }: { country?: Country }) {
     },
     [add, edit, country],
   );
-  const onCountryChange = useCallback((country: PublicCountry) => {
-    form.setValue("name", country.name.common);
-    form.setValue("code", country.cca2);
-    form.setValue("currency", Object.keys(country.currencies)[0]);
-    form.setValue("flag", country.flag);
-  }, []);
+  const onCountryChange = useCallback(
+    (country: PublicCountry) => {
+      form.setValue("name", country.name.common);
+      form.setValue("code", country.cca2);
+      form.setValue("currency", Object.keys(country.currencies)[0]);
+      form.setValue("flag", country.flag);
+    },
+    [form],
+  );
   const onPaymentMethodChange = useCallback(
     (value: number[], paymentMethodId: number, checked: boolean) => {
       const newValue = checked
@@ -141,6 +146,38 @@ function AddCountryForm({ country }: { country?: Country }) {
                     <Input placeholder="أدخل رقم التواصل..." {...field} />
                   </FormControl>
                   <FormDescription>رقم التواصل الخاص بهذه الدولة</FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            {/* Email Field */}
+            <FormField
+              control={form.control}
+              name="email"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>البريد الإلكتروني</FormLabel>
+                  <FormControl>
+                    <Input placeholder="أدخل البريد الإلكتروني..." {...field} />
+                  </FormControl>
+                  <FormDescription>البريد الإلكتروني الخاص بهذه الدولة</FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            {/* Address Field */}
+            <FormField
+              control={form.control}
+              name="address"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>العنوان</FormLabel>
+                  <FormControl>
+                    <Input placeholder="أدخل العنوان..." {...field} />
+                  </FormControl>
+                  <FormDescription>العنوان الخاص بهذه الدولة</FormDescription>
                   <FormMessage />
                 </FormItem>
               )}

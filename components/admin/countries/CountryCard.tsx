@@ -47,6 +47,20 @@ function CountryCard({ country }: { country: Country }) {
           </div>
 
           <div className="flex items-center justify-between">
+            <span className="text-muted-foreground text-sm">البريد الإلكتروني</span>
+            <div className="flex items-center gap-2">
+              <span className="text-sm">{country.email || "لا يوجد"}</span>
+            </div>
+          </div>
+
+          <div className="flex items-center justify-between">
+            <span className="text-muted-foreground text-sm">العنوان</span>
+            <div className="flex items-center gap-2">
+              <span className="text-sm">{country.address || "لا يوجد"}</span>
+            </div>
+          </div>
+
+          <div className="flex items-center justify-between">
             <span className="text-muted-foreground text-sm">تاريخ الإضافة</span>
             <div className="flex items-center gap-2">
               <span className="text-sm">

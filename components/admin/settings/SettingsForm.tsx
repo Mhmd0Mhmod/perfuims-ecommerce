@@ -31,16 +31,16 @@ import {
   Settings2,
 } from "lucide-react";
 
-export function SettingsForm({ initialData }: { initialData: StoreSettingsSchema }) {
+export function SettingsForm({ country }: { country: StoreSettingsSchema }) {
   const form = useForm<StoreSettingsSchema>({
     resolver: zodResolver(storeSettingsSchema),
     defaultValues: {
-      contactEmail: initialData.contactEmail || "",
-      contactPhone: initialData.contactPhone || "",
-      address: initialData.address || "",
-      facebookUrl: initialData.facebookUrl || "",
-      instagramUrl: initialData.instagramUrl || "",
-      whatsappNumber: initialData.whatsappNumber || "",
+      contactEmail: country.contactEmail || "",
+      contactPhone: country.contactPhone || "",
+      address: country.address || "",
+      facebookUrl: country.facebookUrl || "",
+      instagramUrl: country.instagramUrl || "",
+      whatsappNumber: country.whatsappNumber || "",
     },
   });
 

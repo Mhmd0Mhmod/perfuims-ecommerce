@@ -38,6 +38,8 @@ export const addCountrySchema = z.object({
     .string()
     .min(3, { message: "رقم الهاتف يجب أن يكون 3 أرقام على الأقل" })
     .max(14, { message: "رقم الهاتف يجب أن يكون 14 أرقام على الأقل" }),
+  email: z.string().email({ message: "البريد الإلكتروني غير صالح" }),
+  address: z.string().min(1, { message: "العنوان مطلوب" }),
   currency: z.string(),
   isActive: z.boolean(),
   flag: z.string(),
@@ -148,11 +150,9 @@ export const updateProfileSchema = z.object({
 export type UpdateProfileSchema = z.infer<typeof updateProfileSchema>;
 
 export const storeSettingsSchema = z.object({
-  contactEmail: z.string().email("بريد إلكتروني غير صالح"),
-  contactPhone: z.string().min(10, "رقم الهاتف يجب أن يكون 10 أرقام على الأقل"),
-  address: z.string().optional(),
   facebookUrl: z.string().url().optional().or(z.literal("")),
   instagramUrl: z.string().url().optional().or(z.literal("")),
+  twitterUrl: z.string().url().optional().or(z.literal("")),
   whatsappNumber: z.string().optional(),
 });
 

@@ -1,8 +1,15 @@
-import { SettingsForm } from "@/components/admin/settings/SettingsForm";
-import { getStoreSettings } from "./helper";
+import { getSiteSocailMeida } from "@/app/helper";
+import { ContactForm } from "@/components/admin/settings/ContactForm";
+import { SocialMediaForm } from "@/components/admin/settings/SocialMediaForm";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Globe, Phone } from "lucide-react";
+import { getCurrentCountryServer } from "../countries/helpers";
 
 export default async function AdminSettingsPage() {
-  const settings = await getStoreSettings();
+  const [country, socialMedia] = await Promise.all([
+    getCurrentCountryServer(),
+    getSiteSocailMeida(),
+  ]);
 
   return (
     <div className="flex-1 space-y-4 p-8 pt-6" dir="rtl">
@@ -11,7 +18,26 @@ export default async function AdminSettingsPage() {
       </div>
 
       <div className="grid gap-4">
-        <SettingsForm initialData={settings} />
+        <Tabs defaultValue="contact" className="w-full" dir="rtl">
+          <TabsList className="grid w-full grid-cols-2">
+            <TabsTrigger value="contact" className="flex items-center gap-2">
+              <Phone className="h-4 w-4" />
+              <span>اتصال البلد الحالي</span>
+            </TabsTrigger>
+            <TabsTrigger value="social" className="flex items-center gap-2">
+              <Globe className="h-4 w-4" />
+              <span>التواصل الاجتماعي</span>
+            </TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="contact" className="mt-4">
+            <ContactForm country={country!} />
+          </TabsContent>
+
+          <TabsContent value="social" className="mt-4">
+            <SocialMediaForm initialData={socialMedia} />
+          </TabsContent>
+        </Tabs>
       </div>
     </div>
   );
