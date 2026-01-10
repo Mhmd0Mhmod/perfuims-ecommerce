@@ -2,16 +2,9 @@ import { getCountriesServer } from "@/app/(shop)/helper";
 import ASidebar from "@/components/admin/ASidebar";
 import SelectCountry from "@/components/country/SelectCountry";
 import { SidebarInset, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
-import { PublicCountry } from "@/types/country";
 
 async function layout({ children }: { children: React.ReactNode }) {
-  let countries: PublicCountry[] = [];
-
-  try {
-    countries = await getCountriesServer();
-  } catch (error) {
-    console.error("Error fetching countries:", error);
-  }
+  const countries = await getCountriesServer();
 
   return (
     <SidebarProvider>

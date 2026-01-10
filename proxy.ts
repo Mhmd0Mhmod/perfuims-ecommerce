@@ -6,15 +6,20 @@ export async function proxy(request: NextRequest) {
   const countryCode = request.cookies.get("country")?.value;
   const response = NextResponse.next();
   if (!countryCode) {
-    const countries = await fetcher.get("/countries", {
+    const { data } = await fetcher.get<Country[]>("/countries", {
       fetchOptions: {
         next: {
           revalidate: 86400, // 24 hours
         },
       },
     });
-    const defaultCountry = countries.data.find((c: Country) => c.isDefault);
-    response.cookies.set("country", defaultCountry.code);
+
+    const defaultCountry = data.find((c: Country) => c.isDefault);
+    if (defaultCountry) {
+      response.cookies.set("country", defaultCountry.code);
+    } else {
+      response.cookies.set("country", data.at(0)!.code || "EG");
+    }
   } else {
     response.cookies.set("country", countryCode);
   }
