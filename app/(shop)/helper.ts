@@ -38,6 +38,11 @@ export async function getCountries() {
 export async function getCountriesServer() {
   try {
     const response = await fetcher.get<Country[]>("/countries");
+
+    if (!response.data || response.data.length === 0) {
+      return [];
+    }
+
     const { data: countriesPublic } = await axios.get<PublicCountry[]>(
       `https://restcountries.com/v3.1/alpha?fields=name,flag,currencies,cca2&fullText=true&codes=${response.data.map((country) => country.code).join(",")}`,
       {
@@ -48,7 +53,8 @@ export async function getCountriesServer() {
     );
     return countriesPublic;
   } catch (error) {
-    throw throwingError(error);
+    console.error("Error in getCountriesServer:", error);
+    return [];
   }
 }
 

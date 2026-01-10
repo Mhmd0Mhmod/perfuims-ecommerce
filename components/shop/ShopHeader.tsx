@@ -5,12 +5,21 @@ import HeaderActions from "./HeaderActions";
 import Logo from "./Logo";
 import Menu from "./Menu";
 import { getCookies } from "@/app/(auth)/helper";
+import { PublicCountry } from "@/types/country";
 
 async function ShopHeader() {
-  const [countries, selectedCountryCode] = await Promise.all([
-    getCountriesServer(),
-    getCookies("country"),
-  ]);
+  let countries: PublicCountry[] = [];
+  let selectedCountryCode: string | undefined;
+
+  try {
+    [countries, selectedCountryCode] = await Promise.all([
+      getCountriesServer(),
+      getCookies("country"),
+    ]);
+  } catch (error) {
+    console.error("Error fetching countries:", error);
+    // Continue with empty countries array - the UI will handle this gracefully
+  }
   return (
     <header className="bg-background sticky top-0 z-50 w-full border-b shadow-sm">
       <div className="container mx-auto px-4">
