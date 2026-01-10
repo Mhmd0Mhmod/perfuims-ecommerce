@@ -18,7 +18,7 @@ export async function proxy(request: NextRequest) {
     if (defaultCountry) {
       response.cookies.set("country", defaultCountry.code);
     } else {
-      response.cookies.set("country", data.at(0)!.code || "EG");
+      response.cookies.set("country", data.at(0)!.code);
     }
   } else {
     response.cookies.set("country", countryCode);
