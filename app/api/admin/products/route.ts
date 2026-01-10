@@ -1,9 +1,14 @@
+import { auth } from "@/lib/auth";
 import { fetcher } from "@/lib/fetcher";
 import { Product } from "@/types/product";
 import { AxiosError } from "axios";
 import { NextRequest, NextResponse } from "next/server";
 export async function GET(request: NextRequest) {
   try {
+    const session = await auth();
+    if (!session?.token) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
     const { searchParams } = request.nextUrl;
     const q = searchParams.get("searchTerm") || "";
     const page = Number(searchParams.get("page") || 0);
@@ -17,7 +22,10 @@ export async function GET(request: NextRequest) {
         categorieIds,
         dealIds,
       },
-      headers: Object.fromEntries(request.headers),
+      headers: {
+        Authorization: `Bearer ${session.token}`,
+        "X-Country-Code": request.cookies.get("country")?.value,
+      },
     });
     return NextResponse.json(data, {
       status: 200,

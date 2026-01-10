@@ -1,7 +1,7 @@
+import { auth } from "@/lib/auth";
 import { fetcher } from "@/lib/fetcher";
 import { Order } from "@/types/order";
 import { AxiosError } from "axios";
-import { getToken } from "next-auth/jwt";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(request: NextRequest) {
@@ -11,11 +11,8 @@ export async function GET(request: NextRequest) {
   const period = searchParams.get("period");
   const status = searchParams.get("status");
   try {
-    const token = await getToken({
-      req: request,
-      secret: process.env.NEXTAUTH_SECRET,
-    });
-    if (!token) {
+    const session = await auth();
+    if (!session?.token) {
       return NextResponse.json(
         {
           error: "غير مصرح",
@@ -33,7 +30,7 @@ export async function GET(request: NextRequest) {
       },
       headers: {
         "X-Country-Code": countryCode,
-        Authorization: `Bearer ${token.token}`,
+        Authorization: `Bearer ${session.token}`,
       },
     });
     return NextResponse.json(data, {

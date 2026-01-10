@@ -1,7 +1,7 @@
+import { auth } from "@/lib/auth";
 import { fetcher } from "@/lib/fetcher";
 import { Payment } from "@/types/payment";
 import { AxiosError } from "axios";
-import { getToken } from "next-auth/jwt";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(request: NextRequest) {
@@ -9,11 +9,8 @@ export async function GET(request: NextRequest) {
   const page = searchParams.get("page") || 0;
   const countryCode = request.cookies.get("country")?.value;
   try {
-    const token = await getToken({
-      req: request,
-      secret: process.env.NEXTAUTH_SECRET,
-    });
-    if (!token) {
+    const session = await auth();
+    if (!session?.token) {
       return NextResponse.json(
         {
           error: "غير مصرح",
@@ -29,7 +26,7 @@ export async function GET(request: NextRequest) {
       },
       headers: {
         "X-Country-Code": countryCode,
-        Authorization: `Bearer ${token.token}`,
+        Authorization: `Bearer ${session.token}`,
       },
     });
     return NextResponse.json(data, {

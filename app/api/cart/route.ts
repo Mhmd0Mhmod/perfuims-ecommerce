@@ -1,14 +1,18 @@
+import { auth } from "@/lib/auth";
 import { fetcher } from "@/lib/fetcher";
-import { getToken } from "next-auth/jwt";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(requet: NextRequest) {
   try {
-    const token = await getToken({ req: requet, secret: process.env.NEXTAUTH_SECRET });
+    const session = await auth();
+    if (!session?.token) {
+      return NextResponse.json({ error: "المستخدم غير مصرح له." }, { status: 401 });
+    }
+
     const countryCode = requet.cookies.get("country")?.value;
     const response = await fetcher.get("/cart", {
       headers: {
-        Authorization: `Bearer ${token?.token}`,
+        Authorization: `Bearer ${session.token}`,
         "X-Country-Code": countryCode,
       },
     });
