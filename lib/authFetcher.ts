@@ -3,7 +3,7 @@ import axios from "axios";
 import { auth } from "./auth";
 
 const authFetcher = axios.create({
-  baseURL: process.env.API,
+  baseURL: process.env.SPRING_API,
   headers: {
     "Content-Type": "application/json",
   },
