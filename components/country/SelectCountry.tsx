@@ -8,7 +8,7 @@ import {
 } from "@/components/ui/select";
 import { useSelectedCountry } from "@/hooks/use-selected-country";
 import { PublicCountry } from "@/types/country";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback } from "react";
 
 function SelectCountry({
   countries,
@@ -18,7 +18,6 @@ function SelectCountry({
   selectedCountryCode?: string;
 }) {
   const { setSelectedCountry, selectedCountry } = useSelectedCountry();
-  const [value, setValue] = useState<string>(selectedCountryCode || "");
   const onCountryChange = useCallback(
     (code: string) => {
       setSelectedCountry(code);
@@ -26,13 +25,9 @@ function SelectCountry({
     [setSelectedCountry],
   );
 
-  useEffect(() => {
-    setValue(selectedCountry || "");
-  }, [selectedCountry]);
-
   return (
     <div className="flex items-center justify-end gap-4">
-      <Select value={value} onValueChange={onCountryChange}>
+      <Select value={selectedCountry || selectedCountryCode || ""} onValueChange={onCountryChange}>
         <SelectTrigger>
           <SelectValue placeholder="🌐" />
         </SelectTrigger>

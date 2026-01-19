@@ -1,15 +1,6 @@
 "use client";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
+import { deleteCategory } from "@/app/admin/categories/actions";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -21,9 +12,16 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { Pencil, Trash2 } from "lucide-react";
-import { deleteCategory } from "@/app/admin/categories/actions";
-import { toast } from "sonner";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import {
   Dialog,
   DialogContent,
@@ -32,9 +30,10 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { AddCategoryDialog } from "./AddCategoryDialog";
 import { Category } from "@/types/category";
-import { Country } from "@/types/country";
+import { Pencil, Trash2 } from "lucide-react";
+import { toast } from "sonner";
+import { AddCategoryForm } from "./AddCategoryForm";
 
 export function CategoryCard({ category }: { category: Category }) {
   const handleDelete = async () => {
@@ -58,12 +57,15 @@ export function CategoryCard({ category }: { category: Category }) {
           <div className="space-y-1">
             <CardTitle>{category.name}</CardTitle>
           </div>
-          <Badge variant={category.isActive ? "default" : "secondary"}>
-            {category.isActive ? "نشط" : "غير نشط"}
-          </Badge>
+          <CardDescription className="flex flex-col gap-2">
+            <Badge variant={category.isActive ? "default" : "secondary"}>
+              {category.isActive ? "نشط" : "غير نشط"}
+            </Badge>
+            {category.isAtHomePage && <Badge variant="outline">عرض بالرئيسية</Badge>}
+          </CardDescription>
         </div>
       </CardHeader>
-      <CardContent className="space-y-4">
+      <CardContent className="space-y-2">
         <p className="text-muted-foreground text-sm">{category.description || "لا يوجد وصف"}</p>
         {category.subcategories && category.subcategories.length > 0 && (
           <div className="space-y-2">
@@ -92,7 +94,7 @@ export function CategoryCard({ category }: { category: Category }) {
               <DialogTitle>تعديل التصنيف</DialogTitle>
               <DialogDescription>عدل بيانات التصنيف هنا. انقر حفظ عند الانتهاء.</DialogDescription>
             </DialogHeader>
-            <AddCategoryDialog category={category} />
+            <AddCategoryForm category={category} />
           </DialogContent>
         </Dialog>
 

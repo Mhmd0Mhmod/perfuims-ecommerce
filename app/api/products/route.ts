@@ -1,5 +1,4 @@
-import { fetcher } from "@/lib/fetcher";
-import { Product } from "@/types/product";
+import { ProductAPI } from "@/lib/api/product";
 import { AxiosError } from "axios";
 import { NextRequest, NextResponse } from "next/server";
 export async function GET(request: NextRequest) {
@@ -8,19 +7,18 @@ export async function GET(request: NextRequest) {
     const { searchParams } = request.nextUrl;
     const q = searchParams.get("searchTerm") || "";
     const page = Number(searchParams.get("page") || 0);
-    const categorieIds = searchParams.get("categorieIds") || [];
-    const dealIds = searchParams.get("dealIds") || [];
-    const { data } = await fetcher.get<Pagination<Product>>("/products", {
-      params: {
-        q,
+    const categorieIds = searchParams.get("categorieIds")?.split(",") || [];
+    const dealIds = searchParams.get("dealIds")?.split(",") || [];
+    const data = await ProductAPI.getProductsServer(
+      {
+        searchTerm: q,
         page,
         categorieIds,
         dealIds,
       },
-      headers: {
-        "X-Country-Code": countryCode,
-      },
-    });
+      countryCode,
+    );
+
     return NextResponse.json(data, {
       status: 200,
       headers: { "Content-Type": "application/json" },

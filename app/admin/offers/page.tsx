@@ -13,12 +13,12 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { OfferAPI } from "@/lib/api/offer";
 import { formatDate } from "@/lib/utils";
 import { DiscountType, Offer } from "@/types/offer";
 import { CalendarCheck, CalendarX, Percent, Plus, Search, Tag } from "lucide-react";
 import Link from "next/link";
 import { Suspense } from "react";
-import { getAdminOffers } from "./helper";
 
 function OffersPage() {
   return (
@@ -67,7 +67,7 @@ function OffersPage() {
 }
 
 async function OfferStatsCards() {
-  const offers = await getAdminOffers();
+  const offers = await OfferAPI.getAdminOffers();
   const totalOffers = offers.length;
   const activeOffers = offers.filter((o) => o.isActive).length;
   const expiredOffers = offers.filter((o) => new Date(o.endDate) < new Date()).length;
@@ -120,7 +120,7 @@ async function OfferStatsCards() {
 }
 
 async function OffersTable() {
-  const offers = await getAdminOffers();
+  const offers = await OfferAPI.getAdminOffers();
 
   if (offers.length === 0) {
     return (

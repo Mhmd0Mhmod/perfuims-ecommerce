@@ -24,13 +24,14 @@ import { useCallback } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 import { toast } from "sonner";
 
-export function AddCategoryDialog({ category }: { category?: Category }) {
+export function AddCategoryForm({ category }: { category?: Category }) {
   const form = useForm<AddCategorySchema>({
     resolver: zodResolver(addCategorySchema),
     defaultValues: category || {
       name: "",
       description: "",
       isActive: true,
+      isAtHomePage: false,
       subcategories: [],
     },
   });
@@ -120,6 +121,26 @@ export function AddCategoryDialog({ category }: { category?: Category }) {
                 <div className="space-y-0.5 text-right">
                   <FormLabel>نشط</FormLabel>
                   <FormDescription>هل تريد تفعيل هذا التصنيف؟</FormDescription>
+                </div>
+                <FormControl>
+                  <Switch
+                    className="flex-row-reverse"
+                    checked={field.value}
+                    onCheckedChange={field.onChange}
+                  />
+                </FormControl>
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="isAtHomePage"
+            render={({ field }) => (
+              <FormItem className="flex flex-row items-center justify-between rounded-md border p-4">
+                <div className="space-y-0.5 text-right">
+                  <FormLabel>عرض في الصفحة الرئيسية</FormLabel>
+                  <FormDescription>هل تريد عرض هذا التصنيف في الصفحة الرئيسية؟</FormDescription>
                 </div>
                 <FormControl>
                   <Switch

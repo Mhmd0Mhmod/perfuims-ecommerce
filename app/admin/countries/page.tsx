@@ -12,13 +12,13 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";
+import { CountryAPI } from "@/lib/api/country";
+import { Country } from "@/types/country";
 import { CheckCircle2, Globe, Plus, Search, XCircle } from "lucide-react";
 import { Suspense } from "react";
-import { getAdminCountriesServer } from "./helpers";
-import { Country } from "@/types/country";
 
 async function StatsCards() {
-  const countries = await getAdminCountriesServer();
+  const countries = await CountryAPI.getAdminCountriesServer();
   const activeCountries = countries.filter((c: Country) => c.isActive).length;
   const inactiveCountries = countries.filter((c: Country) => !c.isActive).length;
 
@@ -92,7 +92,7 @@ function CountriesListSkeleton() {
 }
 
 async function CountriesList() {
-  const countries = await getAdminCountriesServer();
+  const countries = await CountryAPI.getAdminCountriesServer();
 
   return (
     <>

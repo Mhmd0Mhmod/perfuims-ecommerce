@@ -1,25 +1,13 @@
-"use client";
-
-import { useProducts } from "@/hooks/use-products";
+import { ProductAPI } from "@/lib/api/product";
 import ProductCard from "../products/ProductCard";
-import CardSkeleton from "../shared/card-skeleton";
-import { useSelectedCountry } from "@/hooks/use-selected-country";
+import EmptyCountry from "../shared/empty-country";
 
-function ProductsGrid({ limit = 4 }: { limit?: number }) {
-  const { selectedCountry: country } = useSelectedCountry();
-  const { data: products, isFetching } = useProducts();
-  if (isFetching) {
-    return (
-      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-        {Array.from({ length: 4 }).map((_, i) => (
-          <CardSkeleton key={i} />
-        ))}
-      </div>
-    );
+async function ProductsGrid({ countryCode, limit = 4 }: { countryCode?: string; limit?: number }) {
+  if (!countryCode) {
+    return <EmptyCountry />;
   }
-  if (!country) {
-    return <div>يرجى اختيار الدولة لعرض المنتجات</div>;
-  }
+  const products = await ProductAPI.getProductsServer({}, countryCode);
+
   return (
     <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
       {products?.content?.slice(0, limit).map((product) => (

@@ -1,12 +1,12 @@
-import { Metadata } from "next";
 import { DashboardStats } from "@/components/admin/dashboard-stats";
 import { OverviewChart } from "@/components/admin/overview-chart";
-import { RecentSales } from "@/components/admin/recent-sales";
 import { RecentOrdersTable } from "@/components/admin/recent-orders-table";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { getDashboardStats } from "./helper";
-import { getCurrentCountryServer } from "./countries/helpers";
+import { RecentSales } from "@/components/admin/recent-sales";
 import { YearSelector } from "@/components/shared/year-selector";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { CountryAPI } from "@/lib/api/country";
+import { DashboardAPI } from "@/lib/api/dashboard";
+import { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "لوحة التحكم",
@@ -20,8 +20,8 @@ export default async function DashboardPage({
 }) {
   const { year } = await searchParams;
   const [dashboardStats, currentCountry] = await Promise.all([
-    getDashboardStats(year || new Date().getFullYear().toString()),
-    getCurrentCountryServer(),
+    DashboardAPI.getDashboardStats(year || new Date().getFullYear().toString()),
+    CountryAPI.getCurrentCountryServer(),
   ]);
   return (
     <div className="flex-1 space-y-4 p-8 pt-6">

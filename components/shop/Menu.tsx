@@ -1,19 +1,17 @@
 "use client";
 import { useCategories } from "@/hooks/use-categories";
+import { useOffers } from "@/hooks/use-offers";
+import { SubCategory } from "@/types/category";
+import { PublicCountry } from "@/types/country";
 import { Globe, Menu as MenuIcon } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 import SelectCountry from "../country/SelectCountry";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "../ui/accordion";
 import { Button } from "../ui/button";
 import { ScrollArea } from "../ui/scroll-area";
-import { Separator } from "../ui/separator";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "../ui/sheet";
 import Logo from "./Logo";
-import { NavLinks } from "./NavLinks";
-import { PublicCountry } from "@/types/country";
-import { SubCategory } from "@/types/category";
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "../ui/accordion";
-import { useOffers } from "@/hooks/use-offers";
 
 function MenuComponent({
   countries,
@@ -108,18 +106,6 @@ function MenuComponent({
               </div>
             </div>
           </div>
-          <Separator className="my-6 opacity-50" />
-          {/* Main Navigation */}
-          <div className="space-y-4">
-            <h3 className="text-muted-foreground text-xs font-bold tracking-widest uppercase">
-              القائمة الرئيسية
-            </h3>
-            <NavLinks
-              className="flex-col items-start gap-2"
-              itemClassName="text-lg py-1 w-full"
-              onLinkClick={() => setOpen(false)}
-            />
-          </div>
         </ScrollArea>
 
         <div className="bg-muted/30 mt-auto border-t p-6">
@@ -128,7 +114,7 @@ function MenuComponent({
               <Globe className="h-4 w-4" />
               <span>الدولة</span>
             </div>
-            <div className="max-w-[140px] flex-1">
+            <div className="max-w-35 flex-1">
               <SelectCountry countries={countries} selectedCountryCode={selecedCountryCode} />
             </div>
           </div>

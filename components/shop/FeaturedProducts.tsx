@@ -1,9 +1,13 @@
+import { getCookies } from "@/app/(auth)/helper";
 import Link from "next/link";
+import { Suspense } from "react";
+import CardSkeleton from "../shared/card-skeleton";
 import { Badge } from "../ui/badge";
 import { Button } from "../ui/button";
 import ProductsGrid from "./ProductsGrid";
 
-function FeaturedProducts() {
+async function FeaturedProducts() {
+  const countryCode = await getCookies("country");
   return (
     <section className="py-16 md:py-24">
       <div className="container mx-auto px-4">
@@ -19,7 +23,18 @@ function FeaturedProducts() {
         </div>
 
         {/* Products Grid */}
-        <ProductsGrid limit={4} />
+        <Suspense
+          fallback={
+            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+              {Array.from({ length: 4 }).map((_, index) => (
+                <CardSkeleton key={index} />
+              ))}
+            </div>
+          }
+          key={countryCode}
+        >
+          <ProductsGrid limit={4} countryCode={countryCode} />
+        </Suspense>
 
         {/* View All Button */}
         <div className="mt-12 text-center">

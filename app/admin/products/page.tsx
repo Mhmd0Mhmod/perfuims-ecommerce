@@ -25,20 +25,22 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { CategoryAPI } from "@/lib/api/category";
+import { ProductAPI } from "@/lib/api/product";
+import { SizeAPI } from "@/lib/api/size";
 import { formatCurrency, formatDate } from "@/lib/utils";
-import { Product } from "@/types/product";
 import { Category } from "@/types/category";
+import { Product } from "@/types/product";
 import { Size } from "@/types/size";
 import { Package, PackageCheck, PackageX, Plus, Search } from "lucide-react";
 import Image from "next/image";
 import { Suspense } from "react";
-import { getCategories } from "../categories/helper";
-import { getAdminSizes } from "../sizes/helper";
-import { getAdminProducts } from "./helper";
 
 async function AddProductDialogButton() {
-  const categories = await getCategories();
-  const sizes = await getAdminSizes();
+  const [categories, sizes] = await Promise.all([
+    CategoryAPI.getCategories(),
+    SizeAPI.getAdminSizes(),
+  ]);
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -103,7 +105,7 @@ function ProductsPage() {
 }
 
 async function ProductStatsCards() {
-  const data = (await getAdminProducts()) as Pagination<Product>;
+  const data = (await ProductAPI.getAdminProducts()) as Pagination<Product>;
   const products = data.content;
   const totalProducts = data.totalElements;
   const availableProducts = products.filter((p) => p.variants?.some((v) => v.isAvailable)).length;
@@ -146,7 +148,7 @@ async function ProductStatsCards() {
 }
 
 async function ProductsTable() {
-  const data = (await getAdminProducts()) as Pagination<Product>;
+  const data = (await ProductAPI.getAdminProducts()) as Pagination<Product>;
   const products = data.content;
   if (products.length === 0) {
     return (
@@ -158,8 +160,8 @@ async function ProductsTable() {
     );
   }
   const [categories, sizes, countryCode] = await Promise.all([
-    getCategories(),
-    getAdminSizes(),
+    CategoryAPI.getCategories(),
+    SizeAPI.getAdminSizes(),
     getCookies("country"),
   ]);
   return (

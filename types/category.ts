@@ -7,6 +7,7 @@ export interface Category {
   isActive: boolean;
   createdAt: string;
   updatedAt: string;
+  isAtHomePage: boolean;
   subcategories: SubCategory[];
 }
 export interface SubCategory {

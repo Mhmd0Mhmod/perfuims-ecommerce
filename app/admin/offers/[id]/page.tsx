@@ -1,12 +1,12 @@
 import AddOfferForm from "@/components/admin/offers/AddOfferForm";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { OfferAPI } from "@/lib/api/offer";
+import { ProductAPI } from "@/lib/api/product";
+import { Product } from "@/types/product";
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
-import { getAdminOfferById } from "../helper";
-import { getAdminProducts } from "@/app/admin/products/helper";
 import { notFound } from "next/navigation";
-import { Product } from "@/types/product";
 
 interface EditOfferPageProps {
   params: Promise<{ id: string }>;
@@ -17,12 +17,12 @@ async function EditOfferPage({ params }: EditOfferPageProps) {
 
   let offer;
   try {
-    offer = await getAdminOfferById(id);
+    offer = await OfferAPI.getAdminOfferById(id);
   } catch {
     notFound();
   }
 
-  const productsData = (await getAdminProducts({
+  const productsData = (await ProductAPI.getAdminProducts({
     displayAll: true,
   })) as Product[];
 

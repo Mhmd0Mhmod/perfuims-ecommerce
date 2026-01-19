@@ -1,7 +1,7 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
+import { formatCurrency } from "@/lib/utils";
 import { ORDER_STATUS, OrderStatus } from "@/types/order";
 import {
   ArrowRight,
@@ -16,7 +16,6 @@ import {
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getUserOrderById } from "../helper";
-import { formatCurrency } from "@/lib/utils";
 
 const ORDER_STATUS_CONFIG: Record<
   OrderStatus,

@@ -1,11 +1,11 @@
-import { getCountriesServer } from "@/app/(shop)/helper";
+import { getCookies } from "@/app/(auth)/helper";
+import { CountryAPI } from "@/lib/api/country";
+import { PublicCountry } from "@/types/country";
 import SelectCountry from "../country/SelectCountry";
 import SearchBar from "../shared/SearchBar";
 import HeaderActions from "./HeaderActions";
 import Logo from "./Logo";
 import Menu from "./Menu";
-import { getCookies } from "@/app/(auth)/helper";
-import { PublicCountry } from "@/types/country";
 
 async function ShopHeader() {
   let countries: PublicCountry[] = [];
@@ -13,7 +13,7 @@ async function ShopHeader() {
 
   try {
     [countries, selectedCountryCode] = await Promise.all([
-      getCountriesServer(),
+      CountryAPI.getCountriesServer(),
       getCookies("country"),
     ]);
   } catch (error) {

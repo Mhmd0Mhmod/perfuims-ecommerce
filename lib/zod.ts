@@ -54,6 +54,7 @@ export const addCategorySchema = z.object({
   }),
   description: z.string().nullable(),
   isActive: z.boolean(),
+  isAtHomePage: z.boolean(),
   subcategories: z
     .array(
       z.object({

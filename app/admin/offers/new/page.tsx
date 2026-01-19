@@ -1,13 +1,13 @@
-import { getAdminProducts } from "@/app/admin/products/helper";
 import AddOfferForm from "@/components/admin/offers/AddOfferForm";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { ProductAPI } from "@/lib/api/product";
 import { Product } from "@/types/product";
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 
 async function NewOfferPage() {
-  const products = (await getAdminProducts({
+  const products = (await ProductAPI.getAdminProducts({
     displayAll: true,
   })) as Product[];
 

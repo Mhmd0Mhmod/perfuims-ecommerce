@@ -1,14 +1,14 @@
-import { getSiteSocailMeida } from "@/app/helper";
 import { ContactForm } from "@/components/admin/settings/ContactForm";
 import { SocialMediaForm } from "@/components/admin/settings/SocialMediaForm";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { CountryAPI } from "@/lib/api/country";
+import { Site } from "@/lib/api/site";
 import { Globe, Phone } from "lucide-react";
-import { getCurrentCountryServer } from "../countries/helpers";
 
 export default async function AdminSettingsPage() {
   const [country, socialMedia] = await Promise.all([
-    getCurrentCountryServer(),
-    getSiteSocailMeida(),
+    CountryAPI.getCurrentCountryServer(),
+    Site.getSiteSocailMeida(),
   ]);
 
   return (

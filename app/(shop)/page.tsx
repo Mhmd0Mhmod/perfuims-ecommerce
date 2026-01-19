@@ -4,6 +4,7 @@ import Features from "@/components/shop/Features";
 import FeaturedProducts from "@/components/shop/FeaturedProducts";
 import Categories from "@/components/categories/Categories";
 import Newsletter from "@/components/shop/Newsletter";
+import Footer from "@/components/shop/Footer";
 
 export default function Home() {
   return (
@@ -14,6 +15,7 @@ export default function Home() {
       <Categories />
       <Features />
       <Newsletter />
+      <Footer />
     </>
   );
 }

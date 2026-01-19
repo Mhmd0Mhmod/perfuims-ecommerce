@@ -1,12 +1,11 @@
 "use client";
 
-import { useEffect } from "react";
-import { usePathname } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Alert, AlertDescription } from "@/components/ui/alert";
-import { AlertCircle, RefreshCcw, Home } from "lucide-react";
+import { AlertCircle, Home, RefreshCcw } from "lucide-react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { useEffect } from "react";
 
 interface ErrorProps {
   error: Error & { digest?: string };

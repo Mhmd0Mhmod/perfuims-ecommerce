@@ -1,5 +1,6 @@
 import { AddSizeDialog } from "@/components/admin/sizes/AddSizeDialog";
 import { SizeCard } from "@/components/admin/sizes/SizeCard";
+import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Dialog,
@@ -10,10 +11,9 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Skeleton } from "@/components/ui/skeleton";
+import { SizeAPI } from "@/lib/api/size";
+import { Package, Plus } from "lucide-react";
 import { Suspense } from "react";
-import { getAdminSizes } from "./helper";
-import { Plus, Package } from "lucide-react";
-import { Button } from "@/components/ui/button";
 
 function SizesPage() {
   return (
@@ -33,7 +33,7 @@ function SizesPage() {
               إضافة حجم
             </Button>
           </DialogTrigger>
-          <DialogContent className="sm:max-w-[525px]">
+          <DialogContent className="sm:max-w-131.25">
             <DialogHeader>
               <DialogTitle>إضافة حجم جديد</DialogTitle>
               <DialogDescription>
@@ -69,7 +69,7 @@ function SizesPage() {
 }
 
 async function SizesList() {
-  const sizes = await getAdminSizes();
+  const sizes = await SizeAPI.getAdminSizes();
 
   if (sizes.length === 0) {
     return (

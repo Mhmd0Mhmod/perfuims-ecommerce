@@ -1,4 +1,4 @@
-import { AddCategoryDialog } from "@/components/admin/categories/AddCategoryDialog";
+import { AddCategoryForm } from "@/components/admin/categories/AddCategoryForm";
 import { CategoryCard } from "@/components/admin/categories/CategoryCard";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -11,9 +11,9 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Skeleton } from "@/components/ui/skeleton";
+import { CategoryAPI } from "@/lib/api/category";
 import { Plus } from "lucide-react";
 import { Suspense } from "react";
-import { getCategories } from "./helper";
 function AddCategory() {
   return (
     <Dialog>
@@ -30,7 +30,7 @@ function AddCategory() {
             أدخل بيانات التصنيف الجديد هنا. انقر حفظ عند الانتهاء.
           </DialogDescription>
         </DialogHeader>
-        <AddCategoryDialog />
+        <AddCategoryForm />
       </DialogContent>
     </Dialog>
   );
@@ -70,7 +70,7 @@ function CategoriesPage() {
 }
 
 async function CategoriesList() {
-  const categories = await getCategories();
+  const categories = await CategoryAPI.getCategories();
   if (categories.length === 0) {
     return (
       <Card>

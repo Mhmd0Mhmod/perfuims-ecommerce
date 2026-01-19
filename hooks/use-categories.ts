@@ -1,9 +1,9 @@
-import { getAllCategories } from "@/app/(shop)/helper";
+import { CategoryAPI } from "@/lib/api/category";
 import { useQuery } from "@tanstack/react-query";
 export function useCategories() {
   const query = useQuery({
     queryKey: ["categories-home"],
-    queryFn: getAllCategories,
+    queryFn: CategoryAPI.getAllCategories,
   });
   return query;
 }
