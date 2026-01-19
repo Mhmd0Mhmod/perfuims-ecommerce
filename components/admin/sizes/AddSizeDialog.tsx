@@ -1,6 +1,6 @@
 "use client";
 
-import { addSize, updateSize } from "@/app/admin/sizes/actions";
+import { addSize, updateSize } from "@/app/admin/actions";
 import { Button } from "@/components/ui/button";
 import { DialogFooter } from "@/components/ui/dialog";
 import {

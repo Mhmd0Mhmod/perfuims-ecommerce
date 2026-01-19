@@ -1,4 +1,4 @@
-import { getCookies } from "@/app/(auth)/helper";
+import { getCookies } from "@/app/actions";
 import { CountryAPI } from "@/lib/api/country";
 import { PublicCountry } from "@/types/country";
 import SelectCountry from "../country/SelectCountry";

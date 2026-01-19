@@ -1,8 +1,7 @@
 "use client";
 
-import { updateCountry } from "@/app/admin/countries/actions";
+import { updateCountry } from "@/app/admin/actions";
 import SubmitButton from "@/components/shared/submit-button";
-import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Form,

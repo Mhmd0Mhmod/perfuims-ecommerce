@@ -1,4 +1,4 @@
-import { changePaymentStatus } from "@/app/admin/payments/actions";
+import { changePaymentStatus } from "@/app/admin/actions";
 import {
   Select,
   SelectContent,

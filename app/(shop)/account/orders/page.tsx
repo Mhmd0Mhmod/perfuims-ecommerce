@@ -1,3 +1,4 @@
+import { getCookies } from "@/app/actions";
 import TableSkeleton from "@/components/shared/table-skeleton";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -10,6 +11,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { OrderAPI } from "@/lib/api/order";
 import { cn, formatCurrency } from "@/lib/utils";
 import { Order, OrderStatus } from "@/types/order";
 import {
@@ -24,8 +26,6 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { Suspense } from "react";
-import { getUserOrders } from "./helper";
-import { getCookies } from "@/app/(auth)/helper";
 
 const ORDER_STATUS_CONFIG: Record<
   OrderStatus,
@@ -104,7 +104,10 @@ function OrdersSkeleton() {
 }
 
 async function OrdersList() {
-  const [orders, countryCode] = await Promise.all([getUserOrders(), getCookies("country")]);
+  const [orders, countryCode] = await Promise.all([
+    OrderAPI.getUserOrders(),
+    getCookies("country"),
+  ]);
 
   if (orders.content.length === 0) {
     return <EmptyOrders />;
@@ -153,7 +156,7 @@ async function OrdersList() {
                         <div className="font-medium">#{order.orderNumber}</div>
                       </TableCell>
                       <TableCell>
-                        <div className="max-w-[200px]">
+                        <div className="max-w-50">
                           {order.items.slice(0, 2).map((item, index) => (
                             <div key={index} className="truncate text-sm">
                               {item.productName} × {item.quantity}

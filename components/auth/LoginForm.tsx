@@ -1,5 +1,4 @@
 "use client";
-import { login } from "@/app/(auth)/login/actions";
 import { SignInSchema, signInSchema } from "@/lib/zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useCallback } from "react";
@@ -10,6 +9,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Input } from "../ui/input";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { login } from "@/app/(auth)/actions";
 function LoginForm() {
   const { update } = useSession();
   const router = useRouter();

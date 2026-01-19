@@ -1,4 +1,3 @@
-import { getUser } from "@/app/(auth)/helper";
 import {
   Sidebar,
   SidebarContent,
@@ -26,6 +25,7 @@ import {
 import Link from "next/link";
 import ActiveLink from "../shared/active-link";
 import UserMenu from "./UserMenu";
+import { getUser } from "@/app/(auth)/actions";
 
 const menuItems = [
   {

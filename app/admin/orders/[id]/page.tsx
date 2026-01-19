@@ -30,8 +30,8 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { getOrderById } from "../helper";
 import { formatCurrency } from "@/lib/utils";
+import { OrderAPI } from "@/lib/api/order";
 
 const ORDER_STATUS_CONFIG: Record<
   OrderStatus,
@@ -80,7 +80,7 @@ async function OrderDetailsPage({ params }: { params: Promise<{ id: string }> })
 
   let order;
   try {
-    order = await getOrderById(id);
+    order = await OrderAPI.getOrderById(id);
   } catch {
     notFound();
   }

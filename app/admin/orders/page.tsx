@@ -4,8 +4,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Input } from "@/components/ui/input";
 import { Clock, Package, Search, ShoppingCart, Truck } from "lucide-react";
 import { Suspense } from "react";
-import { getAdminOrderStatus } from "./helper";
 import FilterOrders from "@/components/admin/orders/FilterOrders";
+import { OrderAPI } from "@/lib/api/order";
 
 async function OrdersPage({
   searchParams,
@@ -51,7 +51,7 @@ async function OrdersPage({
 }
 
 async function OrderStatsCard() {
-  const orders = await getAdminOrderStatus();
+  const orders = await OrderAPI.getAdminOrderStatus();
   const {
     cancelledOrders,
     confirmedOrders,

@@ -1,6 +1,6 @@
 "use client";
 
-import { deleteCategory } from "@/app/admin/categories/actions";
+import { deleteCategory } from "@/app/admin/actions";
 import {
   AlertDialog,
   AlertDialogAction,

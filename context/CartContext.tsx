@@ -1,5 +1,5 @@
 "use client";
-import { addToCart, clearCart, editCartItem, removeFromCart } from "@/app/(shop)/cart/actions";
+import { addToCart, clearCart, editCartItem, removeFromCart } from "@/app/(shop)/actions";
 import { useCart } from "@/hooks/use-cart";
 import { CartItem } from "@/types/cart";
 import { createContext, ReactNode, useContext, useTransition } from "react";

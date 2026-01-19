@@ -1,5 +1,5 @@
 "use client";
-import { addProduct, updateProduct } from "@/app/admin/products/actions";
+import { addProduct, updateProduct } from "@/app/admin/actions";
 import { MultiSelect } from "@/components/shared/multi-select";
 import { Button } from "@/components/ui/button";
 import {

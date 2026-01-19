@@ -1,4 +1,4 @@
-import { getAdminOrders } from "@/app/admin/orders/helper";
+import { OrderAPI } from "@/lib/api/order";
 import { Order } from "@/types/order";
 import { useQuery, UseQueryResult } from "@tanstack/react-query";
 
@@ -10,7 +10,7 @@ export function useAdminOrders(params: {
   return useQuery({
     queryKey: ["admin-orders", params],
     queryFn: async () => {
-      const response = await getAdminOrders(params);
+      const response = await OrderAPI.getAdminOrders(params);
       return response;
     },
   });

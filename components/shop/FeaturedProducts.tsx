@@ -1,4 +1,4 @@
-import { getCookies } from "@/app/(auth)/helper";
+import { getCookies } from "@/app/actions";
 import Link from "next/link";
 import { Suspense } from "react";
 import CardSkeleton from "../shared/card-skeleton";

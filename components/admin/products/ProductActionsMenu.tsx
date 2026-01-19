@@ -1,5 +1,5 @@
 "use client";
-import { deleteProduct } from "@/app/admin/products/actions";
+import { deleteProduct } from "@/app/admin/actions";
 import {
   AlertDialog,
   AlertDialogAction,

@@ -2,8 +2,8 @@ import { Country, PublicCountry } from "@/types/country";
 import axios from "axios";
 import { fetcher } from "../fetcher";
 import { throwingError } from "../utils";
-import { getCookies } from "@/app/(auth)/helper";
 import { authFetcher } from "../authFetcher";
+import { getCookies } from "@/app/actions";
 
 export class CountryAPI {
   static async getCountries() {

@@ -14,13 +14,13 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { UserAPI } from "@/lib/api/user";
 import { cn, formatDate } from "@/lib/utils";
 import { Customer } from "@/types/customer";
 import { Roles } from "@/types/roles";
 import { Calendar, Eye, Mail, Phone, Search, Shield, UserCog, Users } from "lucide-react";
 import Link from "next/link";
 import { Suspense } from "react";
-import { getCustomers } from "./helper";
 
 function page() {
   return (
@@ -59,7 +59,7 @@ function page() {
 }
 
 async function CustomerStatsCard() {
-  const customers = await getCustomers();
+  const customers = await UserAPI.getUsers();
   const totalCustomers = customers.totalElements;
   const adminCount = customers.content.filter((c: Customer) => c.role === Roles.ADMIN).length;
   const userCount = customers.content.filter((c: Customer) => c.role === Roles.USER).length;
@@ -99,7 +99,7 @@ async function CustomerStatsCard() {
   );
 }
 async function CustomerTable() {
-  const customers = await getCustomers();
+  const customers = await UserAPI.getUsers();
   const totalCustomers = customers.totalElements;
   return (
     <>

@@ -1,8 +1,10 @@
 "use client";
 
-import { createOffer, updateOffer } from "@/app/admin/offers/actions";
+import { createOffer, updateOffer } from "@/app/admin/actions";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
   Form,
@@ -37,16 +39,14 @@ import { OfferFormValues, offerSchema } from "@/lib/zod";
 import { DiscountType, Offer } from "@/types/offer";
 import { Product } from "@/types/product";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { getCookie } from "cookies-next/client";
 import { format } from "date-fns";
 import { ar } from "date-fns/locale";
 import { CalendarIcon, Loader2, Package } from "lucide-react";
+import { useRouter } from "next/navigation";
+import React from "react";
 import { useForm, useWatch } from "react-hook-form";
 import { toast } from "sonner";
-import { Badge } from "@/components/ui/badge";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import React from "react";
-import { useRouter } from "next/navigation";
-import { getCookie } from "cookies-next/client";
 
 interface AddOfferFormProps {
   offer?: Offer;
@@ -340,7 +340,7 @@ export default function AddOfferForm({ offer, products }: AddOfferFormProps) {
                 <p className="text-muted-foreground text-sm">لا توجد منتجات متاحة</p>
               </div>
             ) : (
-              <div className="max-h-[400px] overflow-y-auto rounded-md border">
+              <div className="max-h-100 overflow-y-auto rounded-md border">
                 <Table>
                   <TableHeader>
                     <TableRow>

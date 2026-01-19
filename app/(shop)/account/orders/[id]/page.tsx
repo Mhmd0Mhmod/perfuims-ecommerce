@@ -1,6 +1,7 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { OrderAPI } from "@/lib/api/order";
 import { formatCurrency } from "@/lib/utils";
 import { ORDER_STATUS, OrderStatus } from "@/types/order";
 import {
@@ -15,7 +16,6 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { getUserOrderById } from "../helper";
 
 const ORDER_STATUS_CONFIG: Record<
   OrderStatus,
@@ -73,7 +73,7 @@ async function OrderDetailsPage({ params }: { params: Promise<{ id: string }> })
 
   let order;
   try {
-    order = await getUserOrderById(id);
+    order = await OrderAPI.getUserOrderById(id);
   } catch {
     notFound();
   }

@@ -1,4 +1,4 @@
-import { getCookies } from "@/app/(auth)/helper";
+import { getCookies } from "@/app/actions";
 import AddProductDialog from "@/components/admin/products/AddProductDialog";
 import { ProductActionsMenu } from "@/components/admin/products/ProductActionsMenu";
 import { VariantsPopover } from "@/components/admin/products/VariantsPopover";

@@ -1,4 +1,4 @@
-import { getCookies } from "@/app/(auth)/helper";
+import { getCookies } from "@/app/actions";
 import axios from "axios";
 import { auth } from "./auth";
 

@@ -1,4 +1,4 @@
-import { getAdminPayments } from "@/app/admin/payments/helper";
+import { PaymentAPI } from "@/lib/api/payment";
 import { Payment } from "@/types/payment";
 import { useQuery, UseQueryResult } from "@tanstack/react-query";
 
@@ -9,7 +9,7 @@ export function useAdminPayments(params: {
   return useQuery({
     queryKey: ["admin-payments", params],
     queryFn: async () => {
-      const response = await getAdminPayments(params);
+      const response = await PaymentAPI.getAdminPayments(params);
       return response;
     },
   });

@@ -1,11 +1,11 @@
-import { getCookies } from "@/app/(auth)/helper";
+import { getCookies } from "@/app/actions";
 import PaymentsTable from "@/components/admin/payments/PaymentsTable";
 import StatsSkeleton from "@/components/shared/stats-skeleton";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { PaymentAPI } from "@/lib/api/payment";
 import { formatCurrency } from "@/lib/utils";
 import { Banknote, CheckCircle2, CreditCard, Wallet } from "lucide-react";
 import { Suspense } from "react";
-import { getAdminPaymentsStatus } from "./helper";
 
 function PaymentsPage() {
   return (
@@ -34,7 +34,7 @@ function PaymentsPage() {
 }
 async function PaymentStatsCard() {
   const [payments, countryCode] = await Promise.all([
-    getAdminPaymentsStatus(),
+    PaymentAPI.getAdminPaymentsStatus(),
     getCookies("country"),
   ]);
   const {

@@ -11,7 +11,7 @@ import { ORDER_STATUS_CONFIG, OrderStatus } from "@/types/order";
 import { Check, ChevronDown, Loader2 } from "lucide-react";
 import { useState, useTransition } from "react";
 import { toast } from "sonner";
-import { updateOrderStatus } from "@/app/admin/orders/actions";
+import { updateOrderStatus } from "@/app/admin/actions";
 
 interface OrderStatusSelectProps {
   orderId: string;

@@ -1,4 +1,4 @@
-import { getUser } from "@/app/(auth)/helper";
+import { getUser } from "@/app/(auth)/actions";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";

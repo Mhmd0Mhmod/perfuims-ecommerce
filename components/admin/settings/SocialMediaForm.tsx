@@ -1,6 +1,6 @@
 "use client";
 
-import { updateStoreSettingsAction } from "@/app/admin/settings/actions";
+import { updateStoreSettingsAction } from "@/app/admin/actions";
 import SubmitButton from "@/components/shared/submit-button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import {
@@ -43,7 +43,7 @@ export function SocialMediaForm({ initialData }: SocialMediaFormProps) {
         toast.error(result.message || "حدث خطأ أثناء حفظ إعدادات التواصل الاجتماعي", { id });
       }
     } catch (error) {
-      toast.error("حدث خطأ غير متوقع", { id });
+      toast.error("حدث خطأ غير متوقع", { id, description: String(error) });
     }
   }
 

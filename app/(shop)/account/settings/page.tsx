@@ -1,4 +1,4 @@
-import { getUser } from "@/app/(auth)/helper";
+import { getUser } from "@/app/(auth)/actions";
 import { SettingsForm } from "@/components/shop/account/SettingsForm";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 

@@ -30,7 +30,7 @@ export default function Error({ error, reset }: ErrorProps) {
 
   return (
     <div
-      className="flex min-h-screen items-center justify-center bg-gradient-to-br from-red-50 to-orange-50 p-4"
+      className="flex min-h-screen items-center justify-center bg-linear-to-br from-red-50 to-orange-50 p-4"
       dir="rtl"
     >
       <Card className="w-full max-w-2xl shadow-lg">

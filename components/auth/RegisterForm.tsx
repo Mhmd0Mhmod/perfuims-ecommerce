@@ -7,7 +7,7 @@ import { Input } from "../ui/input";
 import SubmitButton from "../shared/submit-button";
 import { useCallback } from "react";
 import { toast } from "sonner";
-import { registerAction } from "@/app/(auth)/register/action";
+import { registerAction } from "@/app/(auth)/actions";
 
 function RegisterForm() {
   const form = useForm<RegisterSchema>({

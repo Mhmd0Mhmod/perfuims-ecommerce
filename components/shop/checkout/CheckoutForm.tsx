@@ -1,6 +1,6 @@
 "use client";
 
-import { createOrderAction } from "@/app/(shop)/checkout/actions";
+import { createOrderAction } from "@/app/(shop)/actions";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import {
@@ -208,7 +208,7 @@ export default function CheckoutForm({ cartItems, user, country }: CheckoutFormP
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
-            <div className="max-h-[300px] space-y-4 overflow-auto pr-2">
+            <div className="max-h-75 space-y-4 overflow-auto pr-2">
               {cartItems.map((item) => (
                 <div
                   key={item.id}

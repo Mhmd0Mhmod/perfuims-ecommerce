@@ -1,6 +1,6 @@
 "use client";
 
-import { updateProfileAction } from "@/app/(shop)/account/settings/actions";
+import { updateProfileAction } from "@/app/(shop)/actions";
 import { Button } from "@/components/ui/button";
 import {
   Form,

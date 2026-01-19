@@ -1,5 +1,5 @@
 "use client";
-import { deleteSize } from "@/app/admin/sizes/actions";
+import { deleteSize } from "@/app/admin/actions";
 import {
   AlertDialog,
   AlertDialogAction,
