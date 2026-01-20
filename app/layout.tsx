@@ -5,7 +5,6 @@ import type { Metadata } from "next";
 import { SessionProvider } from "next-auth/react";
 import { Cairo, Playfair_Display } from "next/font/google";
 import "./globals.css";
-import { CartProvider } from "@/context/CartContext";
 const playfairDisplay = Playfair_Display({
   variable: "--font-playfair",
   subsets: ["latin"],
