@@ -30,7 +30,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ar" dir="rtl" suppressHydrationWarning>
-      <body className={`${playfairDisplay.variable} ${cairo.variable} antialiased`}>
+      <body
+        className={`${playfairDisplay.variable} ${cairo.variable} ${cairo.className} ${playfairDisplay.className} antialiased`}
+      >
         <QueryContext>
           <SessionProvider>
             {children}
