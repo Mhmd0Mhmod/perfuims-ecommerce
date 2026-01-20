@@ -1,7 +1,7 @@
 import AnimatedCanvas from "@/components/design/AnimatedCanvas";
 import ShopHeader from "@/components/shop/ShopHeader";
 import { CartProvider } from "@/context/CartContext";
-
+export const dynamic = "force-dynamic";
 function layout({ children }: { children: React.ReactNode }) {
   return (
     <CartProvider>

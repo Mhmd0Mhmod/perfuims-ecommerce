@@ -31,7 +31,7 @@ import { Category } from "@/types/category";
 import { Eye, MoreHorizontal, Pencil, Trash2 } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
-import AddProductDialog from "./AddProductDialog";
+import AddProductForm from "./AddProductForm";
 import ProductDetailsDialog from "./ProductDetailsDialog";
 import { Separator } from "@/components/ui/separator";
 import { Size } from "@/types/size";
@@ -112,7 +112,7 @@ export function ProductActionsMenu({ product, categories, sizes }: ProductAction
             <DialogTitle>تعديل المنتج</DialogTitle>
             <DialogDescription>عدل بيانات المنتج هنا. انقر حفظ عند الانتهاء.</DialogDescription>
           </DialogHeader>
-          <AddProductDialog product={product} categories={categories} sizes={sizes} />
+          <AddProductForm product={product} categories={categories} sizes={sizes} />
         </DialogContent>
       </Dialog>
 

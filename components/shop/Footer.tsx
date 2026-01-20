@@ -1,5 +1,9 @@
+import { PAYMENT_METHODS } from "@/constants/payment_methods";
+import { CountryAPI } from "@/lib/api/country";
+import { Site } from "@/lib/api/site";
+import { Facebook, Instagram, Mail, MapPin, Phone, Twitter } from "lucide-react";
 import Link from "next/link";
-import { Facebook, Instagram, Twitter, Mail, Phone, MapPin } from "lucide-react";
+import { Badge } from "../ui/badge";
 import { Separator } from "../ui/separator";
 
 async function Footer() {
@@ -19,32 +23,7 @@ async function Footer() {
             </p>
 
             {/* Social Media Links */}
-            <div className="flex justify-start gap-3">
-              <Link
-                href="https://facebook.com"
-                target="_blank"
-                className="bg-background hover:bg-primary hover:text-primary-foreground flex h-10 w-10 items-center justify-center rounded-full transition-colors"
-                aria-label="Facebook"
-              >
-                <Facebook className="h-5 w-5" />
-              </Link>
-              <Link
-                href="https://instagram.com"
-                target="_blank"
-                className="bg-background hover:bg-primary hover:text-primary-foreground flex h-10 w-10 items-center justify-center rounded-full transition-colors"
-                aria-label="Instagram"
-              >
-                <Instagram className="h-5 w-5" />
-              </Link>
-              <Link
-                href="https://twitter.com"
-                target="_blank"
-                className="bg-background hover:bg-primary hover:text-primary-foreground flex h-10 w-10 items-center justify-center rounded-full transition-colors"
-                aria-label="Twitter"
-              >
-                <Twitter className="h-5 w-5" />
-              </Link>
-            </div>
+            <SocialMedia />
           </div>
 
           {/* Quick Links */}
@@ -150,39 +129,7 @@ async function Footer() {
           </div>
 
           {/* Contact Info */}
-          <div className="text-right">
-            <h3 className="mb-4 text-lg font-bold">تواصل معنا</h3>
-            <ul className="space-y-4">
-              <li className="flex items-start justify-start gap-3">
-                <MapPin className="text-primary mt-0.5 h-5 w-5 shrink-0" />
-                <div className="text-muted-foreground text-sm leading-relaxed">
-                  المملكة العربية السعودية
-                  <br />
-                  الرياض، حي الملقا
-                </div>
-              </li>
-              <li className="flex items-center justify-start gap-3">
-                <Phone className="text-primary h-5 w-5 shrink-0" />
-                <Link
-                  href="tel:+966501234567"
-                  className="text-muted-foreground hover:text-primary transition-colors"
-                  dir="ltr"
-                >
-                  +966 50 123 4567
-                </Link>
-              </li>
-              <li className="flex items-center justify-start gap-3">
-                <Mail className="text-primary h-5 w-5 shrink-0" />
-                <Link
-                  href="mailto:info@luxuryperfumes.sa"
-                  className="text-muted-foreground hover:text-primary transition-colors"
-                  dir="ltr"
-                >
-                  info@luxuryperfumes.sa
-                </Link>
-              </li>
-            </ul>
-          </div>
+          <ContactInfo />
         </div>
 
         <Separator className="my-8" />
@@ -196,22 +143,94 @@ async function Footer() {
           {/* Payment Methods */}
           <div className="flex items-center gap-2">
             <span className="text-muted-foreground text-sm">طرق الدفع:</span>
-            <div className="flex gap-2">
-              <div className="bg-background rounded border px-2 py-1 text-xs font-semibold">
-                Visa
-              </div>
-              <div className="bg-background rounded border px-2 py-1 text-xs font-semibold">
-                Mastercard
-              </div>
-              <div className="bg-background rounded border px-2 py-1 text-xs font-semibold">
-                mada
-              </div>
-            </div>
+            <CountryPaymentMethods />
           </div>
         </div>
       </div>
     </footer>
   );
 }
-
+async function SocialMedia() {
+  const socialMedia = await Site.getSiteSocialMedia();
+  return (
+    <div className="flex justify-start gap-3">
+      {socialMedia.facebookUrl && (
+        <Link
+          href={socialMedia.facebookUrl}
+          target="_blank"
+          className="bg-background hover:bg-primary hover:text-primary-foreground flex h-10 w-10 items-center justify-center rounded-full transition-colors"
+          aria-label="Facebook"
+        >
+          <Facebook className="h-5 w-5" />
+        </Link>
+      )}
+      {socialMedia.instagramUrl && (
+        <Link
+          href={socialMedia.instagramUrl}
+          target="_blank"
+          className="bg-background hover:bg-primary hover:text-primary-foreground flex h-10 w-10 items-center justify-center rounded-full transition-colors"
+          aria-label="Instagram"
+        >
+          <Instagram className="h-5 w-5" />
+        </Link>
+      )}
+      {socialMedia.twitterUrl && (
+        <Link
+          href={socialMedia.twitterUrl}
+          target="_blank"
+          className="bg-background hover:bg-primary hover:text-primary-foreground flex h-10 w-10 items-center justify-center rounded-full transition-colors"
+          aria-label="Twitter"
+        >
+          <Twitter className="h-5 w-5" />
+        </Link>
+      )}
+    </div>
+  );
+}
+async function ContactInfo() {
+  const country = await CountryAPI.getCurrentCountryServer();
+  return (
+    <div className="text-right">
+      <h3 className="mb-4 text-lg font-bold">تواصل معنا</h3>
+      <ul className="space-y-4">
+        <li className="flex items-start justify-start gap-3">
+          <MapPin className="text-primary mt-0.5 h-5 w-5 shrink-0" />
+          <div className="text-muted-foreground text-sm leading-relaxed">{country?.name}</div>
+        </li>
+        <li className="flex items-center justify-start gap-3">
+          <Phone className="text-primary h-5 w-5 shrink-0" />
+          <Link
+            href="tel:+966501234567"
+            className="text-muted-foreground hover:text-primary transition-colors"
+            dir="ltr"
+          >
+            {country?.contactNumber}
+          </Link>
+        </li>
+        <li className="flex items-center justify-start gap-3">
+          <Mail className="text-primary h-5 w-5 shrink-0" />
+          <Link
+            href="mailto:info@luxuryperfumes.sa"
+            className="text-muted-foreground hover:text-primary transition-colors"
+            dir="ltr"
+          >
+            {country?.email}
+          </Link>
+        </li>
+      </ul>
+    </div>
+  );
+}
+async function CountryPaymentMethods() {
+  const country = await CountryAPI.getCurrentCountryServer();
+  return (
+    <div className="flex gap-2">
+      {country?.paymentMethods.map((method) => (
+        <Badge key={method.id} variant="outline" className="text-xs">
+          {PAYMENT_METHODS.find((pm) => pm.id === method.id)?.displayName || method.name}
+        </Badge>
+      ))}
+    </div>
+  );
+}
 export default Footer;

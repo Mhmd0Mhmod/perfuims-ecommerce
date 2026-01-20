@@ -6,6 +6,7 @@ import { createContext, useContext, useReducer, Dispatch } from "react";
 
 export type ProductsState = {
   searchTerm: string;
+  subcategoryIds: string[];
   categorieIds: string[];
   dealIds: string[];
   fromPrice?: number;
@@ -25,6 +26,7 @@ type ProductsAction =
 const initialState: ProductsState = {
   searchTerm: "",
   categorieIds: [],
+  subcategoryIds: [],
   dealIds: [],
   fromPrice: undefined,
   toPrice: undefined,

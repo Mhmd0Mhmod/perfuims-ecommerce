@@ -8,7 +8,7 @@ import { Globe, Phone } from "lucide-react";
 export default async function AdminSettingsPage() {
   const [country, socialMedia] = await Promise.all([
     CountryAPI.getCurrentCountryServer(),
-    Site.getSiteSocailMeida(),
+    Site.getSiteSocialMedia(),
   ]);
 
   return (

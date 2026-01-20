@@ -1,5 +1,5 @@
 import { getCookies } from "@/app/actions";
-import AddProductDialog from "@/components/admin/products/AddProductDialog";
+import AddProductForm from "@/components/admin/products/AddProductForm";
 import { ProductActionsMenu } from "@/components/admin/products/ProductActionsMenu";
 import { VariantsPopover } from "@/components/admin/products/VariantsPopover";
 import StatsSkeleton from "@/components/shared/stats-skeleton";
@@ -36,7 +36,7 @@ import { Package, PackageCheck, PackageX, Plus, Search } from "lucide-react";
 import Image from "next/image";
 import { Suspense } from "react";
 
-async function AddProductDialogButton() {
+async function AddProductFormButton() {
   const [categories, sizes] = await Promise.all([
     CategoryAPI.getCategories(),
     SizeAPI.getAdminSizes(),
@@ -58,7 +58,7 @@ async function AddProductDialogButton() {
           </DialogDescription>
         </DialogHeader>
 
-        <AddProductDialog categories={categories} sizes={sizes} />
+        <AddProductForm categories={categories} sizes={sizes} />
       </DialogContent>
     </Dialog>
   );
@@ -72,7 +72,7 @@ function ProductsPage() {
           <h1 className="text-3xl font-bold tracking-tight">المنتجات</h1>
           <p className="text-muted-foreground">إدارة جميع المنتجات والباقات</p>
         </div>
-        <AddProductDialogButton />
+        <AddProductFormButton />
       </div>
 
       {/* Stats Cards */}

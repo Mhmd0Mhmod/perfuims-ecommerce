@@ -1,24 +1,13 @@
-import { fetcher } from "@/lib/fetcher";
-import { Category } from "@/types/category";
-import { NextRequest } from "next/server";
+import { CategoryAPI } from "@/lib/api/category";
+import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(request: NextRequest) {
   try {
     const cookies = request.cookies;
     const countryCode = cookies.get("country")?.value;
-    const response = await fetcher.get<Category[]>("/categories", {
-      headers: {
-        "X-Country-Code": countryCode,
-      },
-    });
-    return new Response(JSON.stringify(response.data), {
-      status: 200,
-      headers: { "Content-Type": "application/json" },
-    });
+    const data = await CategoryAPI.getAllCategoriesServer(countryCode);
+    return NextResponse.json(data, { status: 200 });
   } catch (error) {
-    return new Response(JSON.stringify({ error: "Failed to fetch categories" }), {
-      status: 500,
-      headers: { "Content-Type": "application/json" },
-    });
+    return NextResponse.json({ error: "Failed to fetch categories" }, { status: 500 });
   }
 }

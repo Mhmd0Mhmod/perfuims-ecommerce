@@ -2,7 +2,7 @@ import { fetcher } from "../fetcher";
 import { throwingError } from "../utils";
 
 export class Site {
-  static async getSiteSocailMeida() {
+  static async getSiteSocialMedia() {
     try {
       const { data } = await fetcher.get<{
         facebookUrl: string;
