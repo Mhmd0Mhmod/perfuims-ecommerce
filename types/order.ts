@@ -21,6 +21,7 @@ interface Order {
   };
   items: OrderItem[];
   createdAt: string | null;
+  paymentUrl?: string | null;
 }
 interface OrderItem {
   productVariantId: number;

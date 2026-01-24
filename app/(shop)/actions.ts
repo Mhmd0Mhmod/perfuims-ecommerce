@@ -2,10 +2,10 @@
 
 import { authFetcher } from "@/lib/authFetcher";
 import { ErrorResponse } from "@/lib/utils";
-import { UpdateProfileSchema } from "@/lib/zod";
+import { CheckoutSchema, UpdateProfileSchema } from "@/lib/zod";
 import { CartItem } from "@/types/cart";
+import { Order } from "@/types/order";
 import { revalidatePath, revalidateTag } from "next/cache";
-import { CheckoutSchema } from "@/lib/zod";
 
 export async function updateProfileAction(formData: UpdateProfileSchema): Promise<ApiResponse> {
   try {
@@ -106,19 +106,20 @@ export async function clearCart() {
   }
 }
 
-export async function createOrderAction(formData: CheckoutSchema): Promise<ApiResponse> {
+export async function createOrderAction(formData: CheckoutSchema): Promise<ApiResponse<Order>> {
   try {
-    const response = await authFetcher.post("/orders", {
+    const { data, status } = await authFetcher.post<Order>("/orders", {
       paymentMethodId: formData.paymentMethodId,
       shippingAddress: formData.address + ", " + formData.city,
       phoneNumber: formData.phoneNumber,
     });
     revalidateTag("cart", "default");
+
     return {
       success: true,
-      data: response.data,
+      data: data,
       message: "تم إرسال طلبك بنجاح!",
-      status: response.status,
+      status: status,
     };
   } catch (error) {
     return ErrorResponse(error);

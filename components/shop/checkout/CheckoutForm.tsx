@@ -56,6 +56,10 @@ export default function CheckoutForm({ cartItems, user, country }: CheckoutFormP
   async function onSubmit(values: CheckoutSchema) {
     const result = await createOrderAction(values);
     if (result.success) {
+      if (result.data?.paymentUrl) {
+        router.push(result.data.paymentUrl);
+        return;
+      }
       toast.success(result.message);
       router.push("/account/orders");
     } else {

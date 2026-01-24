@@ -13,7 +13,7 @@ export default async function CheckoutPage() {
   ]);
 
   if (cartItems.length === 0) {
-    redirect("/cart");
+    redirect("/products");
   }
 
   return (
