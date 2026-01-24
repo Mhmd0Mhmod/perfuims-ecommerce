@@ -56,6 +56,7 @@ export default function CheckoutForm({ cartItems, user, country }: CheckoutFormP
   async function onSubmit(values: CheckoutSchema) {
     const result = await createOrderAction(values);
     if (result.success) {
+      localStorage.setItem("lastOrderId", result.data!.orderId.toString());
       if (result.data?.paymentUrl) {
         router.push(result.data.paymentUrl);
         return;
