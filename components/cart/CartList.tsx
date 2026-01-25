@@ -6,7 +6,7 @@ function CartList({ cartItems }: { cartItems: CartItem[] }) {
   return (
     <>
       {cartItems.length === 0 ? (
-        <div className="bg-muted/10 flex h-full min-h-[300px] flex-col items-center justify-center gap-4 rounded-xl border border-dashed p-8 text-center">
+        <div className="bg-muted/10 flex h-full min-h-75 flex-col items-center justify-center gap-4 rounded-xl border border-dashed p-8 text-center">
           <div className="bg-muted rounded-full p-4">
             <ShoppingCart className="text-muted-foreground h-8 w-8" />
           </div>

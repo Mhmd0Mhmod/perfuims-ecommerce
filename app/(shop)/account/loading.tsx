@@ -16,8 +16,8 @@ export default function AccountLoading() {
         {/* Content Skeleton */}
         <div className="space-y-6">
           <div className="space-y-2">
-            <Skeleton className="h-8 w-[200px]" />
-            <Skeleton className="h-4 w-[300px]" />
+            <Skeleton className="h-8 w-50" />
+            <Skeleton className="h-4 w-75" />
           </div>
 
           <Card>
@@ -25,7 +25,7 @@ export default function AccountLoading() {
               <div className="space-y-4">
                 {Array.from({ length: 4 }).map((_, i) => (
                   <div key={i} className="space-y-2">
-                    <Skeleton className="h-4 w-[100px]" />
+                    <Skeleton className="h-4 w-25" />
                     <Skeleton className="h-10 w-full" />
                   </div>
                 ))}

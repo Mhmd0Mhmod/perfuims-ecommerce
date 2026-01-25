@@ -9,8 +9,18 @@ import { useCallback, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import SubmitButton from "../shared/submit-button";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "../ui/form";
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "../ui/form";
 import { Input } from "../ui/input";
+import Link from "next/link";
+import { Button } from "../ui/button";
 function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
   const { update } = useSession();
@@ -74,6 +84,9 @@ function LoginForm() {
                   </span>
                 </div>
               </FormControl>
+              <Button asChild variant={"link"} className="mr-auto">
+                <Link href="/forgot-password">هل نسيت كلمة المرور؟</Link>
+              </Button>
               <FormMessage />
             </FormItem>
           )}

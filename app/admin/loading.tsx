@@ -6,7 +6,7 @@ export default function AdminLoading() {
     <div className="flex-1 space-y-4 p-8 pt-6">
       {/* Header */}
       <div className="flex items-center justify-between space-y-2">
-        <Skeleton className="h-9 w-[200px]" />
+        <Skeleton className="h-9 w-50" />
       </div>
 
       {/* Summary Stats */}
@@ -14,11 +14,11 @@ export default function AdminLoading() {
         {Array.from({ length: 4 }).map((_, i) => (
           <Card key={i}>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <Skeleton className="h-4 w-[100px]" />
+              <Skeleton className="h-4 w-25" />
               <Skeleton className="h-4 w-4" />
             </CardHeader>
             <CardContent>
-              <Skeleton className="h-7 w-[120px]" />
+              <Skeleton className="h-7 w-30" />
             </CardContent>
           </Card>
         ))}
@@ -29,18 +29,18 @@ export default function AdminLoading() {
         {/* Overview Chart */}
         <Card className="col-span-4">
           <CardHeader>
-            <Skeleton className="h-6 w-[150px]" />
+            <Skeleton className="h-6 w-37.5" />
           </CardHeader>
           <CardContent className="pl-2">
-            <Skeleton className="h-[350px] w-full" />
+            <Skeleton className="h-87.5 w-full" />
           </CardContent>
         </Card>
 
         {/* Recent Sales */}
         <Card className="col-span-3">
           <CardHeader>
-            <Skeleton className="h-6 w-[150px]" />
-            <Skeleton className="mt-2 h-4 w-[180px]" />
+            <Skeleton className="h-6 w-37.5" />
+            <Skeleton className="mt-2 h-4 w-45" />
           </CardHeader>
           <CardContent>
             <div className="space-y-8">
@@ -48,10 +48,10 @@ export default function AdminLoading() {
                 <div key={i} className="flex items-center">
                   <Skeleton className="h-9 w-9 rounded-full" />
                   <div className="mr-4 space-y-1">
-                    <Skeleton className="h-4 w-[100px]" />
-                    <Skeleton className="h-3 w-[80px]" />
+                    <Skeleton className="h-4 w-25" />
+                    <Skeleton className="h-3 w-20" />
                   </div>
-                  <Skeleton className="mr-auto h-4 w-[60px]" />
+                  <Skeleton className="mr-auto h-4 w-15" />
                 </div>
               ))}
             </div>
@@ -62,18 +62,18 @@ export default function AdminLoading() {
       {/* Recent Orders */}
       <Card className="col-span-4">
         <CardHeader>
-          <Skeleton className="h-6 w-[150px]" />
-          <Skeleton className="mt-2 h-4 w-[200px]" />
+          <Skeleton className="h-6 w-37.5" />
+          <Skeleton className="mt-2 h-4 w-50" />
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
             {Array.from({ length: 5 }).map((_, i) => (
               <div key={i} className="flex items-center gap-4">
-                <Skeleton className="h-4 w-[80px]" />
-                <Skeleton className="h-4 w-[120px]" />
-                <Skeleton className="h-6 w-[60px]" />
-                <Skeleton className="h-4 w-[100px]" />
-                <Skeleton className="h-4 w-[80px]" />
+                <Skeleton className="h-4 w-20" />
+                <Skeleton className="h-4 w-30" />
+                <Skeleton className="h-6 w-15" />
+                <Skeleton className="h-4 w-25" />
+                <Skeleton className="h-4 w-20" />
                 <Skeleton className="ml-auto h-8 w-8" />
               </div>
             ))}

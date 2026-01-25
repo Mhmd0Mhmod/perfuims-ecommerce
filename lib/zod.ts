@@ -31,6 +31,18 @@ export const registerSchema = z.object({
 });
 export type RegisterSchema = z.infer<typeof registerSchema>;
 
+export const forgotPasswordSchema = z.object({
+  email: z.email({ message: "البريد الإلكتروني غير صالح" }),
+});
+export type ForgotPasswordSchema = z.infer<typeof forgotPasswordSchema>;
+
+export const resetPasswordSchema = z.object({
+  token: z.string(),
+  password: z.string().min(4, { message: "كلمة المرور يجب أن تكون 4 أحرف على الأقل" }),
+  confirmPassword: z.string().min(4, { message: "كلمة المرور يجب أن تكون 4 أحرف على الأقل" }),
+});
+export type ResetPasswordSchema = z.infer<typeof resetPasswordSchema>;
+
 export const addCountrySchema = z.object({
   name: z.string(),
   code: z.string().length(2, { message: "رمز الدولة يجب أن يكون حرفين" }),
