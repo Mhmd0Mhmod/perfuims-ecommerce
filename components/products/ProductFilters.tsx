@@ -7,24 +7,29 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { Slider } from "@/components/ui/slider";
-import { useProductsContext } from "@/context/ProductsContext";
+import { productsActions, useProductsContext } from "@/context/ProductsContext";
 import { Category } from "@/types/category";
+import { Offer } from "@/types/offer";
 import { Search, SlidersHorizontal } from "lucide-react";
 import { useEffect, useState } from "react";
 
-function ProductFilters({ subCategories }: { subCategories?: Category[] }) {
+function ProductFilters({
+  subCategories,
+  offers,
+}: {
+  subCategories?: Category[];
+  offers?: Offer[];
+}) {
   const { dispatch, filters } = useProductsContext();
   const [searchTerm, setSearchTerm] = useState(filters.searchTerm);
   const [priceRange, setPriceRange] = useState<[number, number]>([
     filters.fromPrice ?? 0,
     filters.toPrice ?? 2000,
   ]);
-
-  // Debounce search
   useEffect(() => {
     const timer = setTimeout(() => {
       dispatch({
-        type: "SET_SEARCH",
+        type: productsActions.SET_SEARCH,
         payload: searchTerm,
       });
     }, 500);
@@ -38,7 +43,7 @@ function ProductFilters({ subCategories }: { subCategories?: Category[] }) {
 
   const handlePriceCommit = () => {
     dispatch({
-      type: "SET_PRICE_RANGE",
+      type: productsActions.SET_PRICE_RANGE,
       payload: { fromPrice: priceRange[0], toPrice: priceRange[1] },
     });
   };
@@ -50,15 +55,27 @@ function ProductFilters({ subCategories }: { subCategories?: Category[] }) {
       : [...currentCategories, categoryId];
 
     dispatch({
-      type: "SET_CATEGORIES",
+      type: productsActions.SET_CATEGORIES,
       payload: newCategories,
+    });
+  };
+
+  const handleOfferToggle = (offerId: string) => {
+    const currentOffers = filters.dealIds;
+    const newOffers = currentOffers.includes(offerId)
+      ? currentOffers.filter((id) => id !== offerId)
+      : [...currentOffers, offerId];
+
+    dispatch({
+      type: productsActions.SET_DEALS,
+      payload: newOffers,
     });
   };
 
   const handleReset = () => {
     setSearchTerm("");
     setPriceRange([0, 2000]);
-    dispatch({ type: "RESET_FILTERS" });
+    dispatch({ type: productsActions.RESET_FILTERS });
   };
 
   return (
@@ -118,6 +135,26 @@ function ProductFilters({ subCategories }: { subCategories?: Category[] }) {
                 />
                 <Label htmlFor={category.id.toString()} className="cursor-pointer">
                   {category.name}
+                </Label>
+              </div>
+            ))}
+          </div>
+        </div>
+        <Separator className="mb-6" />
+
+        {/* Offers */}
+        <div className="mb-6">
+          <Label className="mb-4 block text-right">العروض</Label>
+          <div className="space-y-3">
+            {offers?.map((offer) => (
+              <div key={offer.id} className="flex items-center gap-2">
+                <Checkbox
+                  id={offer.id.toString()}
+                  checked={filters.dealIds.includes(offer.id.toString())}
+                  onCheckedChange={() => handleOfferToggle(offer.id.toString())}
+                />
+                <Label htmlFor={offer.id.toString()} className="cursor-pointer">
+                  {offer.title}
                 </Label>
               </div>
             ))}

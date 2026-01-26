@@ -1,11 +1,10 @@
-import { fetcher } from "@/lib/fetcher";
-import { Offer } from "@/types/offer";
+import { OfferAPI } from "@/lib/api/offer";
 import { AxiosError } from "axios";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(request: NextRequest) {
   try {
-    const { data } = await fetcher.get<Offer[]>("/offers");
+    const data = await OfferAPI.getOffersServer();
     return NextResponse.json(data, {
       status: 200,
       headers: {

@@ -3,9 +3,13 @@ import ProductsGrid from "@/components/products/ProductsGrid";
 import { Badge } from "@/components/ui/badge";
 import { ProductsProvider } from "@/context/ProductsContext";
 import { CategoryAPI } from "@/lib/api/category";
+import { OfferAPI } from "@/lib/api/offer";
 
 export default async function ProductsPage() {
-  const subCategories = await CategoryAPI.getAllSubCategoriesServer();
+  const [subCategories, offers] = await Promise.all([
+    CategoryAPI.getAllSubCategoriesServer(),
+    OfferAPI.getOffersServer(),
+  ]);
   return (
     <div className="container mx-auto px-4 py-8">
       {/* Page Header */}
@@ -26,7 +30,7 @@ export default async function ProductsPage() {
         <div className="grid gap-8 lg:grid-cols-4">
           {/* Sidebar Filters */}
           <aside className="lg:col-span-1">
-            <ProductFilters subCategories={subCategories} />
+            <ProductFilters subCategories={subCategories} offers={offers} />
           </aside>
 
           {/* Products Grid */}
