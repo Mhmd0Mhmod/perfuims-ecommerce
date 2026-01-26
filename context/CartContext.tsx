@@ -29,7 +29,6 @@ export function CartProvider({ children }: { children: ReactNode }) {
         });
 
         if (reponse.success) {
-          refetch();
           toast.success("تمت إضافة المنتج للسلة بنجاح!", { id });
         } else {
           toast.error("حدث خطأ أثناء إضافة المنتج للسلة.", { id });
@@ -38,6 +37,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
         toast.error("حدث خطأ أثناء إضافة المنتج للسلة.", { id });
       }
     });
+    refetch();
   };
 
   const remove = (itemId: number) => {
@@ -46,7 +46,6 @@ export function CartProvider({ children }: { children: ReactNode }) {
       removeFromCart(itemId)
         .then((response) => {
           if (response.success) {
-            refetch();
             toast.success("تم حذف المنتج من السلة بنجاح!", { id });
           } else {
             toast.error("حدث خطأ أثناء حذف المنتج من السلة.", { id });
@@ -56,6 +55,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
           toast.error("حدث خطأ أثناء حذف المنتج من السلة.", { id });
         });
     });
+    refetch();
   };
 
   const edit = (itemId: number, quantity: number) => {
@@ -64,7 +64,6 @@ export function CartProvider({ children }: { children: ReactNode }) {
       editCartItem(itemId, quantity)
         .then((response) => {
           if (response.success) {
-            refetch();
             toast.success("تم تعديل المنتج في السلة بنجاح!", { id });
           } else {
             toast.error("حدث خطأ أثناء تعديل المنتج في السلة.", { id });
@@ -74,6 +73,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
           toast.error("حدث خطأ أثناء تعديل المنتج في السلة.", { id });
         });
     });
+    refetch();
   };
 
   const clear = () => {
@@ -82,7 +82,6 @@ export function CartProvider({ children }: { children: ReactNode }) {
       clearCart()
         .then((response) => {
           if (response.success) {
-            refetch();
             toast.success("تم تفريغ السلة بنجاح!", { id });
           } else {
             toast.error("حدث خطأ أثناء تفريغ السلة.", { id });
@@ -92,6 +91,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
           toast.error("حدث خطأ أثناء تفريغ السلة.", { id });
         });
     });
+    refetch();
   };
   const totalPrice = cart.reduce(
     (total, item) => total + item.variantDetails.newPrice * item.quantity,

@@ -20,7 +20,7 @@ interface Order {
     transactionId: string;
   };
   items: OrderItem[];
-  createdAt: string | null;
+  createdAt: string;
   paymentUrl?: string | null;
 }
 interface OrderItem {

@@ -2,8 +2,10 @@ import ProductFilters from "@/components/products/ProductFilters";
 import ProductsGrid from "@/components/products/ProductsGrid";
 import { Badge } from "@/components/ui/badge";
 import { ProductsProvider } from "@/context/ProductsContext";
+import { CategoryAPI } from "@/lib/api/category";
 
-export default function ProductsPage() {
+export default async function ProductsPage() {
+  const subCategories = await CategoryAPI.getAllSubCategoriesServer();
   return (
     <div className="container mx-auto px-4 py-8">
       {/* Page Header */}
@@ -24,7 +26,7 @@ export default function ProductsPage() {
         <div className="grid gap-8 lg:grid-cols-4">
           {/* Sidebar Filters */}
           <aside className="lg:col-span-1">
-            <ProductFilters />
+            <ProductFilters subCategories={subCategories} />
           </aside>
 
           {/* Products Grid */}

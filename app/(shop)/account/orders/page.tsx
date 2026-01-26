@@ -12,7 +12,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { OrderAPI } from "@/lib/api/order";
-import { cn, formatCurrency } from "@/lib/utils";
+import { cn, formatCurrency, formatDate } from "@/lib/utils";
 import { Order, OrderStatus } from "@/types/order";
 import {
   ArrowLeft,
@@ -108,6 +108,7 @@ async function OrdersList() {
     OrderAPI.getUserOrders(),
     getCookies("country"),
   ]);
+  console.log(orders);
 
   if (orders.content.length === 0) {
     return <EmptyOrders />;
@@ -138,6 +139,7 @@ async function OrdersList() {
                   <TableHead className="text-right font-semibold">رقم الطلب</TableHead>
                   <TableHead className="text-right font-semibold">المنتجات</TableHead>
                   <TableHead className="text-right font-semibold">المبلغ</TableHead>
+                  <TableHead className="text-right font-semibold">تاريخ الطلب</TableHead>
                   <TableHead className="text-right font-semibold">الحالة</TableHead>
                   <TableHead className="text-center font-semibold">التفاصيل</TableHead>
                 </TableRow>
@@ -177,6 +179,7 @@ async function OrdersList() {
                           })}
                         </div>
                       </TableCell>
+                      <TableCell>{formatDate(order.createdAt)}</TableCell>
                       <TableCell>
                         <Badge variant={statusConfig.variant} className="gap-1">
                           {statusConfig.icon}

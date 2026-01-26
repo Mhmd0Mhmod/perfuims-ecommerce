@@ -8,6 +8,7 @@ import SubmitButton from "../shared/submit-button";
 import { useCallback } from "react";
 import { toast } from "sonner";
 import { registerAction } from "@/app/(auth)/actions";
+import { PasswordInput } from "../ui/password-input";
 
 function RegisterForm() {
   const form = useForm<RegisterSchema>({
@@ -102,7 +103,7 @@ function RegisterForm() {
             <FormItem>
               <FormLabel>كلمة المرور</FormLabel>
               <FormControl>
-                <Input {...field} type="password" placeholder="أدخل كلمة المرور" />
+                <PasswordInput {...field} placeholder="أدخل كلمة المرور" />
               </FormControl>
               <FormMessage />
             </FormItem>

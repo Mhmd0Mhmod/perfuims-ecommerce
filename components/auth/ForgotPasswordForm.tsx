@@ -27,7 +27,8 @@ function ForgotPasswordForm() {
         return;
       }
       toast.success(respone?.message, { id });
-      router.replace("/reset-password");
+      const token = encodeURI(data.email);
+      router.replace(`/reset-password?t=${token}`);
     },
     [router, form],
   );

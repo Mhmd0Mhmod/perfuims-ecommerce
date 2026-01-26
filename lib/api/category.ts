@@ -3,11 +3,25 @@ import axios from "axios";
 import { throwingError } from "../utils";
 import { authFetcher } from "../authFetcher";
 import { fetcher } from "../fetcher";
+import { getCookies } from "@/app/actions";
 
 export class CategoryAPI {
   static async getAllCategories() {
     try {
       const response = await axios.get<Category[]>("/api/categories");
+      return response.data;
+    } catch (error) {
+      throw throwingError(error);
+    }
+  }
+  static async getAllSubCategoriesServer(): Promise<Category[]> {
+    try {
+      const country = await getCookies("country");
+      const response = await authFetcher.get<Category[]>("/subcategories", {
+        headers: {
+          "X-Country-Code": country,
+        },
+      });
       return response.data;
     } catch (error) {
       throw throwingError(error);

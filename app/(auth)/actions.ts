@@ -50,6 +50,8 @@ export async function forgotPassword(data: ForgotPasswordSchema) {
 
 export async function resetPassword(data: ResetPasswordSchema) {
   try {
+    console.log(data);
+
     const response = await fetcher.post("auth/reset-password", data);
     return {
       data: response.data,

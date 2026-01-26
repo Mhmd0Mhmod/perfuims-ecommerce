@@ -12,8 +12,14 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { Sparkles } from "lucide-react";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 
-function Page() {
+async function Page({ searchParams }: { searchParams: Promise<{ t: string }> }) {
+  const { t } = await searchParams;
+  if (!t?.trim()) {
+    redirect("/forgot-password");
+  }
+
   return (
     <Card className="animate-scale-in from-brand to-brand w-full max-w-md shadow-lg">
       <CardHeader className="text-right">
@@ -31,7 +37,7 @@ function Page() {
       </CardHeader>
       <Separator />
       <CardContent>
-        <ResetPasswordForm />
+        <ResetPasswordForm email={t} />
       </CardContent>
       <Separator />
       <CardFooter className="flex-col gap-4">

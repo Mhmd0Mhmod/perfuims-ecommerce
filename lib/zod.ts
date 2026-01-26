@@ -37,9 +37,10 @@ export const forgotPasswordSchema = z.object({
 export type ForgotPasswordSchema = z.infer<typeof forgotPasswordSchema>;
 
 export const resetPasswordSchema = z.object({
-  token: z.string(),
-  password: z.string().min(4, { message: "كلمة المرور يجب أن تكون 4 أحرف على الأقل" }),
-  confirmPassword: z.string().min(4, { message: "كلمة المرور يجب أن تكون 4 أحرف على الأقل" }),
+  email: z.email({ message: "البريد الإلكتروني غير صالح" }),
+  otp: z.string().min(6, { message: "الرمز يجب أن يكون 6 أرقام" }),
+  newPassword: z.string().min(4, { message: "كلمة المرور يجب أن تكون 4 أحرف على الأقل" }),
+  confirmNewPassword: z.string().min(4, { message: "كلمة المرور يجب أن تكون 4 أحرف على الأقل" }),
 });
 export type ResetPasswordSchema = z.infer<typeof resetPasswordSchema>;
 

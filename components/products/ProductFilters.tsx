@@ -8,23 +8,17 @@ import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { Slider } from "@/components/ui/slider";
 import { useProductsContext } from "@/context/ProductsContext";
-import { useCategories } from "@/hooks/use-categories";
+import { Category } from "@/types/category";
 import { Search, SlidersHorizontal } from "lucide-react";
 import { useEffect, useState } from "react";
-import { Skeleton } from "../ui/skeleton";
 
-function ProductFilters() {
+function ProductFilters({ subCategories }: { subCategories?: Category[] }) {
   const { dispatch, filters } = useProductsContext();
   const [searchTerm, setSearchTerm] = useState(filters.searchTerm);
   const [priceRange, setPriceRange] = useState<[number, number]>([
     filters.fromPrice ?? 0,
     filters.toPrice ?? 2000,
   ]);
-  const {
-    data: categories,
-    isLoading: categoriesLoading,
-    isError: categoriesError,
-  } = useCategories();
 
   // Debounce search
   useEffect(() => {
@@ -115,29 +109,18 @@ function ProductFilters() {
         <div className="mb-6">
           <Label className="mb-4 block text-right">التصنيف</Label>
           <div className="space-y-3">
-            {!categoriesLoading &&
-              !categoriesError &&
-              categories?.map((category) => (
-                <div key={category.id} className="flex items-center gap-2">
-                  <Checkbox
-                    id={category.id.toString()}
-                    checked={filters.categorieIds.includes(category.id.toString())}
-                    onCheckedChange={() => handleCategoryToggle(category.id.toString())}
-                  />
-                  <Label htmlFor={category.id.toString()} className="cursor-pointer">
-                    {category.name}
-                  </Label>
-                </div>
-              ))}
-            {categoriesLoading &&
-              Array.from({ length: 5 }).map((_, index) => (
-                <div key={index} className="flex items-center gap-2">
-                  <Checkbox disabled />
-                  <Label className="cursor-not-allowed">
-                    <Skeleton className="h-4 w-24" />
-                  </Label>
-                </div>
-              ))}
+            {subCategories?.map((category) => (
+              <div key={category.id} className="flex items-center gap-2">
+                <Checkbox
+                  id={category.id.toString()}
+                  checked={filters.categorieIds.includes(category.id.toString())}
+                  onCheckedChange={() => handleCategoryToggle(category.id.toString())}
+                />
+                <Label htmlFor={category.id.toString()} className="cursor-pointer">
+                  {category.name}
+                </Label>
+              </div>
+            ))}
           </div>
         </div>
 

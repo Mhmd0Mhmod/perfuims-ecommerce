@@ -10,7 +10,7 @@ import { Button } from "../ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
 
 function AddToCartButton({ product }: { product: Product }) {
-  const { add } = useCartContext();
+  const { add, pending } = useCartContext();
   const [selectedVariantId, setSelectedVariantId] = useState(product.variants[0].id);
   const { selectedCountry } = useSelectedCountry();
   const onAdd = useCallback(() => {
@@ -55,7 +55,7 @@ function AddToCartButton({ product }: { product: Product }) {
           ))}
         </SelectContent>
       </Select>
-      <Button className="w-full" onClick={onAdd}>
+      <Button className="w-full" onClick={onAdd} disabled={pending}>
         <ShoppingCart className="ml-2 h-4 w-4" />
         أضف للسلة
       </Button>

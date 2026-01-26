@@ -9,34 +9,54 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { InputOTP, InputOTPGroup, InputOTPSlot } from "../ui/input-otp";
 import { PasswordInput } from "../ui/password-input";
 import SubmitButton from "../shared/submit-button";
+import { Input } from "../ui/input";
 
-function ResetPasswordForm() {
-  const [isSubmitting, setIsSubmitting] = useState(false);
+function ResetPasswordForm({ email }: { email: string }) {
   const form = useForm<ResetPasswordSchema>({
     resolver: zodResolver(resetPasswordSchema),
     defaultValues: {
-      token: "",
-      password: "",
-      confirmPassword: "",
+      email: email,
+      otp: "",
+      newPassword: "",
+      confirmNewPassword: "",
     },
   });
   const onSubmit = async (data: ResetPasswordSchema) => {
-    setIsSubmitting(true);
     const id = toast.loading("جاري إعادة تعيين كلمة المرور...");
-    const respone = await resetPassword(data);
+    const respone = await resetPassword({
+      ...data,
+      email: email,
+    });
     if (respone?.success) {
       toast.success(respone?.message, { id });
       form.reset();
     } else {
       toast.error(respone?.message, { id });
     }
-    setIsSubmitting(false);
   };
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
         <FormField
-          name="token"
+          name="email"
+          control={form.control}
+          disabled={true}
+          render={({ field }) => (
+            <FormItem className="space-y-2">
+              <FormLabel>البريد الإلكتروني</FormLabel>
+              <FormControl>
+                <Input
+                  placeholder="أدخل بريدك الإلكتروني"
+                  className="disabled:cursor-not-allowed disabled:border-gray-500 disabled:bg-gray-400"
+                  {...field}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          name="otp"
           control={form.control}
           render={({ field }) => (
             <FormItem className="space-y-2">
@@ -58,7 +78,7 @@ function ResetPasswordForm() {
           )}
         />
         <FormField
-          name="password"
+          name="newPassword"
           control={form.control}
           render={({ field }) => (
             <FormItem className="space-y-2">
@@ -71,7 +91,7 @@ function ResetPasswordForm() {
           )}
         />
         <FormField
-          name="confirmPassword"
+          name="confirmNewPassword"
           control={form.control}
           render={({ field }) => (
             <FormItem className="space-y-2">

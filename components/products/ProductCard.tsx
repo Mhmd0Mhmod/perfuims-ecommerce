@@ -2,15 +2,15 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { useSelectedCountry } from "@/hooks/use-selected-country";
 import { formatCurrency } from "@/lib/utils";
-import { Product, ProductVariant } from "@/types/product";
+import { Country } from "@/types/country";
+import { Product } from "@/types/product";
 import { Heart, Minus } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import AddToCartButton from "./AddToCartButton";
-import { useSelectedCountry } from "@/hooks/use-selected-country";
 import { useRouter } from "next/navigation";
-import { Country } from "@/types/country";
+import AddToCartButton from "./AddToCartButton";
 
 interface ProductCardProps {
   product: Product;
