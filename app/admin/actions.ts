@@ -366,7 +366,7 @@ export async function updateStoreSettingsAction(
   formData: StoreSettingsSchema,
 ): Promise<ApiResponse> {
   try {
-    const response = await authFetcher.patch("admin/settings", formData);
+    const response = await authFetcher.put("admin/settings", formData);
     revalidatePath("/admin/settings");
     return {
       success: true,

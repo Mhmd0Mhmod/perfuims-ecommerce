@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogDescription,
   DialogHeader,
@@ -23,7 +24,8 @@ function AddCategory() {
           إضافة تصنيف
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-131.25">
+      <DialogContent>
+        <DialogClose />
         <DialogHeader className="sm:text-right">
           <DialogTitle>إضافة تصنيف جديد</DialogTitle>
           <DialogDescription>

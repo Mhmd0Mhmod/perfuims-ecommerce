@@ -1,7 +1,7 @@
 import { PAYMENT_METHODS } from "@/constants/payment_methods";
 import { CountryAPI } from "@/lib/api/country";
 import { Site } from "@/lib/api/site";
-import { Facebook, Instagram, Mail, MapPin, Phone, Twitter } from "lucide-react";
+import { Facebook, Instagram, Mail, MapPin, MessageCircle, Phone, Twitter } from "lucide-react";
 import Link from "next/link";
 import { Badge } from "../ui/badge";
 import { Separator } from "../ui/separator";
@@ -182,6 +182,16 @@ async function SocialMedia() {
           aria-label="Twitter"
         >
           <Twitter className="h-5 w-5" />
+        </Link>
+      )}
+      {socialMedia.whatsappNumber && (
+        <Link
+          href={`https://wa.me/${socialMedia.whatsappNumber}`}
+          target="_blank"
+          className="bg-background hover:bg-primary hover:text-primary-foreground flex h-10 w-10 items-center justify-center rounded-full transition-colors"
+          aria-label="WhatsApp"
+        >
+          <MessageCircle className="h-5 w-5" />
         </Link>
       )}
     </div>

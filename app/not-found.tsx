@@ -1,44 +1,63 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { FileQuestion, Home, Search } from "lucide-react";
 import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { Home, Search, ArrowRight } from "lucide-react";
 
-export default function NotFound() {
+function NotFound() {
   return (
-    <div
-      className="flex min-h-screen items-center justify-center bg-linear-to-br from-blue-50 to-indigo-50 p-4"
-      dir="rtl"
-    >
-      <Card className="w-full max-w-md shadow-lg">
-        <CardHeader className="text-center">
-          <div className="mx-auto mb-4 flex h-20 w-20 items-center justify-center rounded-full bg-blue-100">
-            <FileQuestion className="h-10 w-10 text-blue-600" />
-          </div>
-          <CardTitle className="text-2xl font-bold text-blue-900">404</CardTitle>
-          <CardDescription className="mt-2 text-lg text-gray-600">
-            الصفحة غير موجودة
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <p className="text-muted-foreground text-sm">
-            عذراً، الصفحة التي تبحث عنها غير موجودة أو تم نقلها.
+    <div className="bg-background fixed inset-0 z-50 flex items-center justify-center">
+      <div className="flex flex-col items-center gap-8 px-4 text-center">
+        {/* Glowing 404 Number */}
+        <div className="relative">
+          {/* Glowing effect behind number */}
+          <div className="bg-primary/20 absolute inset-0 scale-150 rounded-full blur-3xl" />
+          <h1 className="text-primary animate-float relative text-[120px] leading-none font-bold md:text-[180px]">
+            404
+          </h1>
+        </div>
+
+        {/* Message */}
+        <div className="flex flex-col items-center gap-3">
+          <h2 className="text-foreground text-2xl font-bold md:text-3xl">الصفحة غير موجودة</h2>
+          <p className="text-muted-foreground max-w-md text-sm md:text-base">
+            عذراً، الصفحة التي تبحث عنها غير موجودة أو تم نقلها أو حذفها.
           </p>
-          <div className="flex flex-col gap-3 sm:flex-row sm:justify-center">
-            <Button asChild className="flex items-center gap-2">
-              <Link href="/">
-                <Home className="h-4 w-4" />
-                الصفحة الرئيسية
-              </Link>
-            </Button>
-            <Button asChild variant="outline" className="flex items-center gap-2">
-              <Link href="/products">
-                <Search className="h-4 w-4" />
-                تصفح المنتجات
-              </Link>
-            </Button>
-          </div>
-        </CardContent>
-      </Card>
+          <p className="text-muted-foreground text-xs tracking-[0.2em] uppercase">Page Not Found</p>
+        </div>
+
+        {/* Decorative Separator */}
+        <div className="flex items-center gap-3">
+          <div className="bg-primary/30 h-px w-12" />
+          <div className="bg-primary h-2 w-2 rounded-full" />
+          <div className="bg-primary/30 h-px w-12" />
+        </div>
+
+        {/* Action Buttons */}
+        <div className="flex flex-col gap-3 sm:flex-row">
+          <Button asChild size="lg" className="gap-2">
+            <Link href="/">
+              <Home className="size-4" />
+              العودة للرئيسية
+            </Link>
+          </Button>
+          <Button asChild variant="outline" size="lg" className="gap-2">
+            <Link href="/shop">
+              <Search className="size-4" />
+              تصفح المنتجات
+            </Link>
+          </Button>
+        </div>
+
+        {/* Additional Help Link */}
+        <Link
+          href="/contact"
+          className="text-muted-foreground hover:text-primary group mt-4 flex items-center gap-1 text-sm transition-colors"
+        >
+          هل تحتاج مساعدة؟ تواصل معنا
+          <ArrowRight className="size-3 rotate-180 transition-transform group-hover:-translate-x-1" />
+        </Link>
+      </div>
     </div>
   );
 }
+
+export default NotFound;

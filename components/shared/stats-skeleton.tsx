@@ -2,7 +2,7 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 function StatsSkeleton({ length = 3 }: { length?: number }) {
   return (
-    <div className="grid gap-4 md:grid-cols-4">
+    <div className={`grid gap-4 md:grid-cols-${length}`}>
       {Array.from({ length }).map((_, i) => (
         <Card key={i}>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">

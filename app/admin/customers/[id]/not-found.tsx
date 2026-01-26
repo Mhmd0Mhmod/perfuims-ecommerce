@@ -5,10 +5,7 @@ import Link from "next/link";
 
 export default function NotFound() {
   return (
-    <div
-      className="flex min-h-screen items-center justify-center bg-linear-to-br from-orange-50 to-yellow-50 p-4"
-      dir="rtl"
-    >
+    <div className="flex h-full items-center justify-center p-4" dir="rtl">
       <Card className="w-full max-w-lg shadow-lg">
         <CardHeader className="text-center">
           <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-orange-100">
