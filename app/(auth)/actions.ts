@@ -1,8 +1,8 @@
 "use server";
 import { auth, signIn } from "@/lib/auth";
 import { fetcher } from "@/lib/fetcher";
-import { ErrorResponse } from "@/lib/utils";
 import { ForgotPasswordSchema, RegisterSchema, ResetPasswordSchema, SignInSchema } from "@/lib/zod";
+import { APIResponse, IAPIResponse } from "@/types/api";
 import { User } from "next-auth";
 
 export async function getUser() {
@@ -12,54 +12,38 @@ export async function getUser() {
 export async function login(credentials: SignInSchema) {
   try {
     await signIn("credentials", { ...credentials, redirect: false });
-    return {
-      success: true,
-      message: "تم تسجيل الدخول بنجاح",
-    };
+    const session = await auth();
+    return APIResponse.success<User>(session?.user as User, "تم تسجيل الدخول بنجاح");
   } catch (error) {
-    return ErrorResponse(error);
+    return APIResponse.error(error);
   }
 }
 
-export async function registerAction(formData: RegisterSchema): Promise<ApiResponse<User>> {
+export async function registerAction(formData: RegisterSchema): Promise<IAPIResponse<User>> {
   try {
     const response = await fetcher.post("auth/register", formData);
-    return {
-      data: response.data,
-      status: response.status,
-      message: "تم التسجيل بنجاح",
-      success: true,
-    };
+    return APIResponse.success<User>(response.data.user, "تم إنشاء الحساب بنجاح");
   } catch (error) {
-    return ErrorResponse(error);
+    return APIResponse.error(error);
   }
 }
 export async function forgotPassword(data: ForgotPasswordSchema) {
   try {
-    const response = await fetcher.post("auth/forgot-password", data);
-    return {
-      data: response.data,
-      status: response.status,
-      message: "تم إرسال رابط إعادة تعيين كلمة المرور بنجاح",
-      success: true,
-    };
+    await fetcher.post("auth/forgot-password", data);
+    return APIResponse.success<void>(
+      undefined,
+      "تم إرسال رابط إعادة تعيين كلمة المرور إلى بريدك الإلكتروني",
+    );
   } catch (error) {
-    return ErrorResponse(error);
+    return APIResponse.error(error);
   }
 }
 
 export async function resetPassword(data: ResetPasswordSchema) {
   try {
-    console.log(data);
-
     const response = await fetcher.post("auth/reset-password", data);
-    return {
-      data: response.data,
-      status: response.status,
-      message: "تم إعادة تعيين كلمة المرور بنجاح",
-      success: true,
-    };
+    return APIResponse.success<void>(undefined, response.data.message);
   } catch (error) {
-    return ErrorResponse(error);
+    return APIResponse.error(error);
   }
 }

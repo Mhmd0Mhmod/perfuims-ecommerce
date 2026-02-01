@@ -1,24 +1,19 @@
 "use server";
 
 import { authFetcher } from "@/lib/authFetcher";
-import { ErrorResponse } from "@/lib/utils";
 import { CheckoutSchema, UpdateProfileSchema } from "@/lib/zod";
+import { APIResponse, IAPIResponse } from "@/types/api";
 import { CartItem } from "@/types/cart";
 import { Order } from "@/types/order";
 import { revalidatePath, revalidateTag } from "next/cache";
 
-export async function updateProfileAction(formData: UpdateProfileSchema): Promise<ApiResponse> {
+export async function updateProfileAction(formData: UpdateProfileSchema): Promise<IAPIResponse> {
   try {
-    const response = await authFetcher.patch("/users/profile", formData);
+    await authFetcher.patch("/users/profile", formData);
     revalidatePath("/account/settings");
-    return {
-      success: true,
-      data: response.data,
-      message: "تم تحديث البيانات بنجاح",
-      status: response.status,
-    };
+    return APIResponse.success<void>(undefined, "تم تحديث الملف الشخصي بنجاح");
   } catch (error) {
-    return ErrorResponse(error);
+    return APIResponse.error(error);
   }
 }
 
@@ -38,90 +33,67 @@ export async function addToCart({
 }: {
   productVariantId: number;
   quantity: number;
-}): Promise<ApiResponse<CartItem>> {
+}): Promise<IAPIResponse<CartItem>> {
   try {
     const response = await authFetcher.post("/cart", {
       productVariantId,
       quantity,
     });
     revalidateTag("cart", "default");
-    return {
-      success: true,
-      data: response.data,
-      message: "تم اضافه المنتج بنجاح للسله",
-      status: response.status,
-    };
+    return APIResponse.success<CartItem>(response.data, "تم إضافة المنتج بنجاح إلى السله");
   } catch (error) {
-    return ErrorResponse(error);
+    return APIResponse.error(error);
   }
 }
 
-export async function removeFromCart(productVariantId: number) {
+export async function removeFromCart(productVariantId: number): Promise<IAPIResponse> {
   try {
-    const response = await authFetcher.delete(`/cart/${productVariantId}`);
+    await authFetcher.delete(`/cart/${productVariantId}`);
     revalidateTag("cart", "default");
-    return {
-      success: true,
-      data: response.data,
-      message: "تم حذف المنتج بنجاح من السله",
-      status: response.status,
-    };
+    return APIResponse.success<CartItem>(undefined, "تم إزالة المنتج بنجاح من السله");
   } catch (error) {
-    return ErrorResponse(error);
+    return APIResponse.error(error);
   }
 }
 
-export async function editCartItem(productVariantId: number, quantity: number) {
+export async function editCartItem(
+  productVariantId: number,
+  quantity: number,
+): Promise<IAPIResponse> {
   try {
     const response = await authFetcher.patch(`/cart/${productVariantId}`, {
       quantity,
     });
     revalidateTag("cart", "default");
-    console.log(response);
 
-    return {
-      success: true,
-      data: response.data,
-      message: "تم تعديل المنتج بنجاح في السله",
-      status: response.status,
-    };
+    return APIResponse.success<CartItem>(response.data, "تم تعديل المنتج بنجاح في السله");
   } catch (error) {
     console.log(error);
-    return ErrorResponse(error);
+    return APIResponse.error(error);
   }
 }
 
-export async function clearCart() {
+export async function clearCart(): Promise<IAPIResponse> {
   try {
-    const response = await authFetcher.delete("/cart");
+    await authFetcher.delete("/cart");
     revalidateTag("cart", "default");
-    return {
-      success: true,
-      data: response.data,
-      message: "تم تفريغ السله بنجاح",
-      status: response.status,
-    };
+    return APIResponse.success<void>(undefined, "تم تفريغ السله بنجاح");
   } catch (error) {
-    return ErrorResponse(error);
+    return APIResponse.error(error);
   }
 }
 
-export async function createOrderAction(formData: CheckoutSchema): Promise<ApiResponse<Order>> {
+export async function createOrderAction(formData: CheckoutSchema): Promise<IAPIResponse<Order>> {
   try {
-    const { data, status } = await authFetcher.post<Order>("/orders", {
+    const { data } = await authFetcher.post<Order>("/orders", {
       paymentMethodId: formData.paymentMethodId,
       shippingAddress: formData.address + ", " + formData.city,
       phoneNumber: formData.phoneNumber,
     });
     revalidateTag("cart", "default");
 
-    return {
-      success: true,
-      data: data,
-      message: "تم إرسال طلبك بنجاح!",
-      status: status,
-    };
+    return APIResponse.success<Order>(data, "تم إنشاء الطلب بنجاح");
   } catch (error) {
-    return ErrorResponse(error);
+    return APIResponse.error(error);
   }
 }
