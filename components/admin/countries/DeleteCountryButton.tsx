@@ -20,11 +20,7 @@ function DeleteCountryButton({ countryId }: { countryId: number }) {
   const onDelete = useCallback(async () => {
     const id = toast.loading("جاري حذف الدولة...");
     const response = await deleteCountry(countryId);
-    if (response.status === 200) {
-      toast.success(response.message || "تم حذف الدولة بنجاح", { id });
-    } else {
-      toast.error(response.message || "حدث خطأ أثناء حذف الدولة.", { id });
-    }
+    toast.success(response.message, { id });
   }, [countryId]);
   return (
     <AlertDialog>

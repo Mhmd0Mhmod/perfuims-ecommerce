@@ -24,7 +24,7 @@ function DeleteCustomerButton({
   const handleDelete = useCallback(async () => {
     const id = toast.loading("جاري حذف العميل...");
     const response = await deleteCustomerAction(customerId);
-    if (response?.error) {
+    if (!response.success) {
       toast.error(response.message || "حدث خطأ أثناء حذف العميل. حاول مرة أخرى.", { id });
       return;
     }
