@@ -73,7 +73,7 @@ export default function CheckoutForm({ cartItems, user, country }: CheckoutFormP
   });
   const isCardPayment = paymentMethodID === 1;
   return (
-    <div className="grid grid-cols-1 gap-8 md:grid-cols-2" dir="rtl">
+    <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
       <div className="space-y-6">
         <Card>
           <CardHeader>

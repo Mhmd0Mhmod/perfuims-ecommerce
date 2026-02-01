@@ -123,11 +123,7 @@ export function AddCategoryForm({ category }: { category?: Category }) {
                   <FormDescription>هل تريد تفعيل هذا التصنيف؟</FormDescription>
                 </div>
                 <FormControl>
-                  <Switch
-                    className="flex-row-reverse"
-                    checked={field.value}
-                    onCheckedChange={field.onChange}
-                  />
+                  <Switch checked={field.value} onCheckedChange={field.onChange} />
                 </FormControl>
               </FormItem>
             )}
@@ -143,11 +139,7 @@ export function AddCategoryForm({ category }: { category?: Category }) {
                   <FormDescription>هل تريد عرض هذا التصنيف في الصفحة الرئيسية؟</FormDescription>
                 </div>
                 <FormControl>
-                  <Switch
-                    className="flex-row-reverse"
-                    checked={field.value}
-                    onCheckedChange={field.onChange}
-                  />
+                  <Switch checked={field.value} onCheckedChange={field.onChange} />
                 </FormControl>
               </FormItem>
             )}
@@ -224,7 +216,7 @@ export function AddCategoryForm({ category }: { category?: Category }) {
                         </div>
                         <FormControl>
                           <Switch
-                            className="scale-75 flex-row-reverse"
+                            className="scale-75"
                             checked={field.value}
                             onCheckedChange={field.onChange}
                           />

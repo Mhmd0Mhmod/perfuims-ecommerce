@@ -39,7 +39,7 @@ function DeleteCustomerButton({
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle className="sm:text-right">حذف العميل</AlertDialogTitle>
+          <AlertDialogTitle>حذف العميل</AlertDialogTitle>
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>إلغاء</AlertDialogCancel>

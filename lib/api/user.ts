@@ -10,4 +10,12 @@ export class UserAPI {
       throw throwingError(error);
     }
   }
+  static async getUser(id: string) {
+    try {
+      const { data } = await authFetcher.get<Customer>(`/admin/users/${id}`);
+      return data;
+    } catch (error) {
+      throw throwingError(error);
+    }
+  }
 }

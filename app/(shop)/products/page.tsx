@@ -6,8 +6,8 @@ import { CategoryAPI } from "@/lib/api/category";
 import { OfferAPI } from "@/lib/api/offer";
 
 export default async function ProductsPage() {
-  const [subCategories, offers] = await Promise.all([
-    CategoryAPI.getAllSubCategoriesServer(),
+  const [categories, offers] = await Promise.all([
+    CategoryAPI.getAllCategoriesServer(),
     OfferAPI.getOffersServer(),
   ]);
   return (
@@ -30,7 +30,7 @@ export default async function ProductsPage() {
         <div className="grid gap-8 lg:grid-cols-4">
           {/* Sidebar Filters */}
           <aside className="lg:col-span-1">
-            <ProductFilters subCategories={subCategories} offers={offers} />
+            <ProductFilters categories={categories} offers={offers} />
           </aside>
 
           {/* Products Grid */}

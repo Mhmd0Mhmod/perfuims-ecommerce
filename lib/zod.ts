@@ -118,7 +118,7 @@ export const addProductSchema = z.object({
   description: z.string().optional(),
   variants: z.array(addProductVariantSchema).optional(),
   categoryIds: z.array(z.string()).optional(),
-  imageUrl: z.string().url().optional(),
+  image: z.instanceof(File).optional(),
 });
 export type AddProductSchema = z.infer<typeof addProductSchema>;
 

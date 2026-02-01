@@ -63,7 +63,7 @@ export function OfferActionsMenu({ offer }: OfferActionsMenuProps) {
 
   return (
     <>
-      <DropdownMenu dir="rtl">
+      <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button variant="ghost" size="icon" className="h-8 w-8">
             <MoreHorizontal className="h-4 w-4" />
@@ -95,7 +95,7 @@ export function OfferActionsMenu({ offer }: OfferActionsMenuProps) {
       {/* Delete Alert */}
       <AlertDialog open={showDeleteAlert} onOpenChange={setShowDeleteAlert}>
         <AlertDialogContent>
-          <AlertDialogHeader className="sm:text-right">
+          <AlertDialogHeader>
             <AlertDialogTitle>هل أنت متأكد؟</AlertDialogTitle>
             <AlertDialogDescription>
               هذا الإجراء لا يمكن التراجع عنه. سيتم حذف العرض &quot;{offer.title}&quot; نهائياً.

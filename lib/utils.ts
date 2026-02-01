@@ -41,6 +41,7 @@ export function throwingError(error: unknown) {
 export function ErrorResponse<T = void>(error: unknown): ApiResponse<T> {
   if (error instanceof AxiosError) {
     const axiosError = error as AxiosError<{ message: string }>;
+
     return {
       success: false,
       status: axiosError.response?.status || 500,

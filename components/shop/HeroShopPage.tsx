@@ -40,7 +40,7 @@ function HeroShopPage() {
             </p>
 
             {/* Features Card */}
-            <Card className="border-primary/20" dir="rtl">
+            <Card className="border-primary/20">
               <CardContent className="flex flex-col gap-3 p-4">
                 <div className="flex items-center justify-center gap-3">
                   <span className="text-sm font-medium">شحن مجاني للطلبات فوق 500 ريال</span>
@@ -108,7 +108,7 @@ function HeroShopPage() {
             </Card>
 
             {/* Floating Discount Card */}
-            <Card className="absolute -bottom-6 -left-6 shadow-lg" dir="rtl">
+            <Card className="absolute -bottom-6 -left-6 shadow-lg">
               <CardContent className="flex items-center gap-3 p-4">
                 <div className="bg-primary flex h-12 w-12 items-center justify-center rounded-full">
                   <Sparkles className="text-primary-foreground h-6 w-6" />

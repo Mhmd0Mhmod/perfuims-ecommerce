@@ -101,7 +101,7 @@ export function MultiSelect({
         </Button>
       </PopoverTrigger>
       <PopoverContent className="min-w-full p-0" align="center">
-        <Command dir="rtl">
+        <Command>
           <CommandInput placeholder="ابحث..." className="h-9" />
           <CommandEmpty>لا توجد نتائج</CommandEmpty>
           <CommandList>

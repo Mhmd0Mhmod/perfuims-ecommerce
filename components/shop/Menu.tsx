@@ -1,7 +1,6 @@
 "use client";
 import { useCategories } from "@/hooks/use-categories";
 import { useOffers } from "@/hooks/use-offers";
-import { SubCategory } from "@/types/category";
 import { PublicCountry } from "@/types/country";
 import { Globe, Menu as MenuIcon } from "lucide-react";
 import Link from "next/link";
@@ -31,14 +30,14 @@ function MenuComponent({
           <MenuIcon className="h-6 w-6" />
         </Button>
       </SheetTrigger>
-      <SheetContent side="right">
+      <SheetContent side="right" dir="ltr">
         <SheetHeader className="flex flex-row items-center justify-between space-y-0 border-b p-6 text-right">
           <SheetTitle className="text-right">
             <Logo />
           </SheetTitle>
         </SheetHeader>
 
-        <ScrollArea className="flex h-[calc(100vh-15rem)] flex-col gap-6 px-6" dir="rtl">
+        <ScrollArea className="flex h-[calc(100vh-15rem)] flex-col gap-6 px-6">
           <div className="flex flex-col gap-4">
             {/* Categories */}
             <div className="space-y-4">
@@ -66,8 +65,7 @@ function MenuComponent({
                   </AccordionItem>
 
                   {categories?.map((category) => {
-                    const hasSubcategories =
-                      category.subcategories && category.subcategories.length > 0;
+                    const hasSubcategories = category.children && category.children.length > 0;
 
                     if (hasSubcategories) {
                       return (
@@ -75,7 +73,7 @@ function MenuComponent({
                           <AccordionTrigger>{category.name}</AccordionTrigger>
                           <AccordionContent>
                             <div className="mt-1 mr-2 flex flex-col gap-2 border-r pr-4">
-                              {category.subcategories.map((sub: SubCategory) => (
+                              {category.children.map((sub) => (
                                 <Link
                                   key={sub.id}
                                   href={`/products?category=${sub.id}`}

@@ -101,7 +101,7 @@ function AddCountryForm({ country }: { country?: Country }) {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-        <ScrollArea className="h-[calc(100vh-20rem)]" dir="rtl">
+        <ScrollArea className="h-[calc(100vh-20rem)]">
           <div className="space-y-6">
             {/* Country Combobox */}
             <FormField
@@ -194,11 +194,7 @@ function AddCountryForm({ country }: { country?: Country }) {
                     <FormDescription>هل تريد تعيين هذه الدولة كافتراضية؟</FormDescription>
                   </div>
                   <FormControl>
-                    <Switch
-                      className="flex-row-reverse"
-                      checked={field.value}
-                      onCheckedChange={field.onChange}
-                    />
+                    <Switch checked={field.value} onCheckedChange={field.onChange} />
                   </FormControl>
                 </FormItem>
               )}
@@ -213,11 +209,7 @@ function AddCountryForm({ country }: { country?: Country }) {
                     <FormDescription>هل تريد تفعيل هذه الدولة؟</FormDescription>
                   </div>
                   <FormControl>
-                    <Switch
-                      className="flex-row-reverse"
-                      checked={field.value}
-                      onCheckedChange={field.onChange}
-                    />
+                    <Switch checked={field.value} onCheckedChange={field.onChange} />
                   </FormControl>
                 </FormItem>
               )}

@@ -29,7 +29,7 @@ export function UserMenu({ user }: { user: User }) {
   return (
     <SidebarMenu>
       <SidebarMenuItem>
-        <DropdownMenu dir="rtl">
+        <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <SidebarMenuButton size="lg">
               <UserAvatar user={user} size="sm" className="rounded-lg" />

@@ -1,5 +1,6 @@
 "use server";
 
+import { ProductAPI } from "@/lib/api/product";
 import { authFetcher } from "@/lib/authFetcher";
 import { ErrorResponse } from "@/lib/utils";
 import {
@@ -253,7 +254,15 @@ export async function changePaymentStatus(
 
 export async function addProduct(data: AddProductSchema): Promise<ApiResponse<Product>> {
   try {
-    const response = await authFetcher.post<Product>("admin/products", data);
+    const response = await authFetcher.post<Product>(
+      "admin/products",
+      ProductAPI.getProductFormData(data),
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      },
+    );
     revalidatePath("/admin/products");
     return {
       data: response.data,
@@ -266,46 +275,6 @@ export async function addProduct(data: AddProductSchema): Promise<ApiResponse<Pr
   }
 }
 
-function checkVariantChanges(
-  oldVariants: Product["variants"],
-  newVariants: AddProductSchema["variants"],
-) {
-  const toAdd: AddProductSchema["variants"] = [];
-  const toUpdate: AddProductSchema["variants"] = [];
-  const toDelete: number[] = [];
-
-  // Find added and updated
-  newVariants?.forEach((newVariant) => {
-    if (!newVariant.id) {
-      toAdd.push(newVariant);
-      return;
-    }
-
-    const oldVariant = oldVariants.find((v) => v.id === newVariant.id);
-    if (oldVariant) {
-      const isChanged =
-        oldVariant.newPrice !== newVariant.price ||
-        oldVariant.isAvailable !== newVariant.isAvailable ||
-        oldVariant.size !== newVariant.size ||
-        oldVariant.unit !== newVariant.unit;
-
-      if (isChanged) {
-        toUpdate.push(newVariant);
-      }
-    }
-  });
-
-  // Find deleted
-  oldVariants.forEach((oldVariant) => {
-    const stillExists = newVariants?.some((nv) => nv.id === oldVariant.id);
-    if (!stillExists) {
-      toDelete.push(oldVariant.id);
-    }
-  });
-
-  return { toAdd, toUpdate, toDelete };
-}
-
 export async function updateProduct(
   productId: number,
   data: Partial<AddProductSchema>,
@@ -313,7 +282,7 @@ export async function updateProduct(
 ): Promise<ApiResponse<Product>> {
   try {
     if (data.variants && defaultValues?.variants) {
-      const { toAdd, toUpdate, toDelete } = checkVariantChanges(
+      const { toAdd, toUpdate, toDelete } = ProductAPI.checkVariantChanges(
         defaultValues.variants,
         data.variants,
       );
@@ -334,7 +303,10 @@ export async function updateProduct(
       }
     }
 
-    const response = await authFetcher.patch<Product>(`admin/products/${productId}`, data);
+    const response = await authFetcher.patch<Product>(
+      `admin/products/${productId}`,
+      ProductAPI.getProductFormData(data as AddProductSchema),
+    );
 
     revalidatePath("/admin/products");
     return {

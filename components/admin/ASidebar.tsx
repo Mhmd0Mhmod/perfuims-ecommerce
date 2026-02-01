@@ -82,7 +82,7 @@ const menuItems = [
 
 export function ASidebar() {
   return (
-    <Sidebar side={"right"} collapsible="icon" variant="inset">
+    <Sidebar collapsible="icon" variant="inset">
       <SidebarHeader className="border-b p-4">
         <SidebarMenu>
           <SidebarMenuItem>

@@ -13,13 +13,7 @@ import { Offer } from "@/types/offer";
 import { Search, SlidersHorizontal } from "lucide-react";
 import { useEffect, useState } from "react";
 
-function ProductFilters({
-  subCategories,
-  offers,
-}: {
-  subCategories?: Category[];
-  offers?: Offer[];
-}) {
+function ProductFilters({ categories, offers }: { categories?: Category[]; offers?: Offer[] }) {
   const { dispatch, filters } = useProductsContext();
   const [searchTerm, setSearchTerm] = useState(filters.searchTerm);
   const [priceRange, setPriceRange] = useState<[number, number]>([
@@ -96,7 +90,6 @@ function ProductFilters({
             <Input
               placeholder="ابحث عن منتج..."
               className="pr-10"
-              dir="rtl"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
@@ -126,7 +119,7 @@ function ProductFilters({
         <div className="mb-6">
           <Label className="mb-4 block text-right">التصنيف</Label>
           <div className="space-y-3">
-            {subCategories?.map((category) => (
+            {categories?.map((category) => (
               <div key={category.id} className="flex items-center gap-2">
                 <Checkbox
                   id={category.id.toString()}

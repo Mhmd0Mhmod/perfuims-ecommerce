@@ -22,22 +22,22 @@ export function ProductDetailsDialog({ product }: { product: Product }) {
   const { selectedCountry } = useSelectedCountry();
   return (
     <ScrollArea className="max-h-[70vh] px-4">
-      <div className="space-y-6 pb-6 sm:max-w-[600px]">
+      <div className="space-y-6 pb-6 sm:max-w-150">
         {/* Product Image Card */}
 
         {/* Basic Info Card */}
         <Card>
-          <CardHeader className="text-right">
+          <CardHeader>
             <CardTitle className="text-xl">{product.name}</CardTitle>
             <CardDescription className="text-base">{product.description}</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="flex flex-wrap gap-2">
-              {product.categoryNames && product.categoryNames.length > 0 ? (
-                product.categoryNames.map((catName) => (
-                  <Badge variant="outline" key={catName} className="text-sm">
+              {product.categories && product.categories.length > 0 ? (
+                product.categories.map((cat) => (
+                  <Badge variant="outline" key={cat.id} className="text-sm">
                     <Tag className="ml-1 h-3 w-3" />
-                    {catName}
+                    {cat.name}
                   </Badge>
                 ))
               ) : (
@@ -51,8 +51,8 @@ export function ProductDetailsDialog({ product }: { product: Product }) {
         </Card>
 
         {/* Details Card */}
-        <Card dir="rtl">
-          <CardHeader className="text-right">
+        <Card>
+          <CardHeader>
             <CardTitle className="text-lg">المعلومات الأساسية</CardTitle>
           </CardHeader>
           <CardContent className="space-y-3">
@@ -70,8 +70,8 @@ export function ProductDetailsDialog({ product }: { product: Product }) {
                 التصنيفات
               </span>
               <span className="font-medium">
-                {product.categoryNames && product.categoryNames.length > 0
-                  ? product.categoryNames.join(", ")
+                {product.categories && product.categories.length > 0
+                  ? product.categories.map((cat) => cat.name).join(", ")
                   : "بدون تصنيف"}
               </span>
             </div>
@@ -128,7 +128,7 @@ export function ProductDetailsDialog({ product }: { product: Product }) {
 
         {/* Variants Card */}
         <Card>
-          <CardHeader className="text-right">
+          <CardHeader>
             <CardTitle className="flex items-center justify-between text-lg">
               <span>الأحجام المتوفرة</span>
               <Badge variant="outline">{product.variants.length} حجم</Badge>
@@ -140,8 +140,8 @@ export function ProductDetailsDialog({ product }: { product: Product }) {
               <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead className="text-right">الحجم</TableHead>
-                    <TableHead className="text-right">السعر</TableHead>
+                    <TableHead>الحجم</TableHead>
+                    <TableHead>السعر</TableHead>
                     <TableHead className="text-center">الحالة</TableHead>
                   </TableRow>
                 </TableHeader>

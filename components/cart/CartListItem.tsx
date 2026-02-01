@@ -27,7 +27,7 @@ function CartListItem({ item }: { item: CartItem }) {
     remove(item.id);
   };
   return (
-    <Card className="p-0" dir="rtl">
+    <Card className="p-0">
       <div className="flex items-center gap-4">
         <CardHeader className="flex w-24 min-w-20 flex-col items-center justify-center p-4">
           <div className="relative h-20 w-20">

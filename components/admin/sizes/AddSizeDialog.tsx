@@ -111,7 +111,7 @@ export function AddSizeDialog({ size }: { size?: Size }) {
               <FormLabel>الوحدة</FormLabel>
               <FormControl>
                 <Select {...field} value={field.value} onValueChange={field.onChange}>
-                  <SelectTrigger className="w-full" dir="rtl">
+                  <SelectTrigger className="w-full">
                     <SelectValue placeholder="اختر الوحدة..." />
                   </SelectTrigger>
                   <SelectContent>

@@ -100,9 +100,9 @@ function ProductBadges({ product }: { product: Product }) {
           </Badge>,
         ]
       : []),
-    ...product.categoryNames.map((catName) => (
-      <Badge className="bg-primary" key={catName}>
-        {catName}
+    ...product.categories.map((cat) => (
+      <Badge className="bg-primary" key={cat.id}>
+        {cat.name}
       </Badge>
     )),
   ];

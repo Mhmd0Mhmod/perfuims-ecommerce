@@ -51,9 +51,9 @@ export default async function ProductPage({ params }: { params: Promise<{ id: st
               {product.name}
             </CardTitle>
             <div className="mb-2 flex flex-wrap gap-2">
-              {product.categoryNames.map((cat) => (
-                <Badge key={cat} variant="secondary">
-                  {cat}
+              {product.categories.map((cat) => (
+                <Badge key={cat.id} variant="secondary">
+                  {cat.name}
                 </Badge>
               ))}
             </div>

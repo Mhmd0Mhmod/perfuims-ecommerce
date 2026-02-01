@@ -43,7 +43,7 @@ export function UserMenu({ user }: { user: User }) {
   };
 
   return (
-    <DropdownMenu dir="rtl">
+    <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant={"ghost"} size="icon-lg">
           <UserAvatar user={user} size="sm" />
@@ -52,7 +52,7 @@ export function UserMenu({ user }: { user: User }) {
 
       <DropdownMenuContent align="end" forceMount>
         <DropdownMenuLabel className="p-0">
-          <div className="flex flex-row-reverse items-center gap-3 p-4">
+          <div className="flex items-center gap-3 p-4">
             <div className="flex-1 text-right">
               <p className="text-sm leading-none font-semibold">{user.fullName || user.username}</p>
               <p className="text-muted-foreground mt-1 text-xs">{user.email}</p>
@@ -66,7 +66,7 @@ export function UserMenu({ user }: { user: User }) {
           <DropdownMenuItem key={item.href} asChild>
             <Link
               href={item.href}
-              className="hover:bg-accent hover:text-accent-foreground flex w-full items-center gap-2 rounded-sm px-2 py-2 text-right text-sm"
+              className="hover:bg-accent hover:text-accent-foreground flex w-full items-center gap-2 rounded-sm px-2 py-2 text-sm"
             >
               <item.icon className="h-4 w-4" />
               {item.label}
@@ -78,7 +78,7 @@ export function UserMenu({ user }: { user: User }) {
 
         <DropdownMenuItem
           onClick={logout}
-          className="hover:bg-accent hover:text-accent-foreground flex w-full cursor-pointer items-center gap-2 rounded-sm px-2 py-2 text-right text-sm"
+          className="hover:bg-accent hover:text-accent-foreground flex w-full cursor-pointer items-center gap-2 rounded-sm px-2 py-2 text-sm"
         >
           <LogOut className="h-4 w-4" />
           تسجيل الخروج

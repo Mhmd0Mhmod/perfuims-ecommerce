@@ -18,6 +18,8 @@ declare module "next-auth" {
     phoneNumber: string;
     role: Roles;
     createdAt: string;
+    updatedAt: string;
+    deleted: boolean;
   }
   interface Session {
     user: User;
@@ -29,7 +31,7 @@ declare module "next-auth/jwt" {
   /** Returned by the `jwt` callback and `auth`, when using JWT sessions */
   interface JWT {
     token: string;
-    userDetails: User;
+    userProfile: User;
   }
 }
 
@@ -47,13 +49,13 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       authorize: async (credentials) => {
         try {
           const validatedCredentials = signInSchema.parse(credentials);
-          const { data } = await fetcher.post<{ token: string; userDetails: User }>(
+          const { data } = await fetcher.post<{ token: string; userProfile: User }>(
             "auth/login",
             validatedCredentials,
           );
           // Return user with token temporarily (will be separated in jwt callback)
           return {
-            ...data.userDetails,
+            ...data.userProfile,
             token: data.token,
           } as User & { token: string };
         } catch (error) {
@@ -80,16 +82,16 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     async jwt({ token, user }) {
       if (user) {
         // Store token separately from user details
-        const { token: authToken, ...userDetails } = user as User & { token: string };
+        const { token: authToken, ...userProfile } = user as User & { token: string };
         token.token = authToken;
-        token.userDetails = userDetails as User;
+        token.userProfile = userProfile as User;
       }
       return token;
     },
     session({ session, token }) {
       return {
         ...session,
-        user: token.userDetails,
+        user: token.userProfile,
         token: token.token,
       };
     },

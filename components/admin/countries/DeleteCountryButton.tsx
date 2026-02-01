@@ -35,8 +35,8 @@ function DeleteCountryButton({ countryId }: { countryId: number }) {
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle className="sm:text-right">حذف الدولة</AlertDialogTitle>
-          <AlertDialogDescription className="sm:text-right">
+          <AlertDialogTitle>حذف الدولة</AlertDialogTitle>
+          <AlertDialogDescription>
             هل أنت متأكد أنك تريد حذف هذه الدولة؟ لا يمكن التراجع عن هذا الإجراء.
           </AlertDialogDescription>
         </AlertDialogHeader>

@@ -44,7 +44,7 @@ export function SettingsForm({ user }: { user: User }) {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 text-right" dir="rtl">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 text-right">
         <div className="grid gap-4 md:grid-cols-2">
           {/* Username - Disabled */}
           <FormItem>

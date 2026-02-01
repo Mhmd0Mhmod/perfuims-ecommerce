@@ -112,10 +112,10 @@ function ProductVariantItem({ index, control, sizes, onRemove }: ProductVariantI
                     }
                   }}
                 >
-                  <SelectTrigger dir="rtl" className="w-full">
+                  <SelectTrigger className="w-full">
                     <SelectValue placeholder="حجم مخصص" />
                   </SelectTrigger>
-                  <SelectContent dir="rtl">
+                  <SelectContent>
                     {sizes?.map((size) => (
                       <SelectItem key={size.id} value={size.id.toString()}>
                         {size.size} {size.unit}
@@ -164,10 +164,10 @@ function ProductVariantItem({ index, control, sizes, onRemove }: ProductVariantI
                     value={field.value || ""}
                     onValueChange={(value) => field.onChange(value)}
                   >
-                    <SelectTrigger dir="rtl" className="w-full" disabled={!!isSelectedSize}>
+                    <SelectTrigger className="w-full" disabled={!!isSelectedSize}>
                       <SelectValue placeholder="اختر وحدة" />
                     </SelectTrigger>
-                    <SelectContent dir="rtl">
+                    <SelectContent>
                       {Object.values(SIZES_UNITS).map((unit) => (
                         <SelectItem key={unit} value={unit}>
                           {unit}
@@ -207,11 +207,7 @@ function ProductVariantItem({ index, control, sizes, onRemove }: ProductVariantI
             <FormItem className="flex items-center justify-between rounded-lg border p-3">
               <FormLabel className="m-0">متوفر</FormLabel>
               <FormControl>
-                <Switch
-                  className="flex-row-reverse"
-                  checked={field.value}
-                  onCheckedChange={field.onChange}
-                />
+                <Switch checked={field.value} onCheckedChange={field.onChange} />
               </FormControl>
             </FormItem>
           )}

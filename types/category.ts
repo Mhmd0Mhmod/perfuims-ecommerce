@@ -2,21 +2,12 @@ export interface Category {
   id: number;
   name: string;
   description: string;
-  countryId: number;
   countryName: string;
+  parentId: number | null;
+  parentName: string | null;
   isActive: boolean;
-  createdAt: string;
-  updatedAt: string;
   isAtHomePage: boolean;
-  subcategories: SubCategory[];
-}
-export interface SubCategory {
-  id: number;
-  name: string;
-  description: string;
-  categoryId: number;
-  categoryName: string;
-  isActive: boolean;
   createdAt: string;
   updatedAt: string;
+  children: Category[];
 }

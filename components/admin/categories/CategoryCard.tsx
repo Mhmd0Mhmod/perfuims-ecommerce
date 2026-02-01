@@ -67,13 +67,13 @@ export function CategoryCard({ category }: { category: Category }) {
       </CardHeader>
       <CardContent className="space-y-2">
         <p className="text-muted-foreground text-sm">{category.description || "لا يوجد وصف"}</p>
-        {category.subcategories && category.subcategories.length > 0 && (
+        {category.children && category.children.length > 0 && (
           <div className="space-y-2">
             <h4 className="text-sm font-semibold">
-              التصنيفات الفرعية ({category.subcategories.length}):
+              التصنيفات الفرعية ({category.children.length}):
             </h4>
             <div className="flex flex-wrap gap-1">
-              {category.subcategories.map((sub) => (
+              {category.children.map((sub) => (
                 <Badge key={sub.id} variant="secondary" className="text-[10px]">
                   {sub.name}
                 </Badge>
@@ -105,7 +105,7 @@ export function CategoryCard({ category }: { category: Category }) {
             </Button>
           </AlertDialogTrigger>
           <AlertDialogContent>
-            <AlertDialogHeader className="sm:text-right">
+            <AlertDialogHeader>
               <AlertDialogTitle>هل أنت متأكد؟</AlertDialogTitle>
               <AlertDialogDescription>
                 هذا الإجراء لا يمكن التراجع عنه. سيتم حذف التصنيف &quot;{category.name}&quot;

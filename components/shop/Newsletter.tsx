@@ -24,7 +24,6 @@ function Newsletter() {
                   type="email"
                   placeholder="أدخل بريدك الإلكتروني"
                   className="bg-primary-foreground text-primary flex-1"
-                  dir="rtl"
                 />
                 <Button type="submit" variant="secondary" size="lg">
                   اشترك الآن

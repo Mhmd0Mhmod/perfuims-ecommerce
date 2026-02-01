@@ -75,14 +75,14 @@ async function CategoryProductsCarousel({ category, countryCode }: CategoryProdu
         direction: "rtl",
       }}
       className="container"
-      dir="rtl"
+
     >
-      <CarouselContent dir="rtl">
+      <CarouselContent >
         {products.content.map((product) => (
           <CarouselItem
             key={product.id}
             className="sm:basis-1/2 md:basis-1/3 lg:basis-1/4"
-            dir="rtl"
+          
           >
             <ProductCard product={product} />
           </CarouselItem>

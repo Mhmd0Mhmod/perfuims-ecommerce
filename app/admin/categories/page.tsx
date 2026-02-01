@@ -26,7 +26,7 @@ function AddCategory() {
       </DialogTrigger>
       <DialogContent>
         <DialogClose />
-        <DialogHeader className="sm:text-right">
+        <DialogHeader>
           <DialogTitle>إضافة تصنيف جديد</DialogTitle>
           <DialogDescription>
             أدخل بيانات التصنيف الجديد هنا. انقر حفظ عند الانتهاء.
@@ -72,7 +72,7 @@ function CategoriesPage() {
 }
 
 async function CategoriesList() {
-  const categories = await CategoryAPI.getCategories();
+  const categories = await CategoryAPI.getAdminCategoriesRoots();
   if (categories.length === 0) {
     return (
       <Card>

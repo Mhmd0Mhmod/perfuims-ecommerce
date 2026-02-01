@@ -38,7 +38,7 @@ import { Suspense } from "react";
 
 async function AddProductFormButton() {
   const [categories, sizes] = await Promise.all([
-    CategoryAPI.getCategories(),
+    CategoryAPI.getAdminCategoriesRoots(),
     SizeAPI.getAdminSizes(),
   ]);
   return (
@@ -51,7 +51,7 @@ async function AddProductFormButton() {
       </DialogTrigger>
       <DialogContent className="max-w-3xl">
         <DialogClose />
-        <DialogHeader className="sm:text-right">
+        <DialogHeader>
           <DialogTitle>إضافة منتج جديد</DialogTitle>
           <DialogDescription>
             أدخل بيانات المنتج الجديد هنا. انقر حفظ عند الانتهاء.
@@ -160,7 +160,7 @@ async function ProductsTable() {
     );
   }
   const [categories, sizes, countryCode] = await Promise.all([
-    CategoryAPI.getCategories(),
+    CategoryAPI.getAdminCategoriesRoots(),
     SizeAPI.getAdminSizes(),
     getCookies("country"),
   ]);
@@ -217,23 +217,29 @@ function ProductTableRow({
   const maxPrice = Math.max(...product.variants.map((v) => v.newPrice));
   return (
     <TableRow key={product.id}>
-      <TableCell>
+      <TableCell className="max-w-50 overflow-hidden">
         <div className="flex items-center gap-3">
-          <div className="relative h-12 w-12 overflow-hidden rounded-md">
-            <Image src={product.imageUrl} alt={product.name} fill className="object-cover" />
+          <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-md">
+            <Image
+              src={product.imageUrl}
+              alt={product.name}
+              fill
+              sizes="48px"
+              className="object-cover"
+            />
           </div>
-          <div className="text-right">
-            <p className="font-medium">{product.name}</p>
-            <p className="text-muted-foreground line-clamp-1 text-xs">{product.description}</p>
+          <div className="min-w-0 flex-1 text-right">
+            <p className="truncate font-medium">{product.name}</p>
+            <p className="text-muted-foreground truncate text-xs">{product.description}</p>
           </div>
         </div>
       </TableCell>
       <TableCell className="text-right">
         <div className="flex max-w-50 flex-wrap gap-1">
-          {product.categoryNames && product.categoryNames.length > 0 ? (
-            product.categoryNames.slice(0, 2).map((catName) => (
-              <Badge variant="outline" key={catName} className="text-xs">
-                {catName}
+          {product.categories && product.categories.length > 0 ? (
+            product.categories.slice(0, 2).map((cat) => (
+              <Badge variant="outline" key={cat.id} className="text-xs">
+                {cat.name}
               </Badge>
             ))
           ) : (
@@ -241,9 +247,9 @@ function ProductTableRow({
               بدون تصنيف
             </Badge>
           )}
-          {product.categoryNames && product.categoryNames.length > 2 && (
+          {product.categories && product.categories.length > 2 && (
             <Badge variant="secondary" className="text-xs">
-              +{product.categoryNames.length - 2}
+              +{product.categories.length - 2}
             </Badge>
           )}
         </div>

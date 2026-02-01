@@ -307,11 +307,7 @@ export default function AddOfferForm({ offer, products }: AddOfferFormProps) {
                 <FormDescription>العرض سيكون متاحاً للعملاء فور التفعيل</FormDescription>
               </div>
               <FormControl>
-                <Switch
-                  checked={field.value}
-                  onCheckedChange={field.onChange}
-                  className="flex-row-reverse"
-                />
+                <Switch checked={field.value} onCheckedChange={field.onChange} />
               </FormControl>
             </FormItem>
           )}

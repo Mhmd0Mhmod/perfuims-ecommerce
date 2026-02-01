@@ -6,10 +6,7 @@ import Link from "next/link";
 
 function Error({ error, reset }: { error: Error; reset: () => void }) {
   return (
-    <div
-      className="flex min-h-screen items-center justify-center bg-linear-to-br from-red-50 to-orange-50 p-4"
-      dir="rtl"
-    >
+    <div className="flex min-h-screen items-center justify-center bg-linear-to-br from-red-50 to-orange-50 p-4">
       <Card className="w-full max-w-lg shadow-lg">
         <CardHeader className="text-center">
           <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-red-100">

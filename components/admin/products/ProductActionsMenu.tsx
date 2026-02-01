@@ -64,7 +64,7 @@ export function ProductActionsMenu({ product, categories, sizes }: ProductAction
 
   return (
     <>
-      <DropdownMenu dir="rtl">
+      <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button variant="ghost" size="icon" className="h-8 w-8">
             <MoreHorizontal className="h-4 w-4" />
@@ -95,7 +95,7 @@ export function ProductActionsMenu({ product, categories, sizes }: ProductAction
       <Dialog open={showDetailsDialog} onOpenChange={setShowDetailsDialog}>
         <DialogContent>
           <DialogClose />
-          <DialogHeader className="sm:text-right">
+          <DialogHeader>
             <DialogTitle>تفاصيل المنتج</DialogTitle>
             <DialogDescription>عرض جميع بيانات المنتج هنا.</DialogDescription>
           </DialogHeader>
@@ -108,7 +108,7 @@ export function ProductActionsMenu({ product, categories, sizes }: ProductAction
       <Dialog open={showEditDialog} onOpenChange={setShowEditDialog}>
         <DialogContent className="max-w-3xl">
           <DialogClose />
-          <DialogHeader className="sm:text-right">
+          <DialogHeader>
             <DialogTitle>تعديل المنتج</DialogTitle>
             <DialogDescription>عدل بيانات المنتج هنا. انقر حفظ عند الانتهاء.</DialogDescription>
           </DialogHeader>
@@ -119,7 +119,7 @@ export function ProductActionsMenu({ product, categories, sizes }: ProductAction
       {/* Delete Alert */}
       <AlertDialog open={showDeleteAlert} onOpenChange={setShowDeleteAlert}>
         <AlertDialogContent>
-          <AlertDialogHeader className="sm:text-right">
+          <AlertDialogHeader>
             <AlertDialogTitle>هل أنت متأكد؟</AlertDialogTitle>
             <AlertDialogDescription>
               هذا الإجراء لا يمكن التراجع عنه. سيتم حذف المنتج &quot;{product.name}&quot; نهائياً

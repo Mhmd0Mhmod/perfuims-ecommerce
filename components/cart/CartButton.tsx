@@ -29,7 +29,7 @@ function CartButton() {
           </Badge>
         </Button>
       </SheetTrigger>
-      <SheetContent side="right" className="w-full max-w-md">
+      <SheetContent side="left" dir="ltr">
         <SheetClose />
         <SheetHeader>
           <SheetTitle className="mb-4 text-lg font-semibold">سلة التسوق</SheetTitle>

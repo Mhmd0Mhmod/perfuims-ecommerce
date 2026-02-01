@@ -37,7 +37,7 @@ function DeleteSizeButton({ size }: { size: Size }) {
         </Button>
       </AlertDialogTrigger>
       <AlertDialogContent>
-        <AlertDialogHeader className="sm:text-right">
+        <AlertDialogHeader>
           <AlertDialogTitle>هل أنت متأكد؟</AlertDialogTitle>
           <AlertDialogDescription>
             هذا الإجراء لا يمكن التراجع عنه. سيتم حذف الحجم &quot;{size.size} {size.unit}

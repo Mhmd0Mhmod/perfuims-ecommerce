@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { fetcher } from "./lib/fetcher";
 import { Country } from "./types/country";
+import { auth } from "./lib/auth";
 
 export async function proxy(request: NextRequest) {
   const countryCode = request.cookies.get("country")?.value;
@@ -23,6 +24,17 @@ export async function proxy(request: NextRequest) {
   } else {
     response.cookies.set("country", countryCode);
   }
-
-  return response;
+  const session = await auth();
+  if (session) {
+    return response;
+  }
+  const redirectResponse = NextResponse.rewrite(new URL("/login", request.url));
+  response.cookies.getAll().forEach((cookie) => {
+    redirectResponse.cookies.set(cookie.name, cookie.value);
+  });
+  return redirectResponse;
 }
+
+export const config = {
+  matcher: ["/admin/:path*"],
+};

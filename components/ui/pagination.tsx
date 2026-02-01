@@ -59,7 +59,7 @@ function PaginationPrevious({ className, ...props }: React.ComponentProps<typeof
     <PaginationLink
       aria-label="الذهاب إلى الصفحة السابقة"
       size="default"
-      className={cn("gap-1 px-2.5 sm:pr-2.5", className)}
+      className={cn("gap-1 px-2.5 sm:pe-2.5", className)}
       {...props}
     >
       <ChevronRightIcon />
@@ -73,7 +73,7 @@ function PaginationNext({ className, ...props }: React.ComponentProps<typeof Pag
     <PaginationLink
       aria-label="الذهاب إلى الصفحة التالية"
       size="default"
-      className={cn("gap-1 px-2.5 sm:pl-2.5", className)}
+      className={cn("gap-1 px-2.5 sm:ps-2.5", className)}
       {...props}
     >
       <span className="hidden sm:block">التالي</span>

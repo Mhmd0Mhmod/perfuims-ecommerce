@@ -66,14 +66,10 @@ export async function RecentOrdersTable({ orders }: RecentOrdersTableProps) {
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end">
                     <DropdownMenuLabel className="text-right">إجراءات</DropdownMenuLabel>
-                    <DropdownMenuItem className="flex flex-row-reverse text-right">
-                      نسخ رقم الدفع
-                    </DropdownMenuItem>
+                    <DropdownMenuItem className="flex text-right">نسخ رقم الدفع</DropdownMenuItem>
                     <DropdownMenuSeparator />
-                    <DropdownMenuItem className="flex flex-row-reverse text-right">
-                      عرض العميل
-                    </DropdownMenuItem>
-                    <DropdownMenuItem className="flex flex-row-reverse text-right">
+                    <DropdownMenuItem className="flex text-right">عرض العميل</DropdownMenuItem>
+                    <DropdownMenuItem className="flex text-right">
                       عرض تفاصيل الدفع
                     </DropdownMenuItem>
                   </DropdownMenuContent>

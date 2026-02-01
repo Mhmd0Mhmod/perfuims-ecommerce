@@ -149,7 +149,7 @@ function page() {
               </Button>
             </DialogTrigger>
             <DialogContent>
-              <DialogHeader className="sm:text-right">
+              <DialogHeader>
                 <DialogTitle>إضافة دولة جديدة إلى قائمة الدول المتاحة للشحن</DialogTitle>
               </DialogHeader>
               <AddCountryForm />

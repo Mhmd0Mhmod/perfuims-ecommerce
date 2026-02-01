@@ -82,7 +82,11 @@ function PaymentsTable({ status }: { status?: string }) {
             return (
               <TableRow key={payment.paymentId} className="hover:bg-muted/50">
                 <TableCell>
-                  <Button variant="link" className="h-auto p-0 font-medium">
+                  <Button
+                    variant="link"
+                    className="h-auto max-w-32 truncate p-0 font-medium"
+                    asChild
+                  >
                     <Link href={`/admin/payments/${payment.paymentId}`}>
                       {payment.transactionId}
                     </Link>

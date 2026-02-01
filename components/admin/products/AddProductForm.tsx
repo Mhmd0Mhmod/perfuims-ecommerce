@@ -13,8 +13,8 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { addProductSchema, AddProductSchema } from "@/lib/zod";
-import { Product } from "@/types/product";
 import { Category } from "@/types/category";
+import { Product } from "@/types/product";
 import { Size } from "@/types/size";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useCallback } from "react";
@@ -30,24 +30,15 @@ interface AddProductFormProps {
 
 function AddProductForm({ product, categories, sizes }: AddProductFormProps) {
   const isEditMode = Boolean(product);
-
   const form = useForm<AddProductSchema>({
     resolver: zodResolver(addProductSchema),
     defaultValues: product
       ? {
           ...product,
-          categoryIds: product.categoryIds.map((id) => id.toString()),
-          variants: product.variants.map((variant) => ({
-            id: variant.id,
-            isAvailable: variant.isAvailable,
-            price: variant.newPrice,
-            size: variant.size,
-            unit: variant.unit,
-          })),
+          categoryIds: product.categories.map((cat) => cat.id.toString()),
         }
       : {
           name: "",
-          imageUrl: "",
           description: "",
           categoryIds: [],
           variants: [],
@@ -123,22 +114,13 @@ function AddProductForm({ product, categories, sizes }: AddProductFormProps) {
                 <FormLabel>التصنيفات</FormLabel>
                 <FormControl>
                   <MultiSelect
-                    options={
-                      categories?.flatMap((cat) =>
-                        cat.subcategories && cat.subcategories.length > 0
-                          ? cat.subcategories.map((subcat) => ({
-                              label: `${cat.name} > ${subcat.name}`,
-                              value: subcat.id.toString(),
-                            }))
-                          : {
-                              label: cat.name,
-                              value: cat.id.toString(),
-                            },
-                      ) ?? []
-                    }
-                    selected={field.value || []}
-                    onChange={field.onChange}
+                    options={categories.map((cat) => ({
+                      label: cat.name,
+                      value: cat.id.toString(),
+                    }))}
+                    onChange={(values) => field.onChange(values)}
                     placeholder="اختر التصنيفات"
+                    selected={field.value || []}
                   />
                 </FormControl>
                 <FormMessage />
@@ -148,12 +130,19 @@ function AddProductForm({ product, categories, sizes }: AddProductFormProps) {
 
           <FormField
             control={form.control}
-            name="imageUrl"
-            render={({ field }) => (
+            name="image"
+            render={({ field: { value: _value, onChange, ...field } }) => (
               <FormItem>
                 <FormLabel>رابط الصورة</FormLabel>
                 <FormControl>
-                  <Input placeholder="https://example.com/image.jpg" {...field} />
+                  <Input
+                    type="file"
+                    onChange={(e) => {
+                      const file = e.target.files?.[0];
+                      onChange(file);
+                    }}
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>

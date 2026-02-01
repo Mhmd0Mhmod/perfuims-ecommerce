@@ -51,13 +51,13 @@ export function ContactForm({ country }: ContactFormProps) {
   }
   return (
     <Card>
-      <CardHeader className="text-right">
+      <CardHeader>
         <CardTitle>بيانات الاتصال</CardTitle>
         <CardDescription>كيف يمكن للعملاء الوصول إليك</CardDescription>
       </CardHeader>
       <CardContent>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 text-right">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
             <FormField
               control={form.control}
               name="email"

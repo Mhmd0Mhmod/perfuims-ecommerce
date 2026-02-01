@@ -4,6 +4,7 @@ import axios from "axios";
 import { throwingError } from "../utils";
 import { authFetcher } from "../authFetcher";
 import { fetcher } from "../fetcher";
+import { AddProductSchema } from "../zod";
 
 export class ProductAPI {
   static async getProducts(params: Partial<ProductsState>): Promise<Pagination<Product>> {
@@ -59,5 +60,61 @@ export class ProductAPI {
     } catch (error) {
       throw throwingError(error);
     }
+  }
+  static getProductFormData(data: AddProductSchema) {
+    const formData = new FormData();
+    formData.append("name", data.name);
+    if (data.description) {
+      formData.append("description", data.description);
+    }
+    if (data.categoryIds && data.categoryIds.length > 0) {
+      formData.append("categoryIds", JSON.stringify(data.categoryIds));
+    }
+    if (data.variants && data.variants.length > 0) {
+      formData.append("variants", JSON.stringify(data.variants));
+    }
+    if (data.image) {
+      formData.append("image", data.image);
+    }
+    return formData;
+  }
+  static checkVariantChanges(
+    oldVariants: Product["variants"],
+    newVariants: AddProductSchema["variants"],
+  ) {
+    const toAdd: AddProductSchema["variants"] = [];
+    const toUpdate: AddProductSchema["variants"] = [];
+    const toDelete: number[] = [];
+
+    // Find added and updated
+    newVariants?.forEach((newVariant) => {
+      if (!newVariant.id) {
+        toAdd.push(newVariant);
+        return;
+      }
+
+      const oldVariant = oldVariants.find((v) => v.id === newVariant.id);
+      if (oldVariant) {
+        const isChanged =
+          oldVariant.newPrice !== newVariant.price ||
+          oldVariant.isAvailable !== newVariant.isAvailable ||
+          oldVariant.size !== newVariant.size ||
+          oldVariant.unit !== newVariant.unit;
+
+        if (isChanged) {
+          toUpdate.push(newVariant);
+        }
+      }
+    });
+
+    // Find deleted
+    oldVariants.forEach((oldVariant) => {
+      const stillExists = newVariants?.some((nv) => nv.id === oldVariant.id);
+      if (!stillExists) {
+        toDelete.push(oldVariant.id);
+      }
+    });
+
+    return { toAdd, toUpdate, toDelete };
   }
 }
