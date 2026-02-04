@@ -9,13 +9,13 @@ function Logo() {
       aria-label="Go to homepage"
     >
       <div className="relative h-12 w-12 shrink-0 sm:h-14 sm:w-14">
-        <Image 
-          src="/assets/logo.png" 
-          alt="Company Logo" 
+        <Image
+          src="/assets/logo.png"
+          alt="Company Logo"
           width={56}
           height={56}
-          priority 
-          className="h-full w-full object-contain" 
+          priority
+          className="h-full w-full object-contain"
         />
       </div>
       <div className="flex flex-col">
