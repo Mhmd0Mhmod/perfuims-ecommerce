@@ -1,21 +1,16 @@
-import { auth } from "@/lib/auth";
-import { fetcher } from "@/lib/fetcher";
+import { authFetcher } from "@/lib/authFetcher";
 import { Product } from "@/types/product";
 import { AxiosError } from "axios";
 import { NextRequest, NextResponse } from "next/server";
 export async function GET(request: NextRequest) {
   try {
-    const session = await auth();
-    if (!session?.token) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
     const { searchParams } = request.nextUrl;
     const q = searchParams.get("searchTerm") || "";
     const page = Number(searchParams.get("page") || 0);
-    const categorieIds = searchParams.get("categorieIds") || [];
-    const dealIds = searchParams.get("dealIds") || [];
+    const categorieIds = searchParams.get("categorieIds") || "";
+    const dealIds = searchParams.get("dealIds") || "";
 
-    const { data } = await fetcher.get<Pagination<Product>>("/admin/products", {
+    const { data } = await authFetcher.get<Pagination<Product>>("/admin/products", {
       params: {
         q,
         page,
@@ -23,7 +18,7 @@ export async function GET(request: NextRequest) {
         dealIds,
       },
       headers: {
-        Authorization: `Bearer ${session.token}`,
+        Cookie: request.cookies.toString(),
       },
     });
     return NextResponse.json(data, {

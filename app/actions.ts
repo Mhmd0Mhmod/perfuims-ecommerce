@@ -5,3 +5,8 @@ export async function getCookies(cookie: string) {
   const cookiesStore = await cookies();
   return cookiesStore.get(cookie)?.value;
 }
+
+export async function getCookiesToString() {
+  const cookiesStore = await cookies();
+  return cookiesStore.toString();
+}

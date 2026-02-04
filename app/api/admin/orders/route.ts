@@ -1,35 +1,22 @@
-import { auth } from "@/lib/auth";
-import { fetcher } from "@/lib/fetcher";
+import { authFetcher } from "@/lib/authFetcher";
 import { Order } from "@/types/order";
 import { AxiosError } from "axios";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
-  const page = searchParams.get("page") || 0;
-  const countryCode = request.cookies.get("country_code")?.value;
+  const page = Number(searchParams.get("page") || 0);
   const period = searchParams.get("period");
   const status = searchParams.get("status");
   try {
-    const session = await auth();
-    if (!session?.token) {
-      return NextResponse.json(
-        {
-          error: "غير مصرح",
-        },
-        {
-          status: 401,
-        },
-      );
-    }
-    const { data } = await fetcher.get<Pagination<Order>>("/admin/orders", {
+    const { data } = await authFetcher.get<Pagination<Order>>("/admin/orders", {
       params: {
         page,
         status,
         period,
       },
       headers: {
-        Authorization: `Bearer ${session.token}`,
+        Cookie: request.cookies.toString(),
       },
     });
     return NextResponse.json(data, {

@@ -1,10 +1,15 @@
-import { OfferAPI } from "@/lib/api/offer";
+import { fetcher } from "@/lib/fetcher";
+import { Offer } from "@/types/offer";
 import { AxiosError } from "axios";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(request: NextRequest) {
   try {
-    const data = await OfferAPI.getOffersServer();
+    const { data } = await fetcher.get<Offer[]>("/offers", {
+      headers: {
+        Cookie: request.cookies.toString(),
+      },
+    });
     return NextResponse.json(data, {
       status: 200,
       headers: {
@@ -18,7 +23,7 @@ export async function GET(request: NextRequest) {
           error: error.response?.data.message,
         },
         {
-          status: error.status,
+          status: error.response?.status || 500,
         },
       );
     if (error instanceof Error) return NextResponse.json({ error: error.message }, { status: 500 });

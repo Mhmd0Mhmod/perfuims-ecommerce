@@ -5,6 +5,7 @@ import { throwingError } from "../utils";
 import { authFetcher } from "../authFetcher";
 import { fetcher } from "../fetcher";
 import { AddProductSchema } from "../zod";
+import { getCookiesToString } from "@/app/actions";
 
 export class ProductAPI {
   static async getProducts(params: Partial<ProductsState>): Promise<Pagination<Product>> {
@@ -17,15 +18,16 @@ export class ProductAPI {
       throw throwingError(error);
     }
   }
-  static async getProductsServer(
-    params: Partial<ProductsState>,
-    countryCode?: string,
-  ): Promise<Pagination<Product>> {
+  static async getProductsServer(params: Partial<ProductsState>): Promise<Pagination<Product>> {
     try {
+      const cookeString = await getCookiesToString();
       const { data } = await fetcher.get<Pagination<Product>>("/products", {
         params: {
           ...params,
           q: params.searchTerm,
+        },
+        headers: {
+          Cookie: cookeString,
         },
       });
       return data;

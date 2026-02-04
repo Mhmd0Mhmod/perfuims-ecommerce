@@ -1,4 +1,4 @@
-import { getCookies } from "@/app/actions";
+import { getCookiesToString } from "@/app/actions";
 import { Category } from "@/types/category";
 import axios from "axios";
 import { authFetcher } from "../authFetcher";
@@ -23,10 +23,14 @@ export class CategoryAPI {
       throw throwingError(error);
     }
   }
-  static async getAllCategoriesServer(countryCode?: string): Promise<Category[]> {
+  static async getAllCategoriesServer(): Promise<Category[]> {
     try {
-      const country = await getCookies("country_code");
-      const response = await fetcher.get<Category[]>("/categories");
+      const cookieStore = await getCookiesToString();
+      const response = await fetcher.get<Category[]>("/categories", {
+        headers: {
+          Cookie: cookieStore,
+        },
+      });
       return response.data;
     } catch (error) {
       throw throwingError(error);

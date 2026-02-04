@@ -3,21 +3,17 @@ import { AxiosError } from "axios";
 import { NextRequest, NextResponse } from "next/server";
 export async function GET(request: NextRequest) {
   try {
-    const countryCode = request.cookies.get("country_code")?.value;
     const { searchParams } = request.nextUrl;
     const q = searchParams.get("searchTerm") || "";
     const page = Number(searchParams.get("page") || 0);
     const categorieIds = searchParams.get("categorieIds")?.split(",") || [];
     const dealIds = searchParams.get("dealIds")?.split(",") || [];
-    const data = await ProductAPI.getProductsServer(
-      {
-        searchTerm: q,
-        page,
-        categorieIds,
-        dealIds,
-      },
-      countryCode,
-    );
+    const data = await ProductAPI.getProductsServer({
+      searchTerm: q,
+      page,
+      categorieIds,
+      dealIds,
+    });
 
     return NextResponse.json(data, {
       status: 200,
@@ -25,7 +21,10 @@ export async function GET(request: NextRequest) {
     });
   } catch (error) {
     if (error instanceof AxiosError) {
-      return NextResponse.json({ error: error.response?.data.message }, { status: 400 });
+      return NextResponse.json(
+        { error: error.response?.data.message },
+        { status: error.response?.status || 500 },
+      );
     }
 
     if (error instanceof Error) {

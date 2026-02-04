@@ -6,4 +6,5 @@ const fetcher = axios.create({
     "Content-Type": "application/json",
   },
 });
+
 export { fetcher };
