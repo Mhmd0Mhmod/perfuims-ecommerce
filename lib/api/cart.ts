@@ -1,7 +1,7 @@
 import { CartItem } from "@/types/cart";
 import axios from "axios";
-import { throwingError } from "../utils";
 import { authFetcher } from "../authFetcher";
+import { throwingError } from "../utils";
 
 export class CartAPI {
   static async getCart(): Promise<CartItem[]> {

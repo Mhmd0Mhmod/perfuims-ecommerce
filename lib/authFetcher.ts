@@ -1,5 +1,6 @@
 import axios from "axios";
 import { auth } from "./auth";
+import { getCookiesToString } from "@/app/actions";
 
 const authFetcher = axios.create({
   baseURL: process.env.SPRING_API,
@@ -8,9 +9,13 @@ const authFetcher = axios.create({
   },
 });
 authFetcher.interceptors.request.use(async (config) => {
-  const session = await auth();
+  const [session, cookieString] = await Promise.all([auth(), getCookiesToString()]);
+
   if (session?.token) {
     config.headers.Authorization = `Bearer ${session.token}`;
+  }
+  if (cookieString) {
+    config.headers.Cookie = cookieString;
   }
 
   return config;

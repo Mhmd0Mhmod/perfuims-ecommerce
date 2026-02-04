@@ -1,11 +1,10 @@
 import { ProductsState } from "@/context/ProductsContext";
 import { Product } from "@/types/product";
 import axios from "axios";
-import { throwingError } from "../utils";
 import { authFetcher } from "../authFetcher";
 import { fetcher } from "../fetcher";
+import { throwingError } from "../utils";
 import { AddProductSchema } from "../zod";
-import { getCookiesToString } from "@/app/actions";
 
 export class ProductAPI {
   static async getProducts(params: Partial<ProductsState>): Promise<Pagination<Product>> {
@@ -20,14 +19,10 @@ export class ProductAPI {
   }
   static async getProductsServer(params?: Partial<ProductsState>): Promise<Pagination<Product>> {
     try {
-      const cookeString = await getCookiesToString();
       const { data } = await fetcher.get<Pagination<Product>>("/products", {
         params: {
           ...params,
           q: params?.searchTerm,
-        },
-        headers: {
-          Cookie: cookeString,
         },
       });
       return data;

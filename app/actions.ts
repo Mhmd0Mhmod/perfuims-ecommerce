@@ -10,3 +10,7 @@ export async function getCookiesToString() {
   const cookiesStore = await cookies();
   return cookiesStore.toString();
 }
+export async function getCountryCodeCookie() {
+  const cookiesStore = await cookies();
+  return cookiesStore.get("countryCode")?.value;
+}

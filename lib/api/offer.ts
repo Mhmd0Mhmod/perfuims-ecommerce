@@ -1,8 +1,8 @@
-import axios from "axios";
-import { throwingError } from "../utils";
 import { Offer } from "@/types/offer";
+import axios from "axios";
 import { authFetcher } from "../authFetcher";
 import { fetcher } from "../fetcher";
+import { throwingError } from "../utils";
 
 export class OfferAPI {
   static async getOffers() {
