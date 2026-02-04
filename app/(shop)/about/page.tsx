@@ -2,42 +2,42 @@ import { Separator } from "@/components/ui/separator";
 
 export default function AboutPage() {
   return (
-    <div className="container mx-auto px-4 py-8 max-w-4xl">
+    <div className="container mx-auto max-w-4xl px-4 py-8">
       <div className="text-right">
-        <h1 className="text-4xl font-bold mb-2">من نحن</h1>
+        <h1 className="mb-2 text-4xl font-bold">من نحن</h1>
         <p className="text-muted-foreground mb-8">About Us</p>
-        
+
         <Separator className="mb-8" />
 
         <div className="space-y-6 text-right">
           <section>
-            <h2 className="text-2xl font-semibold mb-4">عن متجرنا</h2>
+            <h2 className="mb-4 text-2xl font-semibold">عن متجرنا</h2>
             <p className="text-muted-foreground leading-relaxed">
-              نحن متجر متخصص في بيع العطور الفاخرة والمميزة من أرقى العلامات التجارية العالمية.
-              نسعى لتوفير تجربة تسوق استثنائية لعملائنا من خلال تقديم منتجات عالية الجودة وخدمة
-              عملاء متميزة.
+              نحن متجر متخصص في بيع العطور الفاخرة والمميزة من أرقى العلامات التجارية العالمية. نسعى
+              لتوفير تجربة تسوق استثنائية لعملائنا من خلال تقديم منتجات عالية الجودة وخدمة عملاء
+              متميزة.
             </p>
           </section>
 
           <section>
-            <h2 className="text-2xl font-semibold mb-4">رؤيتنا</h2>
+            <h2 className="mb-4 text-2xl font-semibold">رؤيتنا</h2>
             <p className="text-muted-foreground leading-relaxed">
-              أن نكون الوجهة الأولى لمحبي العطور في المنطقة، ونقدم لهم أفضل تجربة تسوق عبر
-              الإنترنت مع ضمان الجودة والأصالة لجميع منتجاتنا.
+              أن نكون الوجهة الأولى لمحبي العطور في المنطقة، ونقدم لهم أفضل تجربة تسوق عبر الإنترنت
+              مع ضمان الجودة والأصالة لجميع منتجاتنا.
             </p>
           </section>
 
           <section>
-            <h2 className="text-2xl font-semibold mb-4">مهمتنا</h2>
+            <h2 className="mb-4 text-2xl font-semibold">مهمتنا</h2>
             <p className="text-muted-foreground leading-relaxed">
-              توفير مجموعة واسعة من العطور الفاخرة الأصلية بأسعار تنافسية، مع تقديم خدمة
-              توصيل سريعة وآمنة، وضمان رضا العملاء بنسبة 100%.
+              توفير مجموعة واسعة من العطور الفاخرة الأصلية بأسعار تنافسية، مع تقديم خدمة توصيل سريعة
+              وآمنة، وضمان رضا العملاء بنسبة 100%.
             </p>
           </section>
 
           <section>
-            <h2 className="text-2xl font-semibold mb-4">لماذا نحن؟</h2>
-            <ul className="space-y-3 text-muted-foreground">
+            <h2 className="mb-4 text-2xl font-semibold">لماذا نحن؟</h2>
+            <ul className="text-muted-foreground space-y-3">
               <li className="flex items-start gap-2">
                 <span className="text-primary mt-1">•</span>
                 <span>جميع منتجاتنا أصلية 100% ومن مصادر موثوقة</span>

@@ -3,28 +3,28 @@ import { FileText, ShoppingCart, CreditCard, RotateCcw, AlertTriangle, Scale } f
 
 export default function TermsPage() {
   return (
-    <div className="container mx-auto px-4 py-8 max-w-4xl">
+    <div className="container mx-auto max-w-4xl px-4 py-8">
       <div className="text-right">
-        <h1 className="text-4xl font-bold mb-2">الشروط والأحكام</h1>
+        <h1 className="mb-2 text-4xl font-bold">الشروط والأحكام</h1>
         <p className="text-muted-foreground mb-8">Terms & Conditions</p>
-        
+
         <Separator className="mb-8" />
 
         <div className="space-y-8">
           <section>
-            <p className="text-muted-foreground leading-relaxed mb-6">
+            <p className="text-muted-foreground mb-6 leading-relaxed">
               مرحباً بك في متجر عطور فاخرة. باستخدامك لهذا الموقع والشراء منه، فإنك توافق على
               الالتزام بهذه الشروط والأحكام. يرجى قراءتها بعناية قبل إتمام أي عملية شراء.
             </p>
           </section>
 
           <section>
-            <div className="flex items-center gap-3 mb-4">
+            <div className="mb-4 flex items-center gap-3">
               <FileText className="text-primary h-6 w-6" />
               <h2 className="text-2xl font-semibold">الشروط العامة</h2>
             </div>
-            <div className="bg-muted/30 p-6 rounded-lg">
-              <ul className="space-y-3 text-muted-foreground">
+            <div className="bg-muted/30 rounded-lg p-6">
+              <ul className="text-muted-foreground space-y-3">
                 <li className="flex items-start gap-2">
                   <span className="text-primary mt-1">•</span>
                   <span>يجب أن يكون عمر المستخدم 18 عاماً على الأقل للشراء من الموقع</span>
@@ -50,12 +50,12 @@ export default function TermsPage() {
           </section>
 
           <section>
-            <div className="flex items-center gap-3 mb-4">
+            <div className="mb-4 flex items-center gap-3">
               <ShoppingCart className="text-primary h-6 w-6" />
               <h2 className="text-2xl font-semibold">الطلبات والأسعار</h2>
             </div>
-            <div className="bg-muted/30 p-6 rounded-lg">
-              <ul className="space-y-3 text-muted-foreground">
+            <div className="bg-muted/30 rounded-lg p-6">
+              <ul className="text-muted-foreground space-y-3">
                 <li className="flex items-start gap-2">
                   <span className="text-primary mt-1">•</span>
                   <span>جميع الأسعار معروضة بالريال السعودي وتشمل ضريبة القيمة المضافة</span>
@@ -85,15 +85,17 @@ export default function TermsPage() {
           </section>
 
           <section>
-            <div className="flex items-center gap-3 mb-4">
+            <div className="mb-4 flex items-center gap-3">
               <CreditCard className="text-primary h-6 w-6" />
               <h2 className="text-2xl font-semibold">الدفع</h2>
             </div>
-            <div className="bg-muted/30 p-6 rounded-lg">
-              <ul className="space-y-3 text-muted-foreground">
+            <div className="bg-muted/30 rounded-lg p-6">
+              <ul className="text-muted-foreground space-y-3">
                 <li className="flex items-start gap-2">
                   <span className="text-primary mt-1">•</span>
-                  <span>نقبل الدفع عبر البطاقات الائتمانية، مدى، Apple Pay، والدفع عند الاستلام</span>
+                  <span>
+                    نقبل الدفع عبر البطاقات الائتمانية، مدى، Apple Pay، والدفع عند الاستلام
+                  </span>
                 </li>
                 <li className="flex items-start gap-2">
                   <span className="text-primary mt-1">•</span>
@@ -116,12 +118,12 @@ export default function TermsPage() {
           </section>
 
           <section>
-            <div className="flex items-center gap-3 mb-4">
+            <div className="mb-4 flex items-center gap-3">
               <RotateCcw className="text-primary h-6 w-6" />
               <h2 className="text-2xl font-semibold">الاسترجاع والاستبدال</h2>
             </div>
-            <div className="bg-muted/30 p-6 rounded-lg">
-              <ul className="space-y-3 text-muted-foreground">
+            <div className="bg-muted/30 rounded-lg p-6">
+              <ul className="text-muted-foreground space-y-3">
                 <li className="flex items-start gap-2">
                   <span className="text-primary mt-1">•</span>
                   <span>يمكن إرجاع المنتجات غير المفتوحة خلال 14 يوم</span>
@@ -140,7 +142,8 @@ export default function TermsPage() {
                 </li>
                 <li className="flex items-start gap-2">
                   <span className="text-primary mt-1">•</span>
-                  <span>للمزيد من التفاصيل، راجع{" "}
+                  <span>
+                    للمزيد من التفاصيل، راجع{" "}
                     <a href="/returns" className="text-primary hover:underline">
                       سياسة الاسترجاع
                     </a>
@@ -151,12 +154,12 @@ export default function TermsPage() {
           </section>
 
           <section>
-            <div className="flex items-center gap-3 mb-4">
+            <div className="mb-4 flex items-center gap-3">
               <AlertTriangle className="text-primary h-6 w-6" />
               <h2 className="text-2xl font-semibold">ضمان المنتجات</h2>
             </div>
-            <div className="bg-muted/30 p-6 rounded-lg">
-              <ul className="space-y-3 text-muted-foreground">
+            <div className="bg-muted/30 rounded-lg p-6">
+              <ul className="text-muted-foreground space-y-3">
                 <li className="flex items-start gap-2">
                   <span className="text-primary mt-1">•</span>
                   <span>جميع منتجاتنا أصلية 100% من مصادر معتمدة</span>
@@ -182,12 +185,12 @@ export default function TermsPage() {
           </section>
 
           <section>
-            <div className="flex items-center gap-3 mb-4">
+            <div className="mb-4 flex items-center gap-3">
               <Scale className="text-primary h-6 w-6" />
               <h2 className="text-2xl font-semibold">حدود المسؤولية</h2>
             </div>
-            <div className="bg-muted/30 p-6 rounded-lg">
-              <ul className="space-y-3 text-muted-foreground">
+            <div className="bg-muted/30 rounded-lg p-6">
+              <ul className="text-muted-foreground space-y-3">
                 <li className="flex items-start gap-2">
                   <span className="text-primary mt-1">•</span>
                   <span>لا نتحمل المسؤولية عن أي ردود فعل تحسسية للمنتجات</span>
@@ -209,33 +212,33 @@ export default function TermsPage() {
           </section>
 
           <section>
-            <h2 className="text-2xl font-semibold mb-4">الملكية الفكرية</h2>
-            <div className="bg-muted/30 p-6 rounded-lg">
+            <h2 className="mb-4 text-2xl font-semibold">الملكية الفكرية</h2>
+            <div className="bg-muted/30 rounded-lg p-6">
               <p className="text-muted-foreground mb-4">
-                جميع المحتويات على هذا الموقع، بما في ذلك النصوص والصور والشعارات والتصاميم،
-                محمية بموجب حقوق الملكية الفكرية. يُحظر استخدام أي محتوى دون إذن كتابي مسبق.
+                جميع المحتويات على هذا الموقع، بما في ذلك النصوص والصور والشعارات والتصاميم، محمية
+                بموجب حقوق الملكية الفكرية. يُحظر استخدام أي محتوى دون إذن كتابي مسبق.
               </p>
             </div>
           </section>
 
           <section>
-            <h2 className="text-2xl font-semibold mb-4">القانون المطبق</h2>
-            <div className="bg-muted/30 p-6 rounded-lg">
+            <h2 className="mb-4 text-2xl font-semibold">القانون المطبق</h2>
+            <div className="bg-muted/30 rounded-lg p-6">
               <p className="text-muted-foreground">
-                تخضع هذه الشروط والأحكام لقوانين المملكة العربية السعودية. أي نزاع ينشأ عن أو
-                يتعلق بهذه الشروط يخضع للاختصاص الحصري لمحاكم المملكة العربية السعودية.
+                تخضع هذه الشروط والأحكام لقوانين المملكة العربية السعودية. أي نزاع ينشأ عن أو يتعلق
+                بهذه الشروط يخضع للاختصاص الحصري لمحاكم المملكة العربية السعودية.
               </p>
             </div>
           </section>
 
-          <section className="bg-primary/10 p-6 rounded-lg">
-            <h3 className="font-semibold mb-3">تحديثات الشروط</h3>
+          <section className="bg-primary/10 rounded-lg p-6">
+            <h3 className="mb-3 font-semibold">تحديثات الشروط</h3>
             <p className="text-muted-foreground">
-              نحتفظ بالحق في تحديث هذه الشروط والأحكام في أي وقت. استمرارك في استخدام الموقع
-              بعد أي تغييرات يعتبر موافقة منك على الشروط المعدلة.
+              نحتفظ بالحق في تحديث هذه الشروط والأحكام في أي وقت. استمرارك في استخدام الموقع بعد أي
+              تغييرات يعتبر موافقة منك على الشروط المعدلة.
             </p>
             <p className="text-muted-foreground mt-3">
-              <strong>آخر تحديث:</strong> {new Date().toLocaleDateString('ar-SA')}
+              <strong>آخر تحديث:</strong> {new Date().toLocaleDateString("ar-SA")}
             </p>
           </section>
 
