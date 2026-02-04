@@ -4,7 +4,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(request: NextRequest) {
   try {
-    const code = request.cookies.get("country")?.value;
+    const code = request.cookies.get("country_code")?.value;
     const { data } = await fetcher.get<Country[]>(`/countries`);
     const country = data.find((country) => country.code === code);
     return NextResponse.json(country, {

@@ -5,12 +5,8 @@ import { Category } from "@/types/category";
 
 export async function GET(request: NextRequest) {
   try {
-    const countryCode = request.cookies.get("country")?.value;
-    const { data } = await fetcher.get<Category[]>("/admin/categories", {
-      headers: {
-        "X-Country-Code": countryCode,
-      },
-    });
+    const countryCode = request.cookies.get("country_code")?.value;
+    const { data } = await fetcher.get<Category[]>("/admin/categories");
 
     return NextResponse.json(data, {
       status: 200,

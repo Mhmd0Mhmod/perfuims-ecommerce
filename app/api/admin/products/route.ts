@@ -24,7 +24,6 @@ export async function GET(request: NextRequest) {
       },
       headers: {
         Authorization: `Bearer ${session.token}`,
-        "X-Country-Code": request.cookies.get("country")?.value,
       },
     });
     return NextResponse.json(data, {

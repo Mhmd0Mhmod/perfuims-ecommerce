@@ -143,7 +143,7 @@ export default function AddOfferForm({ offer, products }: AddOfferFormProps) {
       toast.error("حدث خطأ غير متوقع", { id: loadingId });
     }
   }
-  const countryCode = getCookie("country");
+  const countryCode = getCookie("country_code");
 
   return (
     <Form {...form}>

@@ -7,7 +7,7 @@ import { NextRequest, NextResponse } from "next/server";
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
   const page = searchParams.get("page") || 0;
-  const countryCode = request.cookies.get("country")?.value;
+  const countryCode = request.cookies.get("country_code")?.value;
   const period = searchParams.get("period");
   const status = searchParams.get("status");
   try {
@@ -29,7 +29,6 @@ export async function GET(request: NextRequest) {
         period,
       },
       headers: {
-        "X-Country-Code": countryCode,
         Authorization: `Bearer ${session.token}`,
       },
     });

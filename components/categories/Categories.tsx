@@ -5,7 +5,7 @@ import CategoriesSkeleton from "./CategoriesSkeleton";
 import { getCookies } from "@/app/actions";
 
 async function Categories() {
-  const countryCode = await getCookies("country");
+  const countryCode = await getCookies("country_code");
   return (
     <section className="bg-muted/30 py-16 md:py-24">
       <div className="container mx-auto px-4">

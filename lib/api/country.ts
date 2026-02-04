@@ -63,7 +63,7 @@ export class CountryAPI {
   }
   static async getCurrentCountryServer() {
     try {
-      const countryCode = await getCookies("country");
+      const countryCode = await getCookies("country_code");
       const { data: countries } = await fetcher.get<Country[]>("countries");
       const country = countries.find((country) => country.code === countryCode);
       return country;

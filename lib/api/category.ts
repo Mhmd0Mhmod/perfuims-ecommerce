@@ -1,9 +1,9 @@
+import { getCookies } from "@/app/actions";
 import { Category } from "@/types/category";
 import axios from "axios";
-import { throwingError } from "../utils";
 import { authFetcher } from "../authFetcher";
 import { fetcher } from "../fetcher";
-import { getCookies } from "@/app/actions";
+import { throwingError } from "../utils";
 
 export class CategoryAPI {
   static async getAllCategories() {
@@ -25,12 +25,8 @@ export class CategoryAPI {
   }
   static async getAllCategoriesServer(countryCode?: string): Promise<Category[]> {
     try {
-      const country = await getCookies("country");
-      const response = await fetcher.get<Category[]>("/categories", {
-        headers: {
-          "X-Country-Code": countryCode || country,
-        },
-      });
+      const country = await getCookies("country_code");
+      const response = await fetcher.get<Category[]>("/categories");
       return response.data;
     } catch (error) {
       throw throwingError(error);

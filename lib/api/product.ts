@@ -27,9 +27,6 @@ export class ProductAPI {
           ...params,
           q: params.searchTerm,
         },
-        headers: {
-          "X-Country-Code": countryCode,
-        },
       });
       return data;
     } catch (error) {

@@ -10,7 +10,7 @@ interface OverviewChartProps {
 }
 
 export function OverviewChart({ data }: OverviewChartProps) {
-  const countryCode = getCookie("country");
+  const countryCode = getCookie("country_code");
   const chartData = data.map((stat) => ({
     name: stat.month,
     total: stat.totalRevenue,

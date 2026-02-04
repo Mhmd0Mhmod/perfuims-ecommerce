@@ -9,11 +9,10 @@ export async function GET(requet: NextRequest) {
       return NextResponse.json({ error: "المستخدم غير مصرح له." }, { status: 401 });
     }
 
-    const countryCode = requet.cookies.get("country")?.value;
+    const countryCode = requet.cookies.get("country_code")?.value;
     const response = await fetcher.get("/cart", {
       headers: {
         Authorization: `Bearer ${session.token}`,
-        "X-Country-Code": countryCode,
       },
     });
     return NextResponse.json(response.data, {

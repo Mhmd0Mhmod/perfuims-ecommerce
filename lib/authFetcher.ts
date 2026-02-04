@@ -1,4 +1,3 @@
-import { getCookies } from "@/app/actions";
 import axios from "axios";
 import { auth } from "./auth";
 
@@ -13,10 +12,7 @@ authFetcher.interceptors.request.use(async (config) => {
   if (session?.token) {
     config.headers.Authorization = `Bearer ${session.token}`;
   }
-  const countryCode = await getCookies("country");
-  if (countryCode) {
-    config.headers["X-Country-Code"] = countryCode;
-  }
+
   return config;
 });
 export { authFetcher };

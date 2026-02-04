@@ -106,7 +106,7 @@ function OrdersSkeleton() {
 async function OrdersList() {
   const [orders, countryCode] = await Promise.all([
     OrderAPI.getUserOrders(),
-    getCookies("country"),
+    getCookies("country_code"),
   ]);
   console.log(orders);
 

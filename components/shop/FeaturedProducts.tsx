@@ -7,7 +7,7 @@ import { Button } from "../ui/button";
 import ProductsGrid from "./ProductsGrid";
 
 async function FeaturedProducts() {
-  const countryCode = await getCookies("country");
+  const countryCode = await getCookies("country_code");
   return (
     <section className="py-16 md:py-24">
       <div className="container mx-auto px-4">

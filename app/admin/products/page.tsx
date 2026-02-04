@@ -162,7 +162,7 @@ async function ProductsTable() {
   const [categories, sizes, countryCode] = await Promise.all([
     CategoryAPI.getAdminCategories(),
     SizeAPI.getAdminSizes(),
-    getCookies("country"),
+    getCookies("country_code"),
   ]);
   return (
     <div className="space-y-4">

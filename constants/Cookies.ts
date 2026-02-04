@@ -1,3 +1,3 @@
 export const COOKIES = {
-  COUNTRY: "country",
+  COUNTRY: "country_code",
 } as const;

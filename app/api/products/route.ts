@@ -3,7 +3,7 @@ import { AxiosError } from "axios";
 import { NextRequest, NextResponse } from "next/server";
 export async function GET(request: NextRequest) {
   try {
-    const countryCode = request.cookies.get("country")?.value;
+    const countryCode = request.cookies.get("country_code")?.value;
     const { searchParams } = request.nextUrl;
     const q = searchParams.get("searchTerm") || "";
     const page = Number(searchParams.get("page") || 0);

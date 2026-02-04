@@ -14,7 +14,7 @@ async function ShopHeader() {
   try {
     [countries, selectedCountryCode] = await Promise.all([
       CountryAPI.getCountriesServer(),
-      getCookies("country"),
+      getCookies("country_code"),
     ]);
   } catch (error) {
     console.error("Error fetching countries:", error);

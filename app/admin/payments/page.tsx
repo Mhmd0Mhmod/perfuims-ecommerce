@@ -35,7 +35,7 @@ function PaymentsPage() {
 async function PaymentStatsCard() {
   const [payments, countryCode] = await Promise.all([
     PaymentAPI.getAdminPaymentsStatus(),
-    getCookies("country"),
+    getCookies("country_code"),
   ]);
   const {
     cashOnDeliveryAmount,

@@ -7,12 +7,12 @@ import useCountryByCode from "./use-country-by-code";
 
 export function useSelectedCountry() {
   const queryClient = useQueryClient();
-  const selectedCountry = getCookie("country");
+  const selectedCountry = getCookie("country_code");
   const { data: selectedCountryEntry } = useCountryByCode(selectedCountry!);
   const router = useRouter();
   const setSelectedCountry = useCallback(
     (code: string) => {
-      setCookie("country", code);
+      setCookie("country_code", code);
       router.refresh();
       queryClient.invalidateQueries();
     },
