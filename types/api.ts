@@ -21,6 +21,8 @@ export class APIResponse {
   }
   static error<T = void>(error: unknown): IAPIResponse<T> {
     if (error instanceof AxiosError) {
+      console.dir(error.response);
+
       const axiosError = error as AxiosError<{ message: string }>;
 
       return {

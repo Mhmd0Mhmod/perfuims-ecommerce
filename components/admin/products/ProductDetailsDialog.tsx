@@ -176,7 +176,12 @@ export function ProductDetailsDialog({ product }: { product: Product }) {
         <Card>
           <CardContent className="p-4">
             <div className="relative aspect-square w-full overflow-hidden rounded-lg">
-              <Image src={product.imageUrl} alt={product.name} fill className="object-cover" />
+              <Image
+                src={product.imageUrl || "/assets/logo.png"}
+                alt={product.name}
+                fill
+                className="object-cover"
+              />
             </div>
           </CardContent>
         </Card>

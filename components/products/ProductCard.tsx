@@ -32,7 +32,7 @@ function ProductCard({ product }: ProductCardProps) {
       <CardHeader className="relative p-0">
         <div className="bg-muted relative aspect-square overflow-hidden">
           <Image
-            src={product.imageUrl}
+            src={product.imageUrl || "/assets/logo.png"}
             alt={product.name}
             onClick={handleCardClick}
             fill
@@ -80,11 +80,9 @@ function ProductCard({ product }: ProductCardProps) {
       <CardFooter className="p-4 pt-0">
         {isAvailable && <AddToCartButton product={product} />}
         {!isAvailable && (
-          <Link href={`/products/${product.id}`}>
-            <Button variant="outline" className="w-full">
-              عرض المنتج
-            </Button>
-          </Link>
+          <Button variant="outline" className="w-full" asChild>
+            <Link href={`/products/${product.id}`}>عرض المنتج</Link>
+          </Button>
         )}
       </CardFooter>
     </Card>

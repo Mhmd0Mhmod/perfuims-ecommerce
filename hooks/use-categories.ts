@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 export function useCategories() {
   const query = useQuery({
     queryKey: ["categories-home"],
-    queryFn: CategoryAPI.getAllCategoriesRoots,
+    queryFn: CategoryAPI.getAllCategories,
   });
   return query;
 }

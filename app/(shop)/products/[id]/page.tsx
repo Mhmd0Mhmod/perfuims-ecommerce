@@ -9,8 +9,10 @@ import Image from "next/image";
 
 export default async function ProductPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  const product = await ProductAPI.getProductById(id);
-  const country = await CountryAPI.getCurrentCountryServer();
+  const [product, country] = await Promise.all([
+    ProductAPI.getProductById(id),
+    CountryAPI.getCurrentCountryServer(),
+  ]);
   const minPrice = Math.min(...product.variants.map((v) => v.newPrice));
   const maxPrice = Math.max(...product.variants.map((v) => v.newPrice));
 
@@ -21,7 +23,7 @@ export default async function ProductPage({ params }: { params: Promise<{ id: st
         <div className="sticky top-8 flex flex-col gap-4">
           <div className="relative aspect-square w-full overflow-hidden rounded-3xl border shadow-2xl">
             <Image
-              src={product.imageUrl}
+              src={product.imageUrl || "/assets/logo.png"}
               alt={product.name}
               fill
               className="object-cover"
@@ -81,8 +83,7 @@ export default async function ProductPage({ params }: { params: Promise<{ id: st
               )}
             </div>
           </div>
-          {/* Add to Cart Sticky Card */}
-          <div className="sticky top-8 z-10">
+          <div>
             <Card className="border-none bg-transparent shadow-none">
               <CardContent className="flex flex-col gap-4 p-6">
                 <AddToCartButton product={product} />

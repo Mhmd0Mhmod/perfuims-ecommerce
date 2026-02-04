@@ -6,7 +6,7 @@ import { fetcher } from "../fetcher";
 import { getCookies } from "@/app/actions";
 
 export class CategoryAPI {
-  static async getAllCategoriesRoots() {
+  static async getAllCategories() {
     try {
       const response = await axios.get<Category[]>("/api/categories");
       return response.data;
@@ -15,22 +15,9 @@ export class CategoryAPI {
     }
   }
 
-  static async getAdminCategoriesRoots(): Promise<Category[]> {
+  static async getAdminCategories(): Promise<Category[]> {
     try {
-      const response = await authFetcher.get<Category[]>("/admin/categories/roots");
-      return response.data;
-    } catch (error) {
-      throw throwingError(error);
-    }
-  }
-  static async getAllCategoriesRootsServer(countryCode?: string): Promise<Category[]> {
-    try {
-      const country = await getCookies("country");
-      const response = await fetcher.get<Category[]>("/categories", {
-        headers: {
-          "X-Country-Code": countryCode || country,
-        },
-      });
+      const response = await authFetcher.get<Category[]>("/admin/categories");
       return response.data;
     } catch (error) {
       throw throwingError(error);

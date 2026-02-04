@@ -60,25 +60,17 @@ export const addCountrySchema = z.object({
   paymentMethodIds: z.array(z.number()),
 });
 export type AddCountrySchema = z.infer<typeof addCountrySchema>;
-
-export const addCategorySchema = z.object({
+const baseCategorySchema = {
   name: z.string({ message: "اسم التصنيف مطلوب" }).min(3, {
     message: "اسم التنصيف يجب ان يكون 3 احرف علي الاقل",
   }),
   description: z.string().nullable(),
   isActive: z.boolean(),
   isAtHomePage: z.boolean(),
-  subcategories: z
-    .array(
-      z.object({
-        name: z.string({ message: "اسم التصنيف الفرعي مطلوب" }).min(3, {
-          message: "اسم التصنيف الفرعي يجب ان يكون 3 احرف علي الاقل",
-        }),
-        description: z.string().nullable(),
-        isActive: z.boolean(),
-      }),
-    )
-    .optional(),
+};
+export const addCategorySchema = z.object({
+  ...baseCategorySchema,
+  children: z.array(z.object(baseCategorySchema)).optional(),
 });
 export type AddCategorySchema = z.infer<typeof addCategorySchema>;
 

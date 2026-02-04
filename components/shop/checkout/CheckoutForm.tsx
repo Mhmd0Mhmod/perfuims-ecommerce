@@ -26,6 +26,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useForm, useWatch } from "react-hook-form";
 import { toast } from "sonner";
+
 interface CheckoutFormProps {
   cartItems: CartItem[];
   user?: User;
@@ -221,7 +222,7 @@ export default function CheckoutForm({ cartItems, user, country }: CheckoutFormP
                 >
                   <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-md border">
                     <Image
-                      src={item.variantDetails.imageUrl}
+                      src={item.variantDetails.imageUrl || "/assets/logo.png"}
                       alt={item.variantDetails.name}
                       fill
                       className="object-cover"

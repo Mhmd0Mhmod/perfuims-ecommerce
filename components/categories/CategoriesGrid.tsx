@@ -5,7 +5,9 @@ interface CategoriesGridProps {
 }
 async function CategoriesGrid({ countryCode }: CategoriesGridProps) {
   const categories = await CategoryAPI.getAllCategoriesServer(countryCode);
-  const filteredCategories = categories?.filter((category) => category.isAtHomePage);
+  const filteredCategories = categories
+    ?.flatMap((category) => (category.children.length ? category.children : [category]))
+    .filter((category) => category.isAtHomePage);
 
   return (
     <div className="space-y-12">

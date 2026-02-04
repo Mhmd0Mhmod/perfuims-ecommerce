@@ -32,10 +32,9 @@ export function AddCategoryForm({ category }: { category?: Category }) {
       description: "",
       isActive: true,
       isAtHomePage: false,
-      subcategories: [],
+      children: [],
     },
   });
-
   const addNewCategory = useCallback(
     async (data: AddCategorySchema) => {
       const id = toast.loading("جارى إضافة التصنيف...");
@@ -74,7 +73,13 @@ export function AddCategoryForm({ category }: { category?: Category }) {
   );
   const { append, fields, remove } = useFieldArray({
     control: form.control,
-    name: "subcategories",
+    name: "children",
+  });
+  const createNewChildCategory = () => ({
+    name: "",
+    description: "",
+    isActive: true,
+    isAtHomePage: false,
   });
 
   return (
@@ -154,7 +159,7 @@ export function AddCategoryForm({ category }: { category?: Category }) {
                 type="button"
                 variant="outline"
                 size="sm"
-                onClick={() => append({ name: "", description: "", isActive: true })}
+                onClick={() => append(createNewChildCategory())}
               >
                 <Plus className="ml-2 h-4 w-4" />
                 إضافة تصنيف فرعي
@@ -176,7 +181,7 @@ export function AddCategoryForm({ category }: { category?: Category }) {
                 <div className="grid gap-4">
                   <FormField
                     control={form.control}
-                    name={`subcategories.${index}.name`}
+                    name={`children.${index}.name`}
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>اسم التصنيف الفرعي</FormLabel>
@@ -190,7 +195,7 @@ export function AddCategoryForm({ category }: { category?: Category }) {
 
                   <FormField
                     control={form.control}
-                    name={`subcategories.${index}.description`}
+                    name={`children.${index}.description`}
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>الوصف</FormLabel>
@@ -208,11 +213,29 @@ export function AddCategoryForm({ category }: { category?: Category }) {
 
                   <FormField
                     control={form.control}
-                    name={`subcategories.${index}.isActive`}
+                    name={`children.${index}.isActive`}
                     render={({ field }) => (
                       <FormItem className="flex flex-row items-center justify-between rounded-md border p-3">
                         <div className="space-y-0.5 text-right">
                           <FormLabel className="text-sm">نشط</FormLabel>
+                        </div>
+                        <FormControl>
+                          <Switch
+                            className="scale-75"
+                            checked={field.value}
+                            onCheckedChange={field.onChange}
+                          />
+                        </FormControl>
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name={`children.${index}.isAtHomePage`}
+                    render={({ field }) => (
+                      <FormItem className="flex flex-row items-center justify-between rounded-md border p-3">
+                        <div className="space-y-0.5 text-right">
+                          <FormLabel className="text-sm">عرض في الصفحة الرئيسية</FormLabel>
                         </div>
                         <FormControl>
                           <Switch

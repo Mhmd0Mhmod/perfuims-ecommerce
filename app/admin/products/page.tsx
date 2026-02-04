@@ -38,7 +38,7 @@ import { Suspense } from "react";
 
 async function AddProductFormButton() {
   const [categories, sizes] = await Promise.all([
-    CategoryAPI.getAdminCategoriesRoots(),
+    CategoryAPI.getAdminCategories(),
     SizeAPI.getAdminSizes(),
   ]);
   return (
@@ -160,7 +160,7 @@ async function ProductsTable() {
     );
   }
   const [categories, sizes, countryCode] = await Promise.all([
-    CategoryAPI.getAdminCategoriesRoots(),
+    CategoryAPI.getAdminCategories(),
     SizeAPI.getAdminSizes(),
     getCookies("country"),
   ]);
@@ -221,7 +221,7 @@ function ProductTableRow({
         <div className="flex items-center gap-3">
           <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-md">
             <Image
-              src={product.imageUrl}
+              src={product.imageUrl || "/assets/logo.png"}
               alt={product.name}
               fill
               sizes="48px"

@@ -21,21 +21,18 @@ async function ShopHeader() {
     // Continue with empty countries array - the UI will handle this gracefully
   }
   return (
-    <header className="bg-background sticky top-0 z-50 w-full border-b shadow-sm">
+    <header className="bg-background/95 supports-backdrop-filter:bg-backg round/60shadow-sm sticky top-0 z-50 w-full border-b backdrop-blur">
       <div className="container mx-auto px-4">
         {/* Main Header Row */}
         <div className="flex h-16 items-center justify-between gap-4">
-          {/* Logo & Mobile Menu Group */}
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-3">
             <Menu countries={countries} />
             <Logo />
           </div>
 
-          {/* Search Bar - Desktop */}
-          <SearchBar className="hidden max-w-sm flex-1 lg:flex" />
+          <SearchBar className="hidden max-w-md flex-1 lg:flex" />
 
-          {/* Actions Group */}
-          <div className="flex items-center gap-2 md:gap-4">
+          <div className="flex items-center gap-2 md:gap-3">
             <div className="hidden md:block">
               <SelectCountry countries={countries} selectedCountryCode={selectedCountryCode} />
             </div>
@@ -43,8 +40,8 @@ async function ShopHeader() {
           </div>
         </div>
 
-        {/* Search Bar - Mobile & Tablet */}
-        <div className="pb-4 lg:hidden">
+        {/* Mobile Search Bar */}
+        <div className="pt-2 pb-3 lg:hidden">
           <SearchBar className="w-full" />
         </div>
       </div>

@@ -72,7 +72,7 @@ function CategoriesPage() {
 }
 
 async function CategoriesList() {
-  const categories = await CategoryAPI.getAdminCategoriesRoots();
+  const categories = await CategoryAPI.getAdminCategories();
   if (categories.length === 0) {
     return (
       <Card>
