@@ -6,7 +6,7 @@ async function ProductsGrid({ countryCode, limit = 4 }: { countryCode?: string; 
   if (!countryCode) {
     return <EmptyCountry />;
   }
-  const products = await ProductAPI.getProductsServer({}, countryCode);
+  const products = await ProductAPI.getProductsServer();
   if (products?.content?.length === 0) {
     return <EmptyProducts />;
   }

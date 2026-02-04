@@ -15,10 +15,9 @@ import CardSkeleton from "../shared/card-skeleton";
 
 interface CategoryProductsCarouselProps {
   category: Category;
-  countryCode?: string;
 }
 
-export default function CategoryProducts({ category, countryCode }: CategoryProductsCarouselProps) {
+export default function CategoryProducts({ category }: CategoryProductsCarouselProps) {
   const { id, name: categoryName, description: categoryDescription } = category;
   return (
     <div className="space-y-6">
@@ -54,19 +53,16 @@ export default function CategoryProducts({ category, countryCode }: CategoryProd
           </div>
         }
       >
-        <CategoryProductsCarousel category={category} countryCode={countryCode} />
+        <CategoryProductsCarousel category={category} />
       </Suspense>
     </div>
   );
 }
 
-async function CategoryProductsCarousel({ category, countryCode }: CategoryProductsCarouselProps) {
-  const products = await ProductAPI.getProductsServer(
-    {
-      categorieIds: [category.id.toString()],
-    },
-    countryCode,
-  );
+async function CategoryProductsCarousel({ category }: CategoryProductsCarouselProps) {
+  const products = await ProductAPI.getProductsServer({
+    categorieIds: [category.id.toString()],
+  });
   return (
     <Carousel
       opts={{
@@ -75,15 +71,10 @@ async function CategoryProductsCarousel({ category, countryCode }: CategoryProdu
         direction: "rtl",
       }}
       className="container"
-
     >
-      <CarouselContent >
+      <CarouselContent>
         {products.content.map((product) => (
-          <CarouselItem
-            key={product.id}
-            className="sm:basis-1/2 md:basis-1/3 lg:basis-1/4"
-          
-          >
+          <CarouselItem key={product.id} className="sm:basis-1/2 md:basis-1/3 lg:basis-1/4">
             <ProductCard product={product} />
           </CarouselItem>
         ))}

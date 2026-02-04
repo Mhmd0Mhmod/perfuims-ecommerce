@@ -18,13 +18,13 @@ export class ProductAPI {
       throw throwingError(error);
     }
   }
-  static async getProductsServer(params: Partial<ProductsState>): Promise<Pagination<Product>> {
+  static async getProductsServer(params?: Partial<ProductsState>): Promise<Pagination<Product>> {
     try {
       const cookeString = await getCookiesToString();
       const { data } = await fetcher.get<Pagination<Product>>("/products", {
         params: {
           ...params,
-          q: params.searchTerm,
+          q: params?.searchTerm,
         },
         headers: {
           Cookie: cookeString,

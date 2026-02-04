@@ -1,4 +1,3 @@
-import { getCookies } from "@/app/actions";
 import Link from "next/link";
 import { Suspense } from "react";
 import CardSkeleton from "../shared/card-skeleton";
@@ -7,7 +6,6 @@ import { Button } from "../ui/button";
 import ProductsGrid from "./ProductsGrid";
 
 async function FeaturedProducts() {
-  const countryCode = await getCookies("country_code");
   return (
     <section className="py-16 md:py-24">
       <div className="container mx-auto px-4">
@@ -31,9 +29,8 @@ async function FeaturedProducts() {
               ))}
             </div>
           }
-          key={countryCode}
         >
-          <ProductsGrid limit={4} countryCode={countryCode} />
+          <ProductsGrid limit={4} />
         </Suspense>
 
         {/* View All Button */}
