@@ -1,11 +1,7 @@
 import { ProductAPI } from "@/lib/api/product";
 import ProductCard from "../products/ProductCard";
-import EmptyCountry from "../shared/empty-country";
 import EmptyProducts from "../shared/empty-products";
-async function ProductsGrid({ countryCode, limit = 4 }: { countryCode?: string; limit?: number }) {
-  if (!countryCode) {
-    return <EmptyCountry />;
-  }
+async function ProductsGrid({ limit = 4 }: { limit?: number }) {
   const products = await ProductAPI.getProductsServer();
   if (products?.content?.length === 0) {
     return <EmptyProducts />;
