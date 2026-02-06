@@ -222,35 +222,12 @@ export async function addProduct(data: AddProductSchema): Promise<IAPIResponse<P
 
 export async function updateProduct(
   productId: number,
-  data: Partial<AddProductSchema>,
-  defaultValues?: Product,
+  data: AddProductSchema,
 ): Promise<IAPIResponse<Product>> {
   try {
-    if (data.variants && defaultValues?.variants) {
-      const { toAdd, toUpdate, toDelete } = ProductAPI.checkVariantChanges(
-        defaultValues.variants,
-        data.variants,
-      );
-      if (toAdd.length) {
-        await authFetcher.post(`admin/product-variants/by-product/${defaultValues.id}`, toAdd);
-      }
-      if (toUpdate.length) {
-        const promises = toUpdate.map((variant) =>
-          authFetcher.patch(`admin/product-variants/${variant.id}`, variant),
-        );
-        await Promise.all(promises);
-      }
-      if (toDelete.length) {
-        const promises = toDelete.map((variantId) =>
-          authFetcher.delete(`admin/product-variants/${variantId}`),
-        );
-        await Promise.all(promises);
-      }
-    }
-
     const response = await authFetcher.patch<Product>(
       `admin/products/${productId}`,
-      ProductAPI.getProductFormData(data as AddProductSchema),
+      ProductAPI.getProductFormData(data),
     );
 
     revalidatePath("/admin/products");

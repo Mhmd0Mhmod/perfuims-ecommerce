@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -21,6 +22,7 @@ import { useCallback } from "react";
 import { useForm, useFormState } from "react-hook-form";
 import { toast } from "sonner";
 import ProductVariants from "./ProductVariants";
+import Link from "next/link";
 
 interface AddProductFormProps {
   product?: Product;
@@ -50,7 +52,7 @@ function AddProductForm({ product, categories, sizes }: AddProductFormProps) {
       const id = toast.loading(isEditMode ? "جارى تحديث المنتج..." : "جارى إضافة المنتج...");
       try {
         if (isEditMode) {
-          const response = await updateProduct(product!.id, data, product);
+          const response = await updateProduct(product!.id, data);
           if (response.success) {
             toast.success(response.message || "تم تحديث المنتج بنجاح", { id });
           } else {
@@ -131,22 +133,35 @@ function AddProductForm({ product, categories, sizes }: AddProductFormProps) {
           <FormField
             control={form.control}
             name="image"
-            render={({ field: { value: _value, onChange, ...field } }) => (
-              <FormItem>
-                <FormLabel>رابط الصورة</FormLabel>
-                <FormControl>
-                  <Input
-                    type="file"
-                    onChange={(e) => {
-                      const file = e.target.files?.[0];
-                      onChange(file);
-                    }}
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
+            render={({ field: { value, onChange, ...field } }) => {
+              return (
+                <FormItem>
+                  <FormLabel>رابط الصورة</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="file"
+                      onChange={(e) => {
+                        const file = e.target.files?.[0];
+                        onChange(file);
+                      }}
+                      onSubmit={() => {
+                        onChange(value);
+                      }}
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormDescription>
+                    يمكنك مشاهدة معاينة للصورة الحاليه للمنتج.
+                    <Button variant="link" size="sm" disabled={!product?.imageUrl}>
+                      <Link href={product?.imageUrl || "#"} target="_blank">
+                        معاينة الصورة
+                      </Link>
+                    </Button>
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              );
+            }}
           />
 
           {/* Variants Section */}
