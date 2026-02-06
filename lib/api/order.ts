@@ -1,5 +1,5 @@
 import { Order } from "@/types/order";
-import axios from "axios";
+import axios from "@/lib/axios";
 import { authFetcher } from "../authFetcher";
 import { throwingError } from "../utils";
 export class OrderAPI {

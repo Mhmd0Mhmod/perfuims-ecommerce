@@ -11,7 +11,7 @@ function Logo() {
       <div className="relative h-12 w-12 shrink-0 sm:h-14 sm:w-14">
         <Image
           src="/assets/logo.png"
-          alt="Company Logo"
+          alt="مؤسسه الطاحون - المسك للعطور"
           width={56}
           height={56}
           priority
@@ -22,7 +22,7 @@ function Logo() {
         <span className="text-primary text-base leading-tight font-bold sm:text-lg">
           مؤسسه الطاحون
         </span>
-        <span className="text-muted-foreground text-xs font-medium sm:text-sm">مسك للعطور</span>
+        <span className="text-muted-foreground text-xs font-medium sm:text-sm">المسك للعطور</span>
       </div>
     </Link>
   );

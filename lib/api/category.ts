@@ -1,5 +1,5 @@
 import { Category } from "@/types/category";
-import axios from "axios";
+import axios from "@/lib/axios";
 import { authFetcher } from "../authFetcher";
 import { fetcher } from "../fetcher";
 import { throwingError } from "../utils";

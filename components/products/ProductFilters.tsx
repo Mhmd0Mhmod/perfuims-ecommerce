@@ -6,7 +6,6 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
-import { Slider } from "@/components/ui/slider";
 import { productsActions, useProductsContext } from "@/context/ProductsContext";
 import { Category } from "@/types/category";
 import { Offer } from "@/types/offer";
@@ -14,12 +13,9 @@ import { Search, SlidersHorizontal } from "lucide-react";
 import { useEffect, useState } from "react";
 
 function ProductFilters({ categories, offers }: { categories?: Category[]; offers?: Offer[] }) {
-  const { dispatch, filters } = useProductsContext();
+  const { dispatch, filters, resetFilters } = useProductsContext();
   const [searchTerm, setSearchTerm] = useState(filters.searchTerm);
-  const [priceRange, setPriceRange] = useState<[number, number]>([
-    filters.fromPrice ?? 0,
-    filters.toPrice ?? 2000,
-  ]);
+
   useEffect(() => {
     const timer = setTimeout(() => {
       dispatch({
@@ -31,19 +27,8 @@ function ProductFilters({ categories, offers }: { categories?: Category[]; offer
     return () => clearTimeout(timer);
   }, [searchTerm, dispatch]);
 
-  const handlePriceChange = (value: number[]) => {
-    setPriceRange([value[0], value[1]]);
-  };
-
-  const handlePriceCommit = () => {
-    dispatch({
-      type: productsActions.SET_PRICE_RANGE,
-      payload: { fromPrice: priceRange[0], toPrice: priceRange[1] },
-    });
-  };
-
   const handleCategoryToggle = (categoryId: string) => {
-    const currentCategories = filters.categorieIds;
+    const currentCategories = filters.categoryIds;
     const newCategories = currentCategories.includes(categoryId)
       ? currentCategories.filter((id) => id !== categoryId)
       : [...currentCategories, categoryId];
@@ -55,7 +40,7 @@ function ProductFilters({ categories, offers }: { categories?: Category[]; offer
   };
 
   const handleOfferToggle = (offerId: string) => {
-    const currentOffers = filters.dealIds;
+    const currentOffers = filters.offerIds;
     const newOffers = currentOffers.includes(offerId)
       ? currentOffers.filter((id) => id !== offerId)
       : [...currentOffers, offerId];
@@ -68,8 +53,7 @@ function ProductFilters({ categories, offers }: { categories?: Category[]; offer
 
   const handleReset = () => {
     setSearchTerm("");
-    setPriceRange([0, 2000]);
-    dispatch({ type: productsActions.RESET_FILTERS });
+    resetFilters();
   };
 
   return (
@@ -96,23 +80,6 @@ function ProductFilters({ categories, offers }: { categories?: Category[]; offer
           </div>
         </div>
 
-        {/* Price Range */}
-        <div className="mb-6">
-          <Label className="mb-4 block text-right">نطاق السعر</Label>
-          <Slider
-            value={priceRange}
-            onValueChange={handlePriceChange}
-            onValueCommit={handlePriceCommit}
-            max={2000}
-            step={50}
-            className="mb-4"
-          />
-          <div className="text-muted-foreground flex items-center justify-between text-sm">
-            <span>{priceRange[1]} </span>
-            <span>{priceRange[0]} </span>
-          </div>
-        </div>
-
         <Separator className="mb-6" />
 
         {/* Categories */}
@@ -123,7 +90,7 @@ function ProductFilters({ categories, offers }: { categories?: Category[]; offer
               <div key={category.id} className="flex items-center gap-2">
                 <Checkbox
                   id={category.id.toString()}
-                  checked={filters.categorieIds.includes(category.id.toString())}
+                  checked={filters.categoryIds.includes(category.id.toString())}
                   onCheckedChange={() => handleCategoryToggle(category.id.toString())}
                 />
                 <Label htmlFor={category.id.toString()} className="cursor-pointer">
@@ -133,26 +100,30 @@ function ProductFilters({ categories, offers }: { categories?: Category[]; offer
             ))}
           </div>
         </div>
-        <Separator className="mb-6" />
-
         {/* Offers */}
-        <div className="mb-6">
-          <Label className="mb-4 block text-right">العروض</Label>
-          <div className="space-y-3">
-            {offers?.map((offer) => (
-              <div key={offer.id} className="flex items-center gap-2">
-                <Checkbox
-                  id={offer.id.toString()}
-                  checked={filters.dealIds.includes(offer.id.toString())}
-                  onCheckedChange={() => handleOfferToggle(offer.id.toString())}
-                />
-                <Label htmlFor={offer.id.toString()} className="cursor-pointer">
-                  {offer.title}
-                </Label>
+        {offers && offers.length > 0 && (
+          <>
+            <Separator className="mb-6" />
+
+            <div className="mb-6">
+              <Label className="mb-4 block text-right">العروض</Label>
+              <div className="space-y-3">
+                {offers?.map((offer) => (
+                  <div key={offer.id} className="flex items-center gap-2">
+                    <Checkbox
+                      id={offer.id.toString()}
+                      checked={filters.offerIds.includes(offer.id.toString())}
+                      onCheckedChange={() => handleOfferToggle(offer.id.toString())}
+                    />
+                    <Label htmlFor={offer.id.toString()} className="cursor-pointer">
+                      {offer.title}
+                    </Label>
+                  </div>
+                ))}
               </div>
-            ))}
-          </div>
-        </div>
+            </div>
+          </>
+        )}
 
         <Separator className="mb-6" />
 

@@ -235,13 +235,7 @@ async function CustomerDetailsPage({ params }: { params: Promise<{ id: string }>
                       return (
                         <TableRow key={order.orderId}>
                           <TableCell className="font-medium">#{order.orderNumber}</TableCell>
-                          <TableCell>
-                            {new Date(order.createdAt).toLocaleDateString("ar-EG", {
-                              year: "numeric",
-                              month: "short",
-                              day: "numeric",
-                            })}
-                          </TableCell>
+                          <TableCell>{formatDate(order.createdAt)}</TableCell>
                           <TableCell>
                             <Badge variant={statusInfo?.variant}>{statusInfo.label}</Badge>
                           </TableCell>

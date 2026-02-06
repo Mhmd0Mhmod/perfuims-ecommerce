@@ -16,7 +16,7 @@ function PromoBanner() {
             </Badge>
           </p>
           <Button asChild variant="secondary" size="sm" className="hidden md:inline-flex">
-            <Link href="/products?deal=true">تسوق الآن</Link>
+            <Link href="/products">تسوق الآن</Link>
           </Button>
         </div>
       </div>

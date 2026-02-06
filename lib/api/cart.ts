@@ -1,5 +1,5 @@
 import { CartItem } from "@/types/cart";
-import axios from "axios";
+import axios from "@/lib/axios";
 import { authFetcher } from "../authFetcher";
 import { throwingError } from "../utils";
 

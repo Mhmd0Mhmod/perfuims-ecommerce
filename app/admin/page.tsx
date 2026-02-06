@@ -10,7 +10,7 @@ import { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "لوحة التحكم",
-  description: "لوحة تحكم للمتجر",
+  description: "لوحة تحكم مؤسسه الطاحون - المسك للعطور",
 };
 
 export default async function DashboardPage({

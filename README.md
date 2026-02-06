@@ -1,4 +1,10 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# مؤسسه الطاحون - المسك للعطور | Al-Tahoun Perfumes
+
+موقع تجارة إلكترونية للعطور العربية الفاخرة والعود والمسك
+
+E-commerce platform for luxury Arabic perfumes, oud, and misk fragrances.
+
+This is a [Next.js](https://nextjs.org) project built for Al-Tahoun Establishment.
 
 ## Getting Started
 

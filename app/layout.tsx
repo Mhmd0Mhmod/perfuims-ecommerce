@@ -19,9 +19,9 @@ const cairo = Cairo({
 });
 
 export const metadata: Metadata = {
-  title: "Attar - Luxury Arabic Perfumes",
+  title: "مؤسسه الطاحون - المسك للعطور | Al-Tahoun Perfumes",
   description:
-    "Discover exquisite Arabic perfumes, oud, and luxury fragrances inspired by Middle Eastern heritage",
+    "اكتشف عطور عربية فاخرة من مؤسسه الطاحون - المسك للعطور. عود، عطور شرقية فاخرة مستوحاة من التراث العربي الأصيل | Discover exquisite Arabic perfumes, oud, and luxury fragrances from Al-Tahoun Establishment",
 };
 
 export default function RootLayout({

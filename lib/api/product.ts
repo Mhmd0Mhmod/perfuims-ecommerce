@@ -1,13 +1,15 @@
 import { ProductsState } from "@/context/ProductsContext";
 import { Product } from "@/types/product";
-import axios from "axios";
 import { authFetcher } from "../authFetcher";
 import { fetcher } from "../fetcher";
 import { throwingError } from "../utils";
 import { AddProductSchema } from "../zod";
+import axios from "@/lib/axios";
 
 export class ProductAPI {
-  static async getProducts(params: Partial<ProductsState>): Promise<Pagination<Product>> {
+  static async getProducts(
+    params: Partial<ProductsState> & { page?: number },
+  ): Promise<Pagination<Product>> {
     try {
       const response = await axios.get<Pagination<Product>>("/api/products", {
         params,
@@ -17,12 +19,18 @@ export class ProductAPI {
       throw throwingError(error);
     }
   }
-  static async getProductsServer(params?: Partial<ProductsState>): Promise<Pagination<Product>> {
+  static async getProductsServer(
+    params?: Partial<ProductsState> & {
+      page?: number;
+    },
+  ): Promise<Pagination<Product>> {
     try {
       const { data } = await fetcher.get<Pagination<Product>>("/products", {
         params: {
-          ...params,
           q: params?.searchTerm,
+          page: params?.page,
+          categoryIds: params?.categoryIds?.join(","),
+          offerIds: params?.offerIds?.join(","),
         },
       });
       return data;

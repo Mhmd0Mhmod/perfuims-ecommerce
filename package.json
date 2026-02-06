@@ -1,6 +1,7 @@
 {
-  "name": "perfuims-ecommerce-next-spring",
+  "name": "altahoun-perfumes",
   "version": "0.1.0",
+  "description": "مؤسسه الطاحون - المسك للعطور | Al-Tahoun Establishment - Misk for Perfumes",
   "private": true,
   "scripts": {
     "dev": "next dev",

@@ -26,6 +26,7 @@ import Link from "next/link";
 import ActiveLink from "../shared/active-link";
 import UserMenu from "./UserMenu";
 import { getUser } from "@/app/(auth)/actions";
+import Image from "next/image";
 
 const menuItems = [
   {
@@ -87,13 +88,20 @@ export function ASidebar() {
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton size="lg">
-              <Link href="/" className="flex items-center gap-2">
-                <div className="bg-primary flex h-10 w-10 items-center justify-center rounded-lg">
-                  <Package className="text-primary-foreground h-6 w-6" />
+              <Link href="/" className="flex w-full items-center gap-2">
+                <div className="relative h-12 w-12 shrink-0 sm:h-14 sm:w-14">
+                  <Image
+                    src="/assets/logo.png"
+                    alt="مؤسسه الطاحون - المسك للعطور"
+                    width={56}
+                    height={56}
+                    priority
+                    className="h-full w-full object-contain"
+                  />
                 </div>
                 <div className="text-right">
-                  <h2 className="text-lg font-bold">لوحة الإدارة</h2>
-                  <p className="text-muted-foreground text-xs">متجر العطور</p>
+                  <h2 className="text-primary font-bold">مؤسسه الطاحون</h2>
+                  <p className="text-muted-foreground text-xs">المسك للعطور</p>
                 </div>
               </Link>
             </SidebarMenuButton>

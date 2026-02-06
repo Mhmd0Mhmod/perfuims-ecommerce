@@ -26,11 +26,9 @@ export default function Loading() {
             {/* Glowing effect behind logo */}
             <div className="bg-primary/20 absolute inset-0 scale-150 rounded-full blur-2xl" />
 
-            <h1 className="text-primary relative text-5xl font-bold md:text-6xl">عطور فاخرة</h1>
+            <h1 className="text-primary relative text-5xl font-bold md:text-6xl">مؤسسه الطاحون</h1>
           </div>
-          <p className="text-muted-foreground text-sm tracking-[0.3em] uppercase">
-            Luxury Perfumes
-          </p>
+          <p className="text-muted-foreground text-sm tracking-[0.3em] uppercase">المسك للعطور</p>
         </div>
 
         {/* Elegant Loader */}

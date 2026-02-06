@@ -1,5 +1,5 @@
 import { Country, PublicCountry } from "@/types/country";
-import axios from "axios";
+import axios from "@/lib/axios";
 import { fetcher } from "../fetcher";
 import { throwingError } from "../utils";
 import { authFetcher } from "../authFetcher";

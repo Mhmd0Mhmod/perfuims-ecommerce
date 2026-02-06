@@ -1,18 +1,12 @@
 "use client";
 
-import { useProducts } from "@/hooks/use-products";
-import { Product } from "@/types/product";
-import { useSearchParams } from "next/navigation";
-import { createContext, useContext, useReducer, Dispatch } from "react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { createContext, Dispatch, useContext, useReducer } from "react";
 
 export type ProductsState = {
   searchTerm: string;
-  subcategoryIds: string[];
-  categorieIds: string[];
-  dealIds: string[];
-  fromPrice?: number;
-  toPrice?: number;
-  page: number;
+  categoryIds: string[];
+  offerIds: string[];
 };
 
 export const productsActions = {
@@ -36,28 +30,16 @@ type ProductsAction =
   | { type: typeof productsActions.SET_COUNTRY; payload: string }
   | { type: typeof productsActions.RESET_FILTERS };
 
-const initialState: ProductsState = {
-  searchTerm: "",
-  categorieIds: [],
-  subcategoryIds: [],
-  dealIds: [],
-  fromPrice: undefined,
-  toPrice: undefined,
-  page: 0,
-};
-
 function productsReducer(state: ProductsState, action: ProductsAction): ProductsState {
   switch (action.type) {
     case productsActions.SET_SEARCH:
       return { ...state, searchTerm: action.payload };
     case productsActions.SET_CATEGORIES:
-      return { ...state, categorieIds: action.payload };
+      return { ...state, categoryIds: action.payload };
     case productsActions.SET_DEALS:
-      return { ...state, dealIds: action.payload };
+      return { ...state, offerIds: action.payload };
     case productsActions.SET_PRICE_RANGE:
       return { ...state, ...action.payload };
-    case productsActions.SET_PAGE:
-      return { ...state, page: action.payload };
     case productsActions.RESET_FILTERS:
       return initialState;
     default:
@@ -68,27 +50,41 @@ function productsReducer(state: ProductsState, action: ProductsAction): Products
 type ProductsContextType = {
   filters: ProductsState;
   dispatch: Dispatch<ProductsAction>;
-  products: Pagination<Product>;
-  isFetching: boolean;
+  resetFilters: () => void;
 };
 
 const ProductsContext = createContext<ProductsContextType | undefined>(undefined);
 
+const initialState: ProductsState = {
+  searchTerm: "",
+  categoryIds: [],
+  offerIds: [],
+};
 export function ProductsProvider({ children }: { children: React.ReactNode }) {
   const searchParams = useSearchParams();
+  const pathName = usePathname();
+  const router = useRouter();
+  const {
+    q: searchTerm,
+    category: categoryIds,
+    offer: offerIds,
+  } = Object.fromEntries(searchParams.entries());
 
-  const [state, dispatch] = useReducer(productsReducer, initialState);
-  const { data: products, isFetching } = useProducts({
-    searchTerm: state.searchTerm,
-    categorieIds: state.categorieIds,
-    dealIds: state.dealIds,
-    fromPrice: state.fromPrice,
-    toPrice: state.toPrice,
-    page: state.page,
+  const [state, dispatch] = useReducer(productsReducer, {
+    ...initialState,
+    searchTerm: (searchTerm as string) || "",
+    categoryIds: categoryIds ? (categoryIds as string).split(",") : [],
+    offerIds: offerIds ? (offerIds as string).split(",") : [],
   });
+  const resetFilters = () => {
+    dispatch({ type: productsActions.RESET_FILTERS });
+    router.push(pathName, {
+      scroll: false,
+    });
+  };
 
   return (
-    <ProductsContext.Provider value={{ filters: state, dispatch, products, isFetching }}>
+    <ProductsContext.Provider value={{ filters: state, dispatch, resetFilters }}>
       {children}
     </ProductsContext.Provider>
   );

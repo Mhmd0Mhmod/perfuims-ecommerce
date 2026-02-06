@@ -1,34 +1,23 @@
 "use client";
 
 import { useProductsContext } from "@/context/ProductsContext";
-import InfiniteScroll from "react-infinite-scroll-component";
-import ProductCard from "./ProductCard";
-import CardSkeleton from "../shared/card-skeleton";
+import { useProducts } from "@/hooks/use-products";
 import { useSelectedCountry } from "@/hooks/use-selected-country";
+import InfiniteScroll from "react-infinite-scroll-component";
+import CardSkeleton from "../shared/card-skeleton";
+import ProductCard from "./ProductCard";
 
 function ProductsGrid() {
-  const { products, isFetching, filters, dispatch } = useProductsContext();
+  const { filters } = useProductsContext();
+  const { data, isLoading, fetchNextPage, hasNextPage } = useProducts({
+    searchTerm: filters.searchTerm,
+    categoryIds: filters.categoryIds,
+    offerIds: filters.offerIds,
+  });
   const { selectedCountry } = useSelectedCountry();
-  const hasMore = products ? !products.last : false;
-  const items = products?.content ?? [];
+  const products = data?.pages.flatMap((page) => page.content);
 
-  const fetchMoreData = () => {
-    if (!isFetching && hasMore) {
-      dispatch({ type: "SET_PAGE", payload: filters.page + 1 });
-    }
-  };
-
-  if (isFetching && items.length === 0) {
-    return (
-      <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
-        {Array.from({ length: 6 }).map((_, i) => (
-          <CardSkeleton key={i} />
-        ))}
-      </div>
-    );
-  }
-
-  if (!isFetching && items.length === 0) {
+  if (!isLoading && products?.length === 0) {
     return (
       <div className="flex min-h-100 items-center justify-center">
         <div className="text-center">
@@ -48,24 +37,34 @@ function ProductsGrid() {
   }
 
   return (
-    <InfiniteScroll
-      dataLength={items.length}
-      next={fetchMoreData}
-      hasMore={hasMore}
-      loader={
-        <div className="col-span-full mt-6 grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
-          {Array.from({ length: 3 }).map((_, i) => (
-            <CardSkeleton key={i} />
+    <>
+      {isLoading ? (
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {Array.from({ length: 6 }).map((_, idx) => (
+            <CardSkeleton key={idx} />
           ))}
         </div>
-      }
-    >
-      <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
-        {items.map((product) => (
-          <ProductCard key={product.id} product={product} />
-        ))}
-      </div>
-    </InfiniteScroll>
+      ) : (
+        <InfiniteScroll
+          dataLength={products?.length || 0}
+          hasMore={hasNextPage ?? false}
+          loader={
+            <div className="col-span-full mt-6 grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
+              {Array.from({ length: 10 }).map((_, i) => (
+                <CardSkeleton key={i} />
+              ))}
+            </div>
+          }
+          next={fetchNextPage}
+        >
+          <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
+            {products?.map((product) => (
+              <ProductCard key={product.id} product={product} />
+            ))}
+          </div>
+        </InfiniteScroll>
+      )}
+    </>
   );
 }
 

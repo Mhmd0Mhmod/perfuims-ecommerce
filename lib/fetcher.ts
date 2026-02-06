@@ -9,7 +9,6 @@ const fetcher = axios.create({
 });
 fetcher.interceptors.request.use(async (config) => {
   const cookieString = await getCookiesToString();
-
   if (cookieString) {
     config.headers.Cookie = cookieString;
   }

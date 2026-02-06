@@ -12,7 +12,7 @@ interface Customer {
   createdAt: string;
   updatedAt: string;
   orders: Order[];
-  payments: Payment[];
   deleted: false;
+  payments: Payment[];
 }
 export type { Customer };

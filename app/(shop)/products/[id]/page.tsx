@@ -60,22 +60,23 @@ export default async function ProductPage({ params }: { params: Promise<{ id: st
               ))}
             </div>
             <div className="mt-2 flex items-center gap-3">
-              <span className="text-primary text-2xl font-bold">
-                {country &&
-                  formatCurrency({
-                    amount: minPrice,
+              {minPrice !== Number.POSITIVE_INFINITY && (
+                <span className="text-primary text-2xl font-bold">
+                  {country &&
+                    formatCurrency({
+                      amount: minPrice,
 
-                    code: country.code,
-                  })}
-              </span>
+                      code: country.code,
+                    })}
+                </span>
+              )}
 
-              {country && minPrice !== maxPrice && (
+              {country && minPrice !== maxPrice && maxPrice !== Number.NEGATIVE_INFINITY && (
                 <>
                   <span className="text-muted-foreground mx-1">-</span>
                   <span className="text-primary text-2xl font-bold">
                     {formatCurrency({
                       amount: maxPrice,
-
                       code: country.code,
                     })}
                   </span>

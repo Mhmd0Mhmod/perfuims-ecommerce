@@ -6,13 +6,15 @@ export async function GET(request: NextRequest) {
     const { searchParams } = request.nextUrl;
     const q = searchParams.get("searchTerm") || "";
     const page = Number(searchParams.get("page") || 0);
-    const categorieIds = searchParams.get("categorieIds")?.split(",") || [];
-    const dealIds = searchParams.get("dealIds")?.split(",") || [];
+    const categoryIds = searchParams.get("categoryIds")?.split(",") || [];
+    const offerIds = searchParams.get("offerIds")?.split(",") || [];
+    console.log(request.nextUrl.searchParams);
+
     const data = await ProductAPI.getProductsServer({
       searchTerm: q,
       page,
-      categorieIds,
-      dealIds,
+      categoryIds,
+      offerIds,
     });
 
     return NextResponse.json(data, {

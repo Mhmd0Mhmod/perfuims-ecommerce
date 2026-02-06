@@ -10,6 +10,7 @@ export default async function ProductsPage() {
     CategoryAPI.getAllCategoriesServer(),
     OfferAPI.getOffersServer(),
   ]);
+  const flatCategories = categories.flatMap((category) => [category, ...category.children]);
   return (
     <div className="container mx-auto px-4 py-8">
       {/* Page Header */}
@@ -30,7 +31,7 @@ export default async function ProductsPage() {
         <div className="grid gap-8 lg:grid-cols-4">
           {/* Sidebar Filters */}
           <aside className="lg:col-span-1">
-            <ProductFilters categories={categories} offers={offers} />
+            <ProductFilters categories={flatCategories} offers={offers} />
           </aside>
 
           {/* Products Grid */}

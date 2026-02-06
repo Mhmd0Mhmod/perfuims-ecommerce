@@ -77,7 +77,7 @@ function ProductCard({ product }: ProductCardProps) {
           )}
         </div>
       </CardContent>
-      <CardFooter className="p-4 pt-0">
+      <CardFooter className="mt-auto p-4">
         {isAvailable && <AddToCartButton product={product} />}
         {!isAvailable && (
           <Button variant="outline" className="w-full" asChild>

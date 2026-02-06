@@ -17,7 +17,7 @@ function PasswordInput({ value, onChange, ...props }: React.ComponentProps<"inpu
         type="button"
         variant="ghost"
         size="icon"
-        className="hover:text-primary absolute top-1/2 start-1 -translate-y-1/2 hover:bg-transparent"
+        className="hover:text-primary absolute end-1 top-1/2 -translate-y-1/2 hover:bg-transparent"
         onClick={() => setShowPassword(!showPassword)}
       >
         {showPassword ? <EyeOff /> : <Eye />}

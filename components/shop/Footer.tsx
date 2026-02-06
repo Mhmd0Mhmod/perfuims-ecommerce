@@ -14,12 +14,12 @@ async function Footer() {
           {/* Brand Section */}
           <div className="text-right">
             <div className="mb-4 flex flex-col items-start">
-              <h2 className="text-primary text-2xl font-bold">عطور فاخرة</h2>
-              <p className="text-muted-foreground text-sm">Luxury Perfumes</p>
+              <h2 className="text-primary text-2xl font-bold">مؤسسه الطاحون</h2>
+              <p className="text-muted-foreground text-sm">المسك للعطور</p>
             </div>
             <p className="text-muted-foreground mb-6 text-sm leading-relaxed">
-              وجهتك المثالية لاكتشاف أجود أنواع العطور الفاخرة والمميزة من أرقى العلامات التجارية
-              العالمية
+              وجهتك المثالية لاكتشاف أجود أنواع العطور العربية الفاخرة والعود والمسك الأصيل من مؤسسه
+              الطاحون
             </p>
 
             {/* Social Media Links */}
@@ -40,7 +40,7 @@ async function Footer() {
               </li>
               <li>
                 <Link
-                  href="/products?deal=true"
+                  href="/products"
                   className="text-muted-foreground hover:text-primary transition-colors"
                 >
                   العروض الخاصة
@@ -48,7 +48,7 @@ async function Footer() {
               </li>
               <li>
                 <Link
-                  href="/products?featured=true"
+                  href="/products"
                   className="text-muted-foreground hover:text-primary transition-colors"
                 >
                   المنتجات المميزة
@@ -137,7 +137,7 @@ async function Footer() {
         {/* Bottom Bar */}
         <div className="flex flex-col items-center justify-between gap-4 text-center md:flex-row md:text-right">
           <p className="text-muted-foreground text-sm">
-            © {new Date().getFullYear()} عطور فاخرة. جميع الحقوق محفوظة.
+            © {new Date().getFullYear()} مؤسسه الطاحون - المسك للعطور. جميع الحقوق محفوظة.
           </p>
 
           {/* Payment Methods */}
@@ -220,7 +220,7 @@ async function ContactInfo() {
         <li className="flex items-center justify-start gap-3">
           <Mail className="text-primary h-5 w-5 shrink-0" />
           <Link
-            href="mailto:info@luxuryperfumes.sa"
+            href="mailto:info@altahoun.sa"
             className="text-muted-foreground hover:text-primary transition-colors"
             dir="ltr"
           >

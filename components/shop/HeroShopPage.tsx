@@ -29,15 +29,15 @@ function HeroShopPage() {
 
             {/* Main Heading */}
             <h1 className="text-4xl leading-tight font-bold md:text-5xl lg:text-6xl">
-              <span className="text-primary">عطور فاخرة</span>
+              <span className="text-primary">مؤسسه الطاحون</span>
               <br />
-              تأسر القلوب والحواس
+              عطور عربية أصيلة تأسر القلوب
             </h1>
 
             {/* Description */}
             <p className="text-muted-foreground text-lg md:text-xl">
-              اكتشف مجموعتنا الحصرية من العطور الفاخرة المستوحاة من أجود المكونات الطبيعية والزيوت
-              العطرية النادرة من جميع أنحاء العالم.
+              اكتشف مجموعتنا الحصرية من العطور العربية الفاخرة والعود والمسك الأصيل المستوحاة من
+              التراث العربي الأصيل والزيوت العطرية النادرة.
             </p>
 
             {/* Features Card */}
@@ -65,7 +65,7 @@ function HeroShopPage() {
                 <Link href="/products">تصفح الكل</Link>
               </Button>
               <Button asChild size="lg" className="text-base">
-                <Link href="/products?deals=true">العروض الخاصة</Link>
+                <Link href="/products">العروض الخاصة</Link>
               </Button>
             </div>
 
