@@ -61,7 +61,7 @@ export default function CategoryProducts({ category }: CategoryProductsCarouselP
 
 async function CategoryProductsCarousel({ category }: CategoryProductsCarouselProps) {
   const products = await ProductAPI.getProductsServer({
-    categorieIds: [category.id.toString()],
+    categoryIds: [category.id.toString()],
   });
   return (
     <Carousel
