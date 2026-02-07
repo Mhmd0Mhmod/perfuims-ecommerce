@@ -2,15 +2,7 @@
 import { addProduct, updateProduct } from "@/app/admin/actions";
 import { MultiSelect } from "@/components/shared/multi-select";
 import { Button } from "@/components/ui/button";
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { addProductSchema, AddProductSchema } from "@/lib/zod";
@@ -36,22 +28,29 @@ function AddProductForm({ product, categories, sizes }: AddProductFormProps) {
     resolver: zodResolver(addProductSchema),
     defaultValues: product
       ? {
-          ...product,
-          categoryIds: product.categories.map((cat) => cat.id.toString()),
-        }
+        ...product,
+        categoryIds: product.categories.map((cat) => cat.id.toString()),
+        variants: product.variants.map((varient) => ({
+          id: varient.id,
+          price: varient.oldPrice,
+          size: varient.size,
+          unit: varient.unit,
+          isAvailable: varient.isAvailable
+        }))
+      }
       : {
-          name: "",
-          description: "",
-          categoryIds: [],
-          variants: [],
-        },
+        name: "",
+        description: "",
+        categoryIds: [],
+        variants: []
+      }
   });
-
   const onSubmit = useCallback(
     async (data: AddProductSchema) => {
       const id = toast.loading(isEditMode ? "جارى تحديث المنتج..." : "جارى إضافة المنتج...");
       try {
         if (isEditMode) {
+          console.log(data);
           const response = await updateProduct(product!.id, data);
           if (response.success) {
             toast.success(response.message || "تم تحديث المنتج بنجاح", { id });
@@ -69,11 +68,11 @@ function AddProductForm({ product, categories, sizes }: AddProductFormProps) {
         }
       } catch {
         toast.error(isEditMode ? "حدث خطأ أثناء تحديث المنتج" : "حدث خطأ أثناء إضافة المنتج", {
-          id,
+          id
         });
       }
     },
-    [isEditMode, product, form],
+    [isEditMode, product, form]
   );
   return (
     <Form {...form}>
@@ -118,7 +117,7 @@ function AddProductForm({ product, categories, sizes }: AddProductFormProps) {
                   <MultiSelect
                     options={categories.map((cat) => ({
                       label: cat.name,
-                      value: cat.id.toString(),
+                      value: cat.id.toString()
                     }))}
                     onChange={(values) => field.onChange(values)}
                     placeholder="اختر التصنيفات"
@@ -175,6 +174,7 @@ function AddProductForm({ product, categories, sizes }: AddProductFormProps) {
     </Form>
   );
 }
+
 function SubmitingButton({ isEditMode }: { isEditMode: boolean }) {
   const { isSubmitting: pending } = useFormState();
 
@@ -190,4 +190,5 @@ function SubmitingButton({ isEditMode }: { isEditMode: boolean }) {
     </Button>
   );
 }
+
 export default AddProductForm;
