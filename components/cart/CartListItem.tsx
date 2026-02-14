@@ -4,6 +4,7 @@ import { formatCurrency } from "@/lib/utils";
 import { CartItem } from "@/types/cart";
 import { ShoppingCart, Trash2 } from "lucide-react";
 import Image from "next/image";
+import { useEffect, useState } from "react";
 import { Badge } from "../ui/badge";
 import { Button } from "../ui/button";
 import { Card } from "../ui/card";
@@ -11,16 +12,27 @@ import { Card } from "../ui/card";
 function CartListItem({ item }: { item: CartItem }) {
   const { selectedCountry } = useSelectedCountry();
   const { edit, remove } = useCartContext();
+  const [localQty, setLocalQty] = useState(item.quantity);
+
+  useEffect(() => {
+    setLocalQty(item.quantity);
+  }, [item.quantity]);
 
   const updateQuantity = async (newQty: number) => {
     edit(item.id, newQty);
   };
 
   const handleIncrement = () => {
-    updateQuantity(item.quantity + 1);
+    const newQty = localQty + 1;
+    setLocalQty(newQty);
+    updateQuantity(newQty);
   };
   const handleDecrement = () => {
-    if (item.quantity > 1) updateQuantity(item.quantity - 1);
+    if (localQty > 1) {
+      const newQty = localQty - 1;
+      setLocalQty(newQty);
+      updateQuantity(newQty);
+    }
   };
   const handleRemove = () => {
     remove(item.id);
@@ -37,7 +49,7 @@ function CartListItem({ item }: { item: CartItem }) {
           />
         </div>
 
-        <div className="flex flex-1 flex-col gap-1.5">
+        <div className="flex flex-1 flex-col gap-2">
           <div className="flex items-start justify-between gap-2">
             <h3 className="line-clamp-1 text-sm leading-tight font-semibold">
               {item.variantDetails.name}
@@ -47,18 +59,46 @@ function CartListItem({ item }: { item: CartItem }) {
             </Badge>
           </div>
 
-          <div className="flex items-center gap-1.5">
-            {selectedCountry && (
-              <span className="text-primary text-base font-bold">
-                {formatCurrency({
-                  amount: item.variantDetails.newPrice,
-                  code: selectedCountry,
-                })}
-              </span>
-            )}
-            <span className="text-muted-foreground text-xs">× {item.quantity}</span>
+          {/* Price Info */}
+          <div className="flex flex-col gap-1">
+            {/* Unit Price */}
+            <div className="flex items-center gap-1.5">
+              <span className="text-muted-foreground text-xs">سعر الوحدة:</span>
+              {selectedCountry && (
+                <span className="text-sm font-semibold">
+                  {formatCurrency({
+                    amount: item.variantDetails.newPrice,
+                    code: selectedCountry,
+                  })}
+                </span>
+              )}
+              {item.variantDetails.oldPrice &&
+                item.variantDetails.oldPrice > item.variantDetails.newPrice &&
+                selectedCountry && (
+                  <span className="text-muted-foreground text-xs line-through">
+                    {formatCurrency({
+                      amount: item.variantDetails.oldPrice,
+                      code: selectedCountry,
+                    })}
+                  </span>
+                )}
+            </div>
+
+            {/* Total Price */}
+            <div className="flex items-center gap-1.5">
+              <span className="text-muted-foreground text-xs">الإجمالي:</span>
+              {selectedCountry && (
+                <span className="text-primary text-base font-bold">
+                  {formatCurrency({
+                    amount: item.variantDetails.newPrice * item.quantity,
+                    code: selectedCountry,
+                  })}
+                </span>
+              )}
+            </div>
           </div>
 
+          {/* Quantity Controls */}
           <div className="flex items-center justify-between gap-2">
             <div className="flex items-center gap-1">
               <ShoppingCart className="text-muted-foreground" size={14} />
@@ -72,14 +112,35 @@ function CartListItem({ item }: { item: CartItem }) {
                   size="icon-sm"
                   onClick={handleDecrement}
                   aria-label="decrement quantity"
-                  disabled={item.quantity <= 1}
+                  disabled={localQty <= 1}
                   className="hover:bg-muted h-6 w-6 text-xs"
                 >
                   -
                 </Button>
-                <span className="min-w-[2ch] px-1.5 text-center text-xs font-semibold">
-                  {item.quantity}
-                </span>
+                <input
+                  type="number"
+                  min={1}
+                  value={localQty}
+                  onChange={(e) => {
+                    const val = parseInt(e.target.value, 10);
+                    if (!isNaN(val) && val >= 1) {
+                      setLocalQty(val);
+                    } else if (e.target.value === "") {
+                      setLocalQty(1);
+                    }
+                  }}
+                  onBlur={() => {
+                    const qty = Math.max(1, localQty);
+                    setLocalQty(qty);
+                    updateQuantity(qty);
+                  }}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      e.currentTarget.blur();
+                    }
+                  }}
+                  className="w-8 min-w-[2ch] [appearance:textfield] border-none bg-transparent px-1.5 text-center text-xs font-semibold outline-none [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+                />
                 <Button
                   variant="ghost"
                   size="icon-sm"

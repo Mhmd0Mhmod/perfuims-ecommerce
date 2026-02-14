@@ -1,10 +1,21 @@
 import AddToCartButton from "@/components/products/AddToCartButton";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Separator } from "@/components/ui/separator";
 import { CountryAPI } from "@/lib/api/country";
 import { ProductAPI } from "@/lib/api/product";
 import { formatCurrency } from "@/lib/utils";
-import { ShieldCheck, Star, Truck } from "lucide-react";
+import {
+  CheckCircle2,
+  Clock,
+  Info,
+  Package,
+  ShieldCheck,
+  Sparkles,
+  Star,
+  Truck,
+  XCircle,
+} from "lucide-react";
 import Image from "next/image";
 
 export default async function ProductPage({ params }: { params: Promise<{ id: string }> }) {
@@ -15,13 +26,15 @@ export default async function ProductPage({ params }: { params: Promise<{ id: st
   ]);
   const minPrice = Math.min(...product.variants.map((v) => v.newPrice));
   const maxPrice = Math.max(...product.variants.map((v) => v.newPrice));
+  const hasDiscount = product.variants.some((v) => v.oldPrice && v.oldPrice > v.newPrice);
 
   return (
-    <div className="flex min-h-[90vh] flex-col items-center px-2 py-8">
-      <div className="grid w-full max-w-5xl grid-cols-1 items-start gap-10 md:grid-cols-2">
-        {/* Product Image + Gallery */}
-        <div className="sticky top-8 flex flex-col gap-4">
-          <div className="relative aspect-square w-full overflow-hidden rounded-3xl border shadow-2xl">
+    <div className="flex min-h-[90vh] flex-col items-center px-4 py-8 md:px-6 lg:px-8">
+      <div className="grid w-full max-w-6xl grid-cols-1 items-start gap-8 lg:grid-cols-2 lg:gap-12">
+        {/* ========== Left Column: Image ========== */}
+        <div className="sticky top-8 flex flex-col gap-5">
+          {/* Main Image */}
+          <div className="bg-muted relative aspect-square w-full overflow-hidden rounded-2xl border shadow-lg">
             <Image
               src={product.imageUrl || "/assets/logo.png"}
               alt={product.name}
@@ -29,52 +42,67 @@ export default async function ProductPage({ params }: { params: Promise<{ id: st
               className="object-cover"
               priority
             />
+            {/* Offer badge on image */}
+            {hasDiscount && (
+              <div className="absolute top-4 right-4">
+                <Badge variant="destructive" className="px-3 py-1 text-sm shadow-md">
+                  {product.variants.find((v) => v.offerId)?.offerTitle || "عرض خاص"}
+                </Badge>
+              </div>
+            )}
           </div>
-          {/* Feature icons */}
-          <div className="mt-2 flex justify-center gap-4">
-            <div className="text-muted-foreground flex flex-col items-center text-xs">
-              <Star className="mb-1 text-yellow-400" size={20} />
-              <span>جودة عالية</span>
+
+          {/* Trust indicators */}
+          <div className="grid grid-cols-3 gap-3">
+            <div className="bg-muted/50 flex flex-col items-center gap-1.5 rounded-xl p-3">
+              <Star className="text-yellow-500" size={22} />
+              <span className="text-muted-foreground text-xs font-medium">جودة عالية</span>
             </div>
-            <div className="text-muted-foreground flex flex-col items-center text-xs">
-              <ShieldCheck className="mb-1 text-green-500" size={20} />
-              <span>ضمان أصلي</span>
+            <div className="bg-muted/50 flex flex-col items-center gap-1.5 rounded-xl p-3">
+              <ShieldCheck className="text-green-500" size={22} />
+              <span className="text-muted-foreground text-xs font-medium">ضمان أصلي</span>
             </div>
-            <div className="text-muted-foreground flex flex-col items-center text-xs">
-              <Truck className="mb-1 text-blue-400" size={20} />
-              <span>توصيل سريع</span>
+            <div className="bg-muted/50 flex flex-col items-center gap-1.5 rounded-xl p-3">
+              <Truck className="text-blue-500" size={22} />
+              <span className="text-muted-foreground text-xs font-medium">توصيل سريع</span>
             </div>
           </div>
         </div>
-        {/* Product Info */}
+
+        {/* ========== Right Column: Product Info ========== */}
         <div className="flex flex-col gap-6">
-          <div className="flex flex-col gap-2">
-            <CardTitle className="font-extrabolddrop-shadow-sm mb-1 text-4xl leading-tight">
-              {product.name}
-            </CardTitle>
-            <div className="mb-2 flex flex-wrap gap-2">
+          {/* Header: Name + Categories */}
+          <div className="flex flex-col gap-3">
+            <div className="flex flex-wrap gap-2">
               {product.categories.map((cat) => (
-                <Badge key={cat.id} variant="secondary">
+                <Badge key={cat.id} variant="secondary" className="text-xs">
                   {cat.name}
                 </Badge>
               ))}
             </div>
-            <div className="mt-2 flex items-center gap-3">
-              {minPrice !== Number.POSITIVE_INFINITY && (
-                <span className="text-primary text-2xl font-bold">
-                  {country &&
-                    formatCurrency({
-                      amount: minPrice,
+            <h1 className="text-3xl leading-tight font-bold md:text-4xl">{product.name}</h1>
+            {product.description && (
+              <p className="text-muted-foreground text-base leading-relaxed">
+                {product.description}
+              </p>
+            )}
+          </div>
 
-                      code: country.code,
-                    })}
+          <Separator />
+
+          {/* Price Section */}
+          <div className="flex flex-col gap-2">
+            <span className="text-muted-foreground text-sm font-medium">السعر</span>
+            <div className="flex items-baseline gap-3">
+              {minPrice !== Number.POSITIVE_INFINITY && country && (
+                <span className="text-primary text-3xl font-bold">
+                  {formatCurrency({ amount: minPrice, code: country.code })}
                 </span>
               )}
-
               {country && minPrice !== maxPrice && maxPrice !== Number.NEGATIVE_INFINITY && (
                 <>
-                  <span className="text-muted-foreground mx-1">-</span>
-                  <span className="text-primary text-2xl font-bold">
+                  <span className="text-muted-foreground text-xl">—</span>
+                  <span className="text-primary text-3xl font-bold">
                     {formatCurrency({
                       amount: maxPrice,
                       code: country.code,
@@ -84,51 +112,118 @@ export default async function ProductPage({ params }: { params: Promise<{ id: st
               )}
             </div>
           </div>
-          <div>
-            <Card className="border-none bg-transparent shadow-none">
-              <CardContent className="flex flex-col gap-4 p-6">
-                <AddToCartButton product={product} />
-              </CardContent>
-            </Card>
+
+          <Separator />
+
+          {/* Add to Cart */}
+          <div className="flex flex-col gap-3">
+            <span className="text-muted-foreground text-sm font-medium">اختر الحجم والكمية</span>
+            <AddToCartButton product={product} />
           </div>
-          {/* Details/Description Tab */}
-          <div className="mt-4">
-            <Card className="border-0 bg-slate-50/80">
-              <CardHeader>
-                <CardTitle className="text-lg">تفاصيل المنتج</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <CardDescription className="text-muted-foreground text-base whitespace-pre-line">
-                  {product.description}
-                </CardDescription>
-                <div className="mt-4 flex flex-wrap gap-2">
-                  {product.variants.map((variant) => (
-                    <Badge
-                      key={variant.id}
-                      variant={variant.isAvailable ? "outline" : "destructive"}
-                      className="px-2 py-1 text-xs"
-                    >
-                      {variant.size} {variant.unit} - {variant.newPrice} ر.س{" "}
-                      {variant.isAvailable ? "متوفر" : "غير متوفر"}
-                    </Badge>
-                  ))}
+
+          <Separator />
+
+          {/* Variants Table */}
+          <div className="flex flex-col gap-3">
+            <div className="flex items-center gap-2">
+              <Package className="text-muted-foreground" size={18} />
+              <span className="text-sm font-semibold">الأحجام المتوفرة</span>
+            </div>
+            <div className="grid gap-2">
+              {product.variants.map((variant) => (
+                <div
+                  key={variant.id}
+                  className={`flex items-center justify-between rounded-lg border p-3 transition-colors ${
+                    variant.isAvailable
+                      ? "bg-background hover:bg-muted/50"
+                      : "bg-muted/30 opacity-60"
+                  }`}
+                >
+                  <div className="flex items-center gap-3">
+                    {variant.isAvailable ? (
+                      <CheckCircle2 className="text-green-500" size={16} />
+                    ) : (
+                      <XCircle className="text-destructive" size={16} />
+                    )}
+                    <span className="text-sm font-medium">
+                      {variant.size} {variant.unit}
+                    </span>
+                    {!variant.isAvailable && (
+                      <Badge variant="destructive" className="text-[10px]">
+                        غير متوفر
+                      </Badge>
+                    )}
+                  </div>
+                  <div className="flex items-center gap-2">
+                    {variant.oldPrice && variant.oldPrice > variant.newPrice && (
+                      <span className="text-muted-foreground text-sm line-through">
+                        {country &&
+                          formatCurrency({
+                            amount: variant.oldPrice,
+                            code: country.code,
+                          })}
+                      </span>
+                    )}
+                    <span className="text-primary text-sm font-bold">
+                      {country &&
+                        formatCurrency({
+                          amount: variant.newPrice,
+                          code: country.code,
+                        })}
+                    </span>
+                  </div>
                 </div>
-              </CardContent>
-            </Card>
+              ))}
+            </div>
           </div>
+
+          {/* Offer Details (if any) */}
+          {product.variants.some((v) => v.offerDescription) && (
+            <>
+              <Separator />
+              <div className="flex flex-col gap-3">
+                <div className="flex items-center gap-2">
+                  <Sparkles className="text-yellow-500" size={18} />
+                  <span className="text-sm font-semibold">تفاصيل العرض</span>
+                </div>
+                <Card className="border-yellow-200 bg-yellow-50/50">
+                  <CardContent className="p-4">
+                    {product.variants
+                      .filter((v) => v.offerDescription)
+                      .map((v) => (
+                        <p key={v.id} className="text-sm leading-relaxed text-yellow-900">
+                          <span className="font-semibold">{v.offerTitle}:</span>{" "}
+                          {v.offerDescription}
+                        </p>
+                      ))}
+                  </CardContent>
+                </Card>
+              </div>
+            </>
+          )}
+
+          <Separator />
+
           {/* Meta info */}
-          <div className="text-muted-foreground mt-2 text-xs">
-            <span>تمت الإضافة: {new Date(product.createdAt).toLocaleDateString()}</span>
-            <span className="mx-2">|</span>
-            <span>آخر تحديث: {new Date(product.updatedAt).toLocaleDateString()}</span>
+          <div className="flex items-center gap-4">
+            <div className="text-muted-foreground flex items-center gap-1.5 text-xs">
+              <Clock size={14} />
+              <span>تمت الإضافة: {new Date(product.createdAt).toLocaleDateString("ar")}</span>
+            </div>
+            <div className="text-muted-foreground flex items-center gap-1.5 text-xs">
+              <Info size={14} />
+              <span>آخر تحديث: {new Date(product.updatedAt).toLocaleDateString("ar")}</span>
+            </div>
           </div>
         </div>
       </div>
-      {/* Related products placeholder */}
-      <div className="mt-16 w-full max-w-5xl">
-        <Card className="border-0 bg-linear-to-br from-slate-100 to-white/80 shadow-md">
+
+      {/* ========== Related Products ========== */}
+      <div className="mt-16 w-full max-w-6xl">
+        <Card className="border-0 shadow-none">
           <CardHeader>
             <CardTitle className="text-xl">منتجات مقترحة</CardTitle>
+            <CardDescription>منتجات قد تعجبك أيضًا</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="text-muted-foreground py-8 text-center">

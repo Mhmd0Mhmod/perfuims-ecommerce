@@ -1,15 +1,13 @@
 "use client";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardDescription, CardTitle } from "@/components/ui/card";
 import { useSelectedCountry } from "@/hooks/use-selected-country";
 import { formatCurrency } from "@/lib/utils";
 import { Country } from "@/types/country";
 import { Product } from "@/types/product";
-import { Heart, Minus } from "lucide-react";
+import { Minus } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import AddToCartButton from "./AddToCartButton";
 
 interface ProductCardProps {
@@ -19,72 +17,71 @@ interface ProductCardProps {
 function ProductCard({ product }: ProductCardProps) {
   const isAvailable = product.variants?.some((vari) => vari.isAvailable);
   const { selectedCountryEntry: countryEntry } = useSelectedCountry();
-  const router = useRouter();
-  const handleCardClick = () => {
-    router.push(`/products/${product.id}`);
-  };
 
   const minPrice = Math.min(...product.variants.map((v) => v.newPrice));
   const maxPrice = Math.max(...product.variants.map((v) => v.newPrice));
 
   return (
-    <Card className="group gap-2 overflow-hidden p-0 transition-shadow hover:shadow-lg">
-      <CardHeader className="relative p-0">
+    <Card className="group flex h-full flex-col gap-0 overflow-hidden p-0 transition-all hover:shadow-lg">
+      {/* Image Section */}
+      <Link href={`/products/${product.id}`} className="relative block">
         <div className="bg-muted relative aspect-square overflow-hidden">
           <Image
             src={product.imageUrl || "/assets/logo.png"}
             alt={product.name}
-            onClick={handleCardClick}
             fill
-            className="object-cover transition-transform group-hover:scale-105"
+            className="object-cover transition-transform duration-300 group-hover:scale-105"
           />
-          <div className="absolute top-4 right-4 flex items-end gap-2">
-            <ProductBadges product={product} />
+
+          {/* Top overlay: badges */}
+          <div className="absolute inset-x-0 top-0 flex items-start justify-between p-3">
+            <div className="flex flex-wrap gap-1">
+              <ProductBadges product={product} />
+            </div>
           </div>
-          {!isAvailable && (
-            <Badge variant="destructive" className="absolute bottom-4 left-4">
-              غير متوفر
-            </Badge>
-          )}
-          <Button
-            size="icon"
-            variant="secondary"
-            className="absolute top-4 left-4 opacity-0 transition-opacity group-hover:opacity-100"
-          >
-            <Heart className="h-4 w-4" />
-          </Button>
-        </div>
-      </CardHeader>
-      <CardContent className="text-right">
-        <div className="flex items-center justify-between gap-2">
-          <div>
-            <CardTitle className="line-clamp-2 text-lg">{product.name}</CardTitle>
-            {product.description && (
-              <p className="text-muted-foreground line-clamp-2 text-sm">{product.description}</p>
-            )}
+
+          {/* Bottom overlay: price + availability */}
+          <div className="absolute inset-x-0 bottom-0 bg-linear-to-t from-black/60 to-transparent px-3 pt-6 pb-3">
+            <div className="flex items-end justify-between">
+              {product.variants.length > 0 && countryEntry && (
+                <ProductPriceDisplay
+                  minPrice={minPrice}
+                  maxPrice={maxPrice}
+                  countryEntry={countryEntry}
+                />
+              )}
+              {!isAvailable && <Badge variant="destructive">غير متوفر</Badge>}
+            </div>
           </div>
-          <Badge variant="outline" className="text-xs">
-            {product.variants.length} أحجام
-          </Badge>
         </div>
-        <div className="flex items-center justify-between gap-2">
-          {product.variants.length > 0 && (
-            <ProductPriceDisplay
-              minPrice={minPrice}
-              maxPrice={maxPrice}
-              countryEntry={countryEntry!}
-            />
+      </Link>
+
+      {/* Product Info */}
+      <div className="flex flex-1 flex-col gap-3 p-3">
+        {/* Name + Description */}
+        <Link href={`/products/${product.id}`} className="group/title">
+          <CardTitle className="group-hover/title:text-primary">{product.name}</CardTitle>
+          {product.description && (
+            <CardDescription className="text-muted-foreground line-clamp-2">
+              {product.description}
+            </CardDescription>
+          )}
+        </Link>
+
+        {/* Add to Cart Section */}
+        <div className="mt-auto">
+          {isAvailable ? (
+            <AddToCartButton product={product} />
+          ) : (
+            <Link
+              href={`/products/${product.id}`}
+              className="border-primary text-primary hover:bg-primary/5 flex w-full items-center justify-center rounded-md border py-2 text-sm font-medium transition-colors"
+            >
+              عرض المنتج
+            </Link>
           )}
         </div>
-      </CardContent>
-      <CardFooter className="mt-auto p-4">
-        {isAvailable && <AddToCartButton product={product} />}
-        {!isAvailable && (
-          <Button variant="outline" className="w-full" asChild>
-            <Link href={`/products/${product.id}`}>عرض المنتج</Link>
-          </Button>
-        )}
-      </CardFooter>
+      </div>
     </Card>
   );
 }
@@ -93,13 +90,13 @@ function ProductBadges({ product }: { product: Product }) {
   const badges = [
     ...(product.variants.some((v) => v.offerId)
       ? [
-          <Badge variant="destructive" key="offer">
+          <Badge variant="destructive" className="shadow-sm">
             {product.variants.find((v) => v.offerId)?.offerTitle || "عرض"}
           </Badge>,
         ]
       : []),
     ...product.categories.map((cat) => (
-      <Badge className="bg-primary" key={cat.id}>
+      <Badge className="bg-primary/90 shadow-sm backdrop-blur-sm" key={cat.id}>
         {cat.name}
       </Badge>
     )),
@@ -110,9 +107,9 @@ function ProductBadges({ product }: { product: Product }) {
   return (
     <>
       {visibleBadges}
-      {badges.length > 3 && (
-        <Badge className="bg-primary/80" key="more">
-          +{badges.length - 3}
+      {badges.length > 2 && (
+        <Badge className="bg-black/50 shadow-sm backdrop-blur-sm" key="more">
+          +{badges.length - 2}
         </Badge>
       )}
     </>
@@ -129,28 +126,16 @@ function ProductPriceDisplay({
   countryEntry: Country;
 }) {
   return (
-    <div className="flex w-full items-center justify-end gap-1">
-      <div className="flex items-center gap-2">
-        <span className="text-primary text-lg font-bold">
-          {countryEntry &&
-            formatCurrency({
-              amount: minPrice,
-              code: countryEntry.code,
-            })}
-        </span>
-      </div>
+    <div className="flex items-center gap-1">
+      <span className="text-base font-bold text-white drop-shadow-md">
+        {formatCurrency({ amount: minPrice, code: countryEntry.code })}
+      </span>
       {minPrice !== maxPrice && (
         <>
-          <Minus className="text-muted-foreground h-4 w-4" />
-          <div className="flex items-center gap-2">
-            <span className="text-primary text-lg font-bold">
-              {countryEntry &&
-                formatCurrency({
-                  amount: maxPrice,
-                  code: countryEntry.code,
-                })}
-            </span>
-          </div>
+          <Minus className="h-3.5 w-3.5 text-white/70" />
+          <span className="text-base font-bold text-white drop-shadow-md">
+            {formatCurrency({ amount: maxPrice, code: countryEntry.code })}
+          </span>
         </>
       )}
     </div>
