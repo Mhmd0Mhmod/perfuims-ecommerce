@@ -19,9 +19,9 @@ const cairo = Cairo({
 });
 
 export const metadata: Metadata = {
-  title: "مؤسسه الطاحون - المسك للعطور | Al-Tahoun Perfumes",
+  title: "مؤسسه طاحون - المسك للعطور | Al-Tahoun Perfumes",
   description:
-    "اكتشف عطور عربية فاخرة من مؤسسه الطاحون - المسك للعطور. عود، عطور شرقية فاخرة مستوحاة من التراث العربي الأصيل | Discover exquisite Arabic perfumes, oud, and luxury fragrances from Al-Tahoun Establishment",
+    "اكتشف عطور عربية فاخرة من مؤسسه طاحون - المسك للعطور. عود، عطور شرقية فاخرة مستوحاة من التراث العربي الأصيل | Discover exquisite Arabic perfumes, oud, and luxury fragrances from Al-Tahoun Establishment",
 };
 
 export default function RootLayout({

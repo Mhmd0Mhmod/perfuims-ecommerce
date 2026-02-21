@@ -92,7 +92,7 @@ export function ASidebar() {
                 <div className="relative h-12 w-12 shrink-0 sm:h-14 sm:w-14">
                   <Image
                     src="/assets/logo.png"
-                    alt="مؤسسه الطاحون - المسك للعطور"
+                    alt="مؤسسه طاحون - المسك للعطور"
                     width={56}
                     height={56}
                     priority
@@ -100,7 +100,7 @@ export function ASidebar() {
                   />
                 </div>
                 <div className="text-right">
-                  <h2 className="text-primary font-bold">مؤسسه الطاحون</h2>
+                  <h2 className="text-primary font-bold">مؤسسه طاحون</h2>
                   <p className="text-muted-foreground text-xs">المسك للعطور</p>
                 </div>
               </Link>

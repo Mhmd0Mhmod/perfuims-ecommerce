@@ -7,6 +7,7 @@ import {
   ArrowLeft,
   Calendar,
   Mail,
+  MapPin,
   Package,
   Phone,
   Settings,
@@ -92,6 +93,12 @@ async function AccountPage() {
                   <span className="flex items-center gap-1">
                     <Phone className="h-4 w-4" />
                     {user.phoneNumber}
+                  </span>
+                )}
+                {user.address && (
+                  <span className="flex items-center gap-1">
+                    <MapPin className="h-4 w-4" />
+                    {user.address}
                   </span>
                 )}
                 <span className="flex items-center gap-1">

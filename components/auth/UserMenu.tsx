@@ -25,7 +25,6 @@ interface MenuItem {
 const MENU_ITEMS: MenuItem[] = [
   { href: "/account", label: "الملف الشخصي", icon: UserIcon },
   { href: "/account/orders", label: "طلباتي", icon: Package },
-  { href: "/account/wishlist", label: "المفضلة", icon: Heart },
   { href: "/account/settings", label: "الإعدادات", icon: Settings },
 ];
 const ADMIN_MENU_ITEMS: MenuItem[] = [

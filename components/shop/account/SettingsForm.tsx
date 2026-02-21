@@ -25,6 +25,7 @@ export function SettingsForm({ user }: { user: User }) {
       fullName: user?.fullName || "",
       email: user?.email || "",
       phoneNumber: user?.phoneNumber || "",
+      address: user?.address || "",
     },
   });
 
@@ -98,9 +99,24 @@ export function SettingsForm({ user }: { user: User }) {
               </FormItem>
             )}
           />
+
+          {/* Address */}
+          <FormField
+            control={form.control}
+            name="address"
+            render={({ field }) => (
+              <FormItem className="col-span-2">
+                <FormLabel>العنوان</FormLabel>
+                <FormControl>
+                  <Input placeholder="أدخل عنوانك..." {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
         </div>
 
-        <div className="flex justify-start">
+        <div className="flex justify-end">
           <Button type="submit" disabled={form.formState.isSubmitting}>
             {form.formState.isSubmitting ? "جاري الحفظ..." : "حفظ التغييرات"}
           </Button>

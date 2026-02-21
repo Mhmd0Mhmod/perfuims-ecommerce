@@ -11,9 +11,9 @@ export default function AboutPage() {
 
         <div className="space-y-6 text-right">
           <section>
-            <h2 className="mb-4 text-2xl font-semibold">عن مؤسسه الطاحون</h2>
+            <h2 className="mb-4 text-2xl font-semibold">عن مؤسسه طاحون</h2>
             <p className="text-muted-foreground leading-relaxed">
-              مؤسسه الطاحون - المسك للعطور، متجر متخصص في بيع العطور العربية الفاخرة والعود والمسك
+              مؤسسه طاحون - المسك للعطور، متجر متخصص في بيع العطور العربية الفاخرة والعود والمسك
               الأصيل. نسعى لتوفير تجربة تسوق استثنائية لعملائنا من خلال تقديم منتجات عالية الجودة
               مستوحاة من التراث العربي الأصيل وخدمة عملاء متميزة.
             </p>

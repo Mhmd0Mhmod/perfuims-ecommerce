@@ -29,7 +29,7 @@ function HeroShopPage() {
 
             {/* Main Heading */}
             <h1 className="text-4xl leading-tight font-bold md:text-5xl lg:text-6xl">
-              <span className="text-primary">مؤسسه الطاحون</span>
+              <span className="text-primary">مؤسسه طاحون</span>
               <br />
               عطور عربية أصيلة تأسر القلوب
             </h1>

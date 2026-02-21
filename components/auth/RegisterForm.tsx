@@ -19,6 +19,7 @@ function RegisterForm() {
       email: "",
       fullName: "",
       phoneNumber: "",
+      address: "",
       role: "customer",
     },
   });
@@ -104,6 +105,20 @@ function RegisterForm() {
               <FormLabel>كلمة المرور</FormLabel>
               <FormControl>
                 <PasswordInput {...field} placeholder="أدخل كلمة المرور" />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          name="address"
+          control={form.control}
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>العنوان</FormLabel>
+              <FormControl>
+                <Input {...field} placeholder="أدخل عنوانك" />
               </FormControl>
               <FormMessage />
             </FormItem>

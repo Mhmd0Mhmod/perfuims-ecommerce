@@ -7,6 +7,7 @@ interface Customer {
   fullName: string;
   username: string;
   email: string;
+  address: string;
   phoneNumber: string;
   role: Roles;
   createdAt: string;

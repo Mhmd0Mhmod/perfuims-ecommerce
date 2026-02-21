@@ -19,6 +19,7 @@ import {
   Calendar,
   CreditCard,
   Mail,
+  MapPin,
   Package,
   Phone,
   ShieldCheck,
@@ -174,6 +175,14 @@ async function CustomerDetailsPage({ params }: { params: Promise<{ id: string }>
                 <div className="flex-1">
                   <p className="text-muted-foreground text-sm">رقم الهاتف</p>
                   <p className="font-medium">{customer.phoneNumber || "غير محدد"}</p>
+                </div>
+              </div>
+
+              <div className="flex items-start gap-3">
+                <MapPin className="text-muted-foreground mt-0.5 h-5 w-5" />
+                <div className="flex-1">
+                  <p className="text-muted-foreground text-sm">العنوان</p>
+                  <p className="font-medium">{customer.address || "غير محدد"}</p>
                 </div>
               </div>
 

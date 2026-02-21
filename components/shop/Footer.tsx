@@ -14,12 +14,12 @@ async function Footer() {
           {/* Brand Section */}
           <div className="text-right">
             <div className="mb-4 flex flex-col items-start">
-              <h2 className="text-primary text-2xl font-bold">مؤسسه الطاحون</h2>
+              <h2 className="text-primary text-2xl font-bold">مؤسسه طاحون</h2>
               <p className="text-muted-foreground text-sm">المسك للعطور</p>
             </div>
             <p className="text-muted-foreground mb-6 text-sm leading-relaxed">
               وجهتك المثالية لاكتشاف أجود أنواع العطور العربية الفاخرة والعود والمسك الأصيل من مؤسسه
-              الطاحون
+              طاحون
             </p>
 
             {/* Social Media Links */}
@@ -137,7 +137,7 @@ async function Footer() {
         {/* Bottom Bar */}
         <div className="flex flex-col items-center justify-between gap-4 text-center md:flex-row md:text-right">
           <p className="text-muted-foreground text-sm">
-            © {new Date().getFullYear()} مؤسسه الطاحون - المسك للعطور. جميع الحقوق محفوظة.
+            © {new Date().getFullYear()} مؤسسه طاحون - المسك للعطور. جميع الحقوق محفوظة.
           </p>
 
           {/* Payment Methods */}
