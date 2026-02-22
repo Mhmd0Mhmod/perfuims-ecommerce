@@ -108,7 +108,10 @@ export default function AddOfferForm({ offer, products }: AddOfferFormProps) {
   };
 
   const isProductFullySelected = (product: Product) => {
-    return product.variants.every((v) => selectedVariantIds.includes(v.id));
+    return (
+      product.variants.every((v) => selectedVariantIds.includes(v.id)) &&
+      product.variants.length > 0
+    );
   };
 
   const isProductPartiallySelected = (product: Product) => {

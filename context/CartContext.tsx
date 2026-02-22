@@ -27,7 +27,6 @@ export function CartProvider({ children }: { children: ReactNode }) {
           productVariantId,
           quantity,
         });
-
         if (reponse.success) {
           toast.success("تمت إضافة المنتج للسلة بنجاح!", { id });
         } else {
