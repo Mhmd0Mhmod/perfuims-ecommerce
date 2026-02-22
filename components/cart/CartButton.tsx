@@ -31,31 +31,34 @@ function CartButton() {
       </SheetTrigger>
       <SheetContent side="left" dir="ltr">
         <SheetClose />
-        <SheetHeader>
-          <SheetTitle className="mb-4 text-lg font-semibold">سلة التسوق</SheetTitle>
-          <SheetDescription className="text-muted-foreground mb-6 text-sm">
-            تحقق من العناصر في سلة التسوق الخاصة بك وقم بإجراء عملية الدفع عندما تكون جاهزًا.
-          </SheetDescription>
-        </SheetHeader>
-        <div className="space-y-4 px-4 py-2">
-          <ScrollArea className="max-h-[70vh]">
-            <CartList cartItems={items} />
-          </ScrollArea>
-          <div className="grid grid-cols-1 gap-2">
-            {items.length > 0 && (
-              <Button asChild variant={"outline"}>
-                <Link href="/checkout">
-                  <Barcode className="mr-2 h-4 w-4" />
-                  إتمام الشراء
-                </Link>
-              </Button>
-            )}
-            {items.length > 0 && (
-              <ClearCartButton>
-                <Trash2 className="mr-2 h-4 w-4" />
-                إفراغ السلة
-              </ClearCartButton>
-            )}
+
+        <div className="flex h-full flex-col" dir="rtl">
+          <SheetHeader>
+            <SheetTitle className="mb-4 text-lg font-semibold">سلة التسوق</SheetTitle>
+            <SheetDescription className="text-muted-foreground mb-6 text-sm">
+              تحقق من العناصر في سلة التسوق الخاصة بك وقم بإجراء عملية الدفع عندما تكون جاهزًا.
+            </SheetDescription>
+          </SheetHeader>
+          <div className="space-y-4 px-4 py-2">
+            <ScrollArea className="max-h-[70vh]">
+              <CartList cartItems={items} />
+            </ScrollArea>
+            <div className="grid grid-cols-1 gap-2">
+              {items.length > 0 && (
+                <Button asChild variant={"outline"}>
+                  <Link href="/checkout">
+                    <Barcode className="mr-2 h-4 w-4" />
+                    إتمام الشراء
+                  </Link>
+                </Button>
+              )}
+              {items.length > 0 && (
+                <ClearCartButton>
+                  <Trash2 className="mr-2 h-4 w-4" />
+                  إفراغ السلة
+                </ClearCartButton>
+              )}
+            </div>
           </div>
         </div>
       </SheetContent>

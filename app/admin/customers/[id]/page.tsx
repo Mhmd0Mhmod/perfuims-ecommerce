@@ -243,7 +243,11 @@ async function CustomerDetailsPage({ params }: { params: Promise<{ id: string }>
                         ORDER_STATUS_CONFIG[order.status as keyof typeof ORDER_STATUS_CONFIG];
                       return (
                         <TableRow key={order.orderId}>
-                          <TableCell className="font-medium">#{order.orderNumber}</TableCell>
+                          <TableCell className="font-medium">
+                            <Button variant={"link"} size={"sm"} asChild>
+                              <Link href={`/admin/orders/${order.orderId}`}>{order.orderId}#</Link>
+                            </Button>
+                          </TableCell>
                           <TableCell>{formatDate(order.createdAt)}</TableCell>
                           <TableCell>
                             <Badge variant={statusInfo?.variant}>{statusInfo.label}</Badge>
@@ -315,21 +319,15 @@ async function CustomerDetailsPage({ params }: { params: Promise<{ id: string }>
                       ];
                     return (
                       <TableRow key={payment.paymentId}>
-                        <TableCell className="font-medium">#{payment.paymentId}</TableCell>
-                        <TableCell>
-                          {new Date(payment.createdAt).toLocaleDateString("ar-EG", {
-                            year: "numeric",
-                            month: "short",
-                            day: "numeric",
-                          })}
-                        </TableCell>
+                        <TableCell className="font-medium">{payment.paymentId}#</TableCell>
+                        <TableCell>{formatDate(payment.createdAt)}</TableCell>
                         <TableCell className="font-medium">
                           {formatCurrency({
                             amount: payment.amount,
-                            code: "EG",
+                            code: payment.countryCode,
                           })}
                         </TableCell>
-                        <TableCell>{}</TableCell>
+                        <TableCell>{payment.paymentMethodType}</TableCell>
                         <TableCell>
                           <Badge variant={statusInfo.variant}>{statusInfo.label}</Badge>
                         </TableCell>

@@ -43,7 +43,7 @@ export default function CheckoutForm({ cartItems, user, country }: CheckoutFormP
       email: user?.email || "",
       phoneNumber: user?.phoneNumber || "",
       city: "",
-      address: "",
+      address: user?.address || "",
       paymentMethodId: 2,
     },
   });
@@ -232,16 +232,32 @@ export default function CheckoutForm({ cartItems, user, country }: CheckoutFormP
                     <p className="line-clamp-1 flex items-center justify-center leading-none font-medium">
                       {item.variantDetails.name}
                     </p>
-                    <div className="flex flex-col gap-1">
-                      <p className="text-muted-foreground text-xs">
-                        {item.variantDetails.size} {item.variantDetails.unit} × {item.quantity}
-                      </p>
-                      <p className="text-sm font-semibold">
-                        {formatCurrency({
-                          amount: item.variantDetails.newPrice * item.quantity,
-                          code: country.code,
-                        })}
-                      </p>
+                    <div className="flex flex-col justify-end gap-1">
+                      <div className="text-muted-foreground flex items-center gap-2 text-xs">
+                        <span className="bg-muted rounded px-2 py-0.5 font-medium">
+                          {item.quantity} × {item.variantDetails.size} {item.variantDetails.unit}
+                        </span>
+                      </div>
+                      <div className="mt-1 flex flex-col gap-0.5">
+                        <div className="flex items-center gap-1">
+                          <span className="text-muted-foreground text-xs">سعر الوحدة:</span>
+                          <span className="text-primary text-sm font-bold">
+                            {formatCurrency({
+                              amount: item.variantDetails.newPrice,
+                              code: country.code,
+                            })}
+                          </span>
+                        </div>
+                        <div className="flex items-center gap-1">
+                          <span className="text-muted-foreground text-xs">الإجمالي:</span>
+                          <span className="text-sm font-bold text-green-700">
+                            {formatCurrency({
+                              amount: item.variantDetails.newPrice * item.quantity,
+                              code: country.code,
+                            })}
+                          </span>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>

@@ -90,7 +90,11 @@ function ProductBadges({ product }: { product: Product }) {
   const badges = [
     ...(product.variants.some((v) => v.offerId)
       ? [
-          <Badge variant="destructive" className="shadow-sm">
+          <Badge
+            variant="destructive"
+            key={product.variants.find((v) => v.offerId)?.id || "offer"}
+            className="shadow-sm"
+          >
             {product.variants.find((v) => v.offerId)?.offerTitle || "عرض"}
           </Badge>,
         ]

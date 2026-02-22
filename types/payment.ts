@@ -7,6 +7,7 @@ export interface Payment {
   username: string;
   paymentMethodType: string;
   paymentStatus: PaymentStatus;
+  countryCode: string;
   amount: number;
   transactionId: string;
   createdAt: string;

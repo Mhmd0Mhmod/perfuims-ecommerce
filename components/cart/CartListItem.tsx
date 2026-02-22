@@ -4,7 +4,7 @@ import { formatCurrency } from "@/lib/utils";
 import { CartItem } from "@/types/cart";
 import { ShoppingCart, Trash2 } from "lucide-react";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Badge } from "../ui/badge";
 import { Button } from "../ui/button";
 import { Card } from "../ui/card";
@@ -13,10 +13,6 @@ function CartListItem({ item }: { item: CartItem }) {
   const { selectedCountry } = useSelectedCountry();
   const { edit, remove } = useCartContext();
   const [localQty, setLocalQty] = useState(item.quantity);
-
-  useEffect(() => {
-    setLocalQty(item.quantity);
-  }, [item.quantity]);
 
   const updateQuantity = async (newQty: number) => {
     edit(item.id, newQty);
