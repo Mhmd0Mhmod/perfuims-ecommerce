@@ -1,4 +1,5 @@
 import { PaymentAPI } from "@/lib/api/payment";
+import { Pagination } from "@/types/pagination";
 import { Payment } from "@/types/payment";
 import { useQuery, UseQueryResult } from "@tanstack/react-query";
 

@@ -46,7 +46,8 @@ export default async function ProductPage({ params }: { params: Promise<{ id: st
             {hasDiscount && (
               <div className="absolute top-4 right-4">
                 <Badge variant="destructive" className="px-3 py-1 text-sm shadow-md">
-                  {product.variants.find((v) => v.offerId)?.offerTitle || "عرض خاص"}
+                  {product.variants.find((v) => v.offerResponseDTO)?.offerResponseDTO?.title ||
+                    "عرض خاص"}
                 </Badge>
               </div>
             )}
@@ -178,7 +179,7 @@ export default async function ProductPage({ params }: { params: Promise<{ id: st
           </div>
 
           {/* Offer Details (if any) */}
-          {product.variants.some((v) => v.offerDescription) && (
+          {product.variants.some((v) => v.offerResponseDTO) && (
             <>
               <Separator />
               <div className="flex flex-col gap-3">
@@ -189,11 +190,11 @@ export default async function ProductPage({ params }: { params: Promise<{ id: st
                 <Card className="border-yellow-200 bg-yellow-50/50">
                   <CardContent className="p-4">
                     {product.variants
-                      .filter((v) => v.offerDescription)
+                      .filter((v) => v.offerResponseDTO)
                       .map((v) => (
                         <p key={v.id} className="text-sm leading-relaxed text-yellow-900">
-                          <span className="font-semibold">{v.offerTitle}:</span>{" "}
-                          {v.offerDescription}
+                          <span className="font-semibold">{v.offerResponseDTO?.title}:</span>{" "}
+                          {v.offerResponseDTO?.description}
                         </p>
                       ))}
                   </CardContent>

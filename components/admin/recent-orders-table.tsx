@@ -1,11 +1,5 @@
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -14,12 +8,18 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Button } from "@/components/ui/button";
-import { MoreHorizontal } from "lucide-react";
-import { Order, ORDER_STATUS, ORDER_STATUS_CONFIG } from "@/types/order";
-import { Badge } from "@/components/ui/badge";
-import { formatCurrency } from "@/lib/utils";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 import { PAYMENT_METHODS } from "@/constants/payment_methods";
+import { formatCurrency } from "@/lib/utils";
+import { Order, ORDER_STATUS_CONFIG } from "@/types/order";
+import { MoreHorizontal } from "lucide-react";
 
 interface RecentOrdersTableProps {
   orders: Order[];

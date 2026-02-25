@@ -1,3 +1,5 @@
+import { PaginationParams } from "./pagination";
+
 interface Order {
   orderId: string;
   orderNumber: string;
@@ -120,5 +122,10 @@ const PERIOD_OPTIONS = {
 } as const;
 type PeriodOptions = (typeof PERIOD_OPTIONS)[keyof typeof PERIOD_OPTIONS];
 
-export type { Order, OrderItem, OrderStatus, PaymentStatus, PeriodOptions };
+export type OrderSearchParams = PaginationParams & {
+  status?: OrderStatus;
+  period?: PeriodOptions;
+};
+
 export { ORDER_STATUS, PAYMENT_STATUS, PERIOD_OPTIONS };
+export type { Order, OrderItem, OrderStatus, PaymentStatus, PeriodOptions };

@@ -1,20 +1,15 @@
+import FilterOrders from "@/components/admin/orders/FilterOrders";
 import OrdersTable from "@/components/admin/orders/OrdersTable";
 import StatsSkeleton from "@/components/shared/stats-skeleton";
+import TableSkeleton from "@/components/shared/table-skeleton";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { OrderAPI } from "@/lib/api/order";
+import { OrderSearchParams } from "@/types/order";
 import { Clock, Package, Search, ShoppingCart, Truck } from "lucide-react";
 import { Suspense } from "react";
-import FilterOrders from "@/components/admin/orders/FilterOrders";
-import { OrderAPI } from "@/lib/api/order";
 
-async function OrdersPage({
-  searchParams,
-}: {
-  searchParams: Promise<{
-    status?: string;
-    period?: string;
-  }>;
-}) {
+async function OrdersPage({ searchParams }: { searchParams: Promise<OrderSearchParams> }) {
   const params = await searchParams;
   return (
     <div className="container mx-auto space-y-6 p-6">
@@ -43,7 +38,15 @@ async function OrdersPage({
           </div>
         </CardHeader>
         <CardContent>
-          <OrdersTable {...params} />
+          <Suspense
+            fallback={
+              <div className="rounded-md border">
+                <TableSkeleton rows={5} columns={7} />
+              </div>
+            }
+          >
+            <OrdersTable searchParams={params} />
+          </Suspense>
         </CardContent>
       </Card>
     </div>
@@ -52,14 +55,7 @@ async function OrdersPage({
 
 async function OrderStatsCard() {
   const orders = await OrderAPI.getAdminOrderStatus();
-  const {
-    cancelledOrders,
-    confirmedOrders,
-    deliveredOrders,
-    pendingOrders,
-    shippedOrders,
-    totalOrders,
-  } = orders;
+  const { deliveredOrders, pendingOrders, shippedOrders, totalOrders } = orders;
   return (
     <>
       <Card>

@@ -2,6 +2,8 @@ import { getCookies } from "@/app/actions";
 import AddProductForm from "@/components/admin/products/AddProductForm";
 import { ProductActionsMenu } from "@/components/admin/products/ProductActionsMenu";
 import { VariantsPopover } from "@/components/admin/products/VariantsPopover";
+import { PaginationServer } from "@/components/shared/pagination";
+import SearchInput from "@/components/shared/search-input";
 import StatsSkeleton from "@/components/shared/stats-skeleton";
 import TableSkeleton from "@/components/shared/table-skeleton";
 import { Badge } from "@/components/ui/badge";
@@ -30,7 +32,8 @@ import { ProductAPI } from "@/lib/api/product";
 import { SizeAPI } from "@/lib/api/size";
 import { formatCurrency, formatDate } from "@/lib/utils";
 import { Category } from "@/types/category";
-import { Product } from "@/types/product";
+import { Pagination } from "@/types/pagination";
+import { ProdcutSearchParams, Product } from "@/types/product";
 import { Size } from "@/types/size";
 import { Package, PackageCheck, PackageX, Plus, Search } from "lucide-react";
 import Image from "next/image";
@@ -63,7 +66,7 @@ async function AddProductFormButton() {
     </Dialog>
   );
 }
-function ProductsPage() {
+async function ProductsPage({ searchParams }: { searchParams: Promise<ProdcutSearchParams> }) {
   return (
     <div className="container mx-auto space-y-6 p-6">
       {/* Header */}
@@ -88,15 +91,12 @@ function ProductsPage() {
               <CardTitle className="text-2xl font-bold">قائمة المنتجات</CardTitle>
               <CardDescription>عرض وإدارة جميع المنتجات</CardDescription>
             </div>
-            <div className="relative w-full md:w-80">
-              <Search className="text-muted-foreground absolute top-1/2 right-3 h-4 w-4 -translate-y-1/2" />
-              <Input placeholder="ابحث عن منتج..." className="pr-10" />
-            </div>
+            <SearchInput />
           </div>
         </CardHeader>
         <CardContent>
           <Suspense fallback={<TableSkeleton columns={6} rows={8} />}>
-            <ProductsTable />
+            <ProductsTable searchParams={await searchParams} />
           </Suspense>
         </CardContent>
       </Card>
@@ -147,8 +147,14 @@ async function ProductStatsCards() {
   );
 }
 
-async function ProductsTable() {
-  const data = (await ProductAPI.getAdminProducts()) as Pagination<Product>;
+async function ProductsTable({ searchParams }: { searchParams: ProdcutSearchParams }) {
+  const data = (await ProductAPI.getAdminProducts({
+    categoryIds: searchParams.categoryIds?.split(",") || [],
+    offerIds: searchParams.offerIds?.split(",") || [],
+    searchTerm: searchParams.q,
+    page: searchParams.page,
+    displayAll: false,
+  })) as Pagination<Product>;
   const products = data.content;
   if (products.length === 0) {
     return (
@@ -159,10 +165,9 @@ async function ProductsTable() {
       </div>
     );
   }
-  const [categories, sizes, countryCode] = await Promise.all([
+  const [categories, sizes] = await Promise.all([
     CategoryAPI.getAdminCategories(),
     SizeAPI.getAdminSizes(),
-    getCookies("country_code"),
   ]);
   return (
     <div className="space-y-4">
@@ -185,19 +190,16 @@ async function ProductsTable() {
                 product={product}
                 categories={categories}
                 sizes={sizes}
-                countryCode={countryCode!}
               />
             ))}
           </TableBody>
         </Table>
       </div>
-      <Card>
-        <CardContent className="pt-6">
-          <div className="text-muted-foreground text-center text-sm">
-            إجمالي المنتجات: {data.totalElements}
-          </div>
-        </CardContent>
-      </Card>
+      <PaginationServer
+        totalPages={data.totalPages}
+        currentPage={data.pageable.pageNumber}
+        searchParams={searchParams}
+      />
     </div>
   );
 }
@@ -206,12 +208,10 @@ function ProductTableRow({
   product,
   categories,
   sizes,
-  countryCode,
 }: {
   product: Product;
   categories: Category[];
   sizes: Size[];
-  countryCode: string;
 }) {
   const minPrice = Math.min(...product.variants.map((v) => v.newPrice));
   const maxPrice = Math.max(...product.variants.map((v) => v.newPrice));
@@ -256,7 +256,7 @@ function ProductTableRow({
       </TableCell>
       <TableCell className="text-right">
         {product.variants && product.variants.length > 0 ? (
-          <VariantsPopover countryCode={countryCode} variants={product.variants} />
+          <VariantsPopover countryCode={product.countryCode} variants={product.variants} />
         ) : (
           <Badge variant="secondary">لا يوجد أحجام</Badge>
         )}
@@ -265,21 +265,19 @@ function ProductTableRow({
         {product.variants && product.variants.length > 0 ? (
           <div className="flex items-center gap-1 font-medium">
             <span>
-              {countryCode &&
-                formatCurrency({
-                  amount: minPrice,
-                  code: countryCode,
-                })}
+              {formatCurrency({
+                amount: minPrice,
+                code: product.countryCode,
+              })}
             </span>
             {minPrice !== maxPrice && (
               <>
                 <span className="text-muted-foreground">-</span>
                 <span>
-                  {countryCode &&
-                    formatCurrency({
-                      amount: maxPrice,
-                      code: countryCode,
-                    })}
+                  {formatCurrency({
+                    amount: maxPrice,
+                    code: product.countryCode,
+                  })}
                 </span>
               </>
             )}

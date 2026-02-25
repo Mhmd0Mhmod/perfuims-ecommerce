@@ -1,11 +1,14 @@
-import { Order } from "@/types/order";
+import { Order, OrderSearchParams } from "@/types/order";
 import axios from "@/lib/axios";
 import { authFetcher } from "../authFetcher";
 import { throwingError } from "../utils";
+import { Pagination } from "@/types/pagination";
 export class OrderAPI {
-  static async getUserOrders() {
+  static async getUserOrders(params?: OrderSearchParams) {
     try {
-      const { data } = await authFetcher.get<Pagination<Order>>("/orders");
+      const { data } = await authFetcher.get<Pagination<Order>>("/orders", {
+        params,
+      });
       return data;
     } catch (error) {
       throw throwingError(error);
@@ -36,13 +39,13 @@ export class OrderAPI {
     }
   }
 
-  static async getAdminOrders(params: {
+  static async getAdminOrdersServer(params: {
     page: number;
     status?: string;
     period?: string;
   }): Promise<Pagination<Order>> {
     try {
-      const { data } = await axios.get<Pagination<Order>>("/api/admin/orders", {
+      const { data } = await authFetcher.get<Pagination<Order>>("/admin/orders", {
         params,
       });
       return data;

@@ -5,6 +5,7 @@ import { fetcher } from "../fetcher";
 import { throwingError } from "../utils";
 import { AddProductSchema } from "../zod";
 import axios from "@/lib/axios";
+import { Pagination, PaginationParams } from "@/types/pagination";
 
 export class ProductAPI {
   static async getProducts(
@@ -47,13 +48,24 @@ export class ProductAPI {
     }
   }
   static async getAdminProducts(
-    params?: Partial<ProductsState> & {
-      displayAll: boolean;
-    },
+    params?: Partial<ProductsState> &
+      (
+        | (PaginationParams & {
+            displayAll?: false;
+          })
+        | {
+            displayAll: true;
+          }
+      ),
   ): Promise<Pagination<Product> | Product[]> {
     try {
       const { data } = await authFetcher.get<Product[] | Pagination<Product>>("/admin/products", {
-        params,
+        params: {
+          q: params?.searchTerm,
+          categoryIds: params?.categoryIds?.join(","),
+          offerIds: params?.offerIds?.join(","),
+          ...params,
+        },
       });
       if (params?.displayAll) {
         return data as Product[];

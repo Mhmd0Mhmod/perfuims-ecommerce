@@ -1,5 +1,6 @@
 import { authFetcher } from "@/lib/authFetcher";
 import { Order } from "@/types/order";
+import { Pagination } from "@/types/pagination";
 import { AxiosError } from "axios";
 import { NextRequest, NextResponse } from "next/server";
 

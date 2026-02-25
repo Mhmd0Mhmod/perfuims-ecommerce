@@ -1,5 +1,6 @@
 import RemoveCustomerButton from "@/components/admin/customers/DeleteCustomerButton";
 import { UserAvatar } from "@/components/auth/UserAvatar";
+import { PaginationServer } from "@/components/shared/pagination";
 import StatsSkeleton from "@/components/shared/stats-skeleton";
 import TableSkeleton from "@/components/shared/table-skeleton";
 import { Badge } from "@/components/ui/badge";
@@ -17,12 +18,13 @@ import {
 import { UserAPI } from "@/lib/api/user";
 import { cn, formatDate } from "@/lib/utils";
 import { Customer } from "@/types/customer";
+import { PaginationParams } from "@/types/pagination";
 import { Roles } from "@/types/roles";
 import { Calendar, Eye, Mail, Phone, Search, Shield, UserCog, Users } from "lucide-react";
 import Link from "next/link";
 import { Suspense } from "react";
 
-function page() {
+async function page({ seachParams }: { seachParams: Promise<PaginationParams> }) {
   return (
     <div className="container mx-auto space-y-6 p-6">
       {/* Stats Cards */}
@@ -50,7 +52,7 @@ function page() {
         </CardHeader>
         <CardContent>
           <Suspense fallback={<TableSkeleton columns={5} rows={5} />}>
-            <CustomerTable />
+            <CustomerTable searchParams={await seachParams} />
           </Suspense>
         </CardContent>
       </Card>
@@ -98,9 +100,8 @@ async function CustomerStatsCard() {
     </>
   );
 }
-async function CustomerTable() {
-  const customers = await UserAPI.getUsers();
-  const totalCustomers = customers.totalElements;
+async function CustomerTable({ searchParams }: { searchParams: PaginationParams }) {
+  const customers = await UserAPI.getUsers(searchParams);
   return (
     <>
       <div className="rounded-md border">
@@ -191,15 +192,11 @@ async function CustomerTable() {
         </Table>
       </div>
 
-      {/* Pagination Info */}
-      <div className="mt-4 flex items-center justify-between">
-        <div className="text-muted-foreground text-sm">
-          عرض {customers.content.length} من {totalCustomers} عميل
-        </div>
-        <div className="text-muted-foreground text-sm">
-          صفحة {customers.number + 1} من {customers.totalPages}
-        </div>
-      </div>
+      <PaginationServer
+        totalPages={customers.totalPages}
+        currentPage={customers.pageable.pageNumber}
+        searchParams={searchParams}
+      />
     </>
   );
 }

@@ -3,6 +3,7 @@ import axios from "@/lib/axios";
 import { authFetcher } from "../authFetcher";
 import { fetcher } from "../fetcher";
 import { throwingError } from "../utils";
+import { PaginationParams } from "@/types/pagination";
 
 export class OfferAPI {
   static async getOffers() {
@@ -21,9 +22,11 @@ export class OfferAPI {
       throw throwingError(error);
     }
   }
-  static async getAdminOffers(): Promise<Offer[]> {
+  static async getAdminOffers(params?: PaginationParams): Promise<Offer[]> {
     try {
-      const response = await authFetcher.get<Offer[]>(`/admin/offers`);
+      const response = await authFetcher.get<Offer[]>(`/admin/offers`, {
+        params,
+      });
       return response.data;
     } catch (error) {
       throw throwingError(error);

@@ -1,4 +1,5 @@
 import { authFetcher } from "@/lib/authFetcher";
+import { Pagination } from "@/types/pagination";
 import { Product } from "@/types/product";
 import { AxiosError } from "axios";
 import { NextRequest, NextResponse } from "next/server";

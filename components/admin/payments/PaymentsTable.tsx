@@ -109,7 +109,7 @@ function PaymentsTable({ status }: { status?: string }) {
                     {/* Assuming Egypt currency as default since code isn't in payment object. Ideally fetch or use context. */}
                     {formatCurrency({
                       amount: payment.amount,
-                      code: "EG",
+                      code: payment.countryCode,
                     })}
                   </div>
                 </TableCell>

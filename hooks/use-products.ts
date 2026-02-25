@@ -1,5 +1,6 @@
 import { ProductsState } from "@/context/ProductsContext";
 import { ProductAPI } from "@/lib/api/product";
+import { Pagination } from "@/types/pagination";
 import { Product } from "@/types/product";
 import { useInfiniteQuery } from "@tanstack/react-query";
 

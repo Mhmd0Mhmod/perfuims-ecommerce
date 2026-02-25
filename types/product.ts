@@ -1,5 +1,6 @@
 import { Category } from "./category";
-import { DiscountType, Offer } from "./offer";
+import { Offer } from "./offer";
+import { PaginationParams } from "./pagination";
 
 interface Product {
   id: number;
@@ -30,4 +31,9 @@ interface ProductVariant {
   updatedAt: "2026-02-06T21:47:07Z";
 }
 
-export type { Product, ProductVariant };
+type ProdcutSearchParams = PaginationParams & {
+  q?: string;
+  categoryIds?: string;
+  offerIds?: string;
+};
+export type { Product, ProductVariant, ProdcutSearchParams };

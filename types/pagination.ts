@@ -1,4 +1,4 @@
-interface Pagination<T> {
+export interface Pagination<T> {
   content: T[];
   pageable: {
     pageNumber: number;
@@ -26,3 +26,6 @@ interface Pagination<T> {
   first: boolean;
   empty: boolean;
 }
+export type PaginationParams = {
+  page: number;
+};

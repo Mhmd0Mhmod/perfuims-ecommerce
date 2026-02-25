@@ -1,8 +1,15 @@
-import { getCookies } from "@/app/actions";
+import { PaginationServer } from "@/components/shared/pagination";
 import TableSkeleton from "@/components/shared/table-skeleton";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import {
   Table,
   TableBody,
@@ -13,7 +20,7 @@ import {
 } from "@/components/ui/table";
 import { OrderAPI } from "@/lib/api/order";
 import { cn, formatCurrency, formatDate } from "@/lib/utils";
-import { Order, OrderStatus } from "@/types/order";
+import { Order, OrderSearchParams, OrderStatus } from "@/types/order";
 import {
   ArrowLeft,
   CheckCircle,
@@ -68,7 +75,9 @@ const ORDER_STATUS_CONFIG: Record<
   },
 };
 
-function OrdersPage() {
+async function OrdersPage({ searchParams }: { searchParams: Promise<OrderSearchParams> }) {
+  const params = await searchParams;
+
   return (
     <div className="space-y-6">
       {/* Header */}
@@ -87,7 +96,7 @@ function OrdersPage() {
 
       {/* Orders List */}
       <Suspense fallback={<OrdersSkeleton />}>
-        <OrdersList />
+        <OrdersList searchParams={params} />
       </Suspense>
     </div>
   );
@@ -103,13 +112,8 @@ function OrdersSkeleton() {
   );
 }
 
-async function OrdersList() {
-  const [orders, countryCode] = await Promise.all([
-    OrderAPI.getUserOrders(),
-    getCookies("country_code"),
-  ]);
-  console.log(orders);
-
+async function OrdersList({ searchParams }: { searchParams: OrderSearchParams }) {
+  const orders = await OrderAPI.getUserOrders(searchParams);
   if (orders.content.length === 0) {
     return <EmptyOrders />;
   }
@@ -175,7 +179,7 @@ async function OrdersList() {
                         <div className="font-semibold">
                           {formatCurrency({
                             amount: order.totalAmount,
-                            code: countryCode!,
+                            code: order.countryCode,
                           })}
                         </div>
                       </TableCell>
@@ -203,16 +207,14 @@ async function OrdersList() {
               </TableBody>
             </Table>
           </div>
-
-          {/* Pagination */}
-          {orders.totalPages > 1 && (
-            <div className="mt-4 flex items-center justify-between">
-              <div className="text-muted-foreground text-sm">
-                صفحة {orders.number + 1} من {orders.totalPages}
-              </div>
-            </div>
-          )}
         </CardContent>
+        <CardFooter>
+          <PaginationServer
+            totalPages={orders.totalPages}
+            currentPage={orders.pageable.pageNumber}
+            searchParams={searchParams}
+          />
+        </CardFooter>
       </Card>
     </div>
   );

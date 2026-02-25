@@ -145,7 +145,6 @@ export default function AddOfferForm({ offer, products }: AddOfferFormProps) {
       toast.error("حدث خطأ غير متوقع", { id: loadingId });
     }
   }
-  const countryCode = getCookie("country_code");
 
   return (
     <Form {...form}>
@@ -387,11 +386,10 @@ export default function AddOfferForm({ offer, products }: AddOfferFormProps) {
                               {variant.size} {variant.unit}
                             </TableCell>
                             <TableCell className="text-sm">
-                              {countryCode &&
-                                formatCurrency({
-                                  amount: variant.newPrice,
-                                  code: countryCode,
-                                })}
+                              {formatCurrency({
+                                amount: variant.newPrice,
+                                code: product.countryCode,
+                              })}
                             </TableCell>
                             <TableCell className="text-center">
                               <Checkbox

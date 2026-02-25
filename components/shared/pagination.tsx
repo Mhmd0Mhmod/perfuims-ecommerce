@@ -1,7 +1,5 @@
 "use client";
 
-import { usePathname, useSearchParams } from "next/navigation";
-import { Suspense } from "react";
 import {
   Pagination,
   PaginationContent,
@@ -11,11 +9,43 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
-
+import { usePathname, useSearchParams } from "next/navigation";
+const getPagesToShow = ({
+  totalPages,
+  currentPage,
+}: {
+  totalPages: number;
+  currentPage: number;
+}) => {
+  const pages: (number | string)[] = [];
+  if (totalPages <= 5) {
+    for (let i = 1; i <= totalPages; i++) {
+      pages.push(i);
+    }
+  } else {
+    if (currentPage <= 3) {
+      pages.push(1, 2, 3, 4, "ellipsis", totalPages);
+    } else if (currentPage >= totalPages - 2) {
+      pages.push(1, "ellipsis", totalPages - 3, totalPages - 2, totalPages - 1, totalPages);
+    } else {
+      pages.push(
+        1,
+        "ellipsis",
+        currentPage - 1,
+        currentPage,
+        currentPage + 1,
+        "ellipsis",
+        totalPages,
+      );
+    }
+  }
+  return pages;
+};
 interface PaginationProps {
   totalPages: number;
-  currentPage?: number;
+  currentPage: number;
   onPageChange?: (page: number) => void;
+  searchParams?: Record<string, string | number | boolean>;
 }
 
 function PaginationClientInternal({
@@ -44,32 +74,6 @@ function PaginationClientInternal({
     }
   };
 
-  const getPagesToShow = () => {
-    const pages: (number | string)[] = [];
-    if (totalPages <= 5) {
-      for (let i = 1; i <= totalPages; i++) {
-        pages.push(i);
-      }
-    } else {
-      if (currentPage <= 3) {
-        pages.push(1, 2, 3, 4, "ellipsis", totalPages);
-      } else if (currentPage >= totalPages - 2) {
-        pages.push(1, "ellipsis", totalPages - 3, totalPages - 2, totalPages - 1, totalPages);
-      } else {
-        pages.push(
-          1,
-          "ellipsis",
-          currentPage - 1,
-          currentPage,
-          currentPage + 1,
-          "ellipsis",
-          totalPages,
-        );
-      }
-    }
-    return pages;
-  };
-
   return (
     <Pagination className="my-8">
       <PaginationContent>
@@ -82,7 +86,7 @@ function PaginationClientInternal({
           />
         </PaginationItem>
 
-        {getPagesToShow().map((page, index) => (
+        {getPagesToShow({ totalPages, currentPage }).map((page, index) => (
           <PaginationItem key={index}>
             {page === "ellipsis" ? (
               <PaginationEllipsis />
@@ -114,9 +118,57 @@ function PaginationClientInternal({
 }
 
 export function PaginationClient(props: PaginationProps) {
+  return <PaginationClientInternal {...props} />;
+}
+export function PaginationServer(props: PaginationProps) {
   return (
-    <Suspense fallback={null}>
-      <PaginationClientInternal {...props} />
-    </Suspense>
+    <Pagination className="my-4">
+      <PaginationContent>
+        <PaginationItem>
+          <PaginationPrevious
+            href={{
+              query: { ...props.searchParams, page: props.currentPage - 1 },
+            }}
+            aria-disabled={props.currentPage <= 1}
+            className={
+              props.currentPage && props.currentPage <= 1
+                ? "pointer-events-none opacity-50"
+                : "cursor-pointer"
+            }
+          />
+        </PaginationItem>
+        {getPagesToShow({ totalPages: props.totalPages, currentPage: props.currentPage }).map(
+          (page, index) => (
+            <PaginationItem key={index}>
+              {page === "ellipsis" ? (
+                <PaginationEllipsis />
+              ) : (
+                <PaginationLink
+                  href={{
+                    query: { ...props.searchParams, page: page },
+                  }}
+                  isActive={props.currentPage === page}
+                >
+                  {page}
+                </PaginationLink>
+              )}
+            </PaginationItem>
+          ),
+        )}
+        <PaginationItem>
+          <PaginationNext
+            href={{
+              query: { ...props.searchParams, page: props.currentPage + 1 },
+            }}
+            aria-disabled={props.currentPage >= props.totalPages}
+            className={
+              props.currentPage >= props.totalPages
+                ? "pointer-events-none opacity-50"
+                : "cursor-pointer"
+            }
+          />
+        </PaginationItem>
+      </PaginationContent>
+    </Pagination>
   );
 }

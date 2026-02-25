@@ -122,7 +122,6 @@ async function OfferStatsCards() {
 
 async function OffersTable() {
   const offers = await OfferAPI.getAdminOffers();
-  const countryCode = await getCookies("country_code");
 
   if (offers.length === 0) {
     return (
@@ -150,7 +149,7 @@ async function OffersTable() {
           </TableHeader>
           <TableBody>
             {offers.map((offer) => (
-              <OfferTableRow key={offer.id} offer={offer} countryCode={countryCode!} />
+              <OfferTableRow key={offer.id} offer={offer} />
             ))}
           </TableBody>
         </Table>
@@ -166,7 +165,7 @@ async function OffersTable() {
   );
 }
 
-function OfferTableRow({ offer, countryCode }: { offer: Offer; countryCode: string }) {
+function OfferTableRow({ offer }: { offer: Offer }) {
   const isExpired = new Date(offer.endDate) < new Date();
   const isUpcoming = new Date(offer.startDate) > new Date();
 
@@ -187,7 +186,7 @@ function OfferTableRow({ offer, countryCode }: { offer: Offer; countryCode: stri
     if (offer.discountType === DiscountType.PERCENTAGE) {
       return `${offer.discountValue}%`;
     }
-    return formatCurrency({ amount: offer.discountValue, code: countryCode });
+    return formatCurrency({ amount: offer.discountValue, code: offer.countryCode });
   };
 
   return (

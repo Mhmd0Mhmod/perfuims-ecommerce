@@ -9,7 +9,7 @@ export interface Offer {
   isActive: boolean;
   createdAt: string;
   updatedAt: string;
-
+  countryCode: string;
   productVariantIds: number[];
 }
 

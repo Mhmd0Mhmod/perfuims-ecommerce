@@ -2,6 +2,7 @@ import { authFetcher } from "@/lib/authFetcher";
 import { throwingError } from "@/lib/utils";
 import { Payment } from "@/types/payment";
 import axios from "@/lib/axios";
+import { Pagination } from "@/types/pagination";
 
 export class PaymentAPI {
   static async getAdminPayments(params: {
