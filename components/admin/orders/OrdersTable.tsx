@@ -20,7 +20,7 @@ import {
   OrderStatus,
   PAYMENT_STATUS,
 } from "@/types/order";
-import { Pagination } from "@/types/pagination";
+import { Pageable } from "@/types/pageable";
 import { CheckCircle, Clock, Package, Truck, XCircle } from "lucide-react";
 import Link from "next/link";
 
@@ -48,7 +48,7 @@ export const ORDER_STATUS_ICONS: Record<
 } as const;
 async function OrdersTable({ searchParams }: { searchParams: OrderSearchParams }) {
   const data = await OrderAPI.getAdminOrdersServer(searchParams);
-  const { content, totalPages } = data as Pagination<Order>;
+  const { content, totalPages } = data as Pageable<Order>;
 
   return (
     <div className="rounded-md border">
@@ -139,7 +139,7 @@ async function OrdersTable({ searchParams }: { searchParams: OrderSearchParams }
       </Table>
       <PaginationServer
         totalPages={totalPages}
-        currentPage={data.pageable.pageNumber}
+        currentPage={data.page}
         searchParams={searchParams}
       />
     </div>

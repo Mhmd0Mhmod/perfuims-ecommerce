@@ -18,7 +18,7 @@ import {
 import { UserAPI } from "@/lib/api/user";
 import { cn, formatDate } from "@/lib/utils";
 import { Customer } from "@/types/customer";
-import { PaginationParams } from "@/types/pagination";
+import { PaginationParams } from "@/types/pageable";
 import { Roles } from "@/types/roles";
 import { Calendar, Eye, Mail, Phone, Search, Shield, UserCog, Users } from "lucide-react";
 import Link from "next/link";
@@ -194,7 +194,7 @@ async function CustomerTable({ searchParams }: { searchParams: PaginationParams 
 
       <PaginationServer
         totalPages={customers.totalPages}
-        currentPage={customers.pageable.pageNumber}
+        currentPage={customers.page}
         searchParams={searchParams}
       />
     </>

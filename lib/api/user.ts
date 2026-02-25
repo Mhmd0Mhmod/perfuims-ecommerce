@@ -1,11 +1,11 @@
 import { authFetcher } from "@/lib/authFetcher";
 import { throwingError } from "@/lib/utils";
 import { Customer } from "@/types/customer";
-import { Pagination, PaginationParams } from "@/types/pagination";
+import { Pageable, PaginationParams } from "@/types/pageable";
 export class UserAPI {
   static async getUsers(params?: PaginationParams) {
     try {
-      const { data } = await authFetcher.get<Pagination<Customer>>("/admin/users", { params });
+      const { data } = await authFetcher.get<Pageable<Customer>>("/admin/users", { params });
       return data;
     } catch (error) {
       throw throwingError(error);

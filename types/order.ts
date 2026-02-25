@@ -1,4 +1,4 @@
-import { PaginationParams } from "./pagination";
+import { PaginationParams } from "./pageable";
 
 interface Order {
   orderId: string;

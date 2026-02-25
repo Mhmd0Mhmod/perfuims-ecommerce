@@ -5,14 +5,14 @@ import { fetcher } from "../fetcher";
 import { throwingError } from "../utils";
 import { AddProductSchema } from "../zod";
 import axios from "@/lib/axios";
-import { Pagination, PaginationParams } from "@/types/pagination";
+import { Pageable, PaginationParams } from "@/types/pageable";
 
 export class ProductAPI {
   static async getProducts(
     params: Partial<ProductsState> & { page?: number },
-  ): Promise<Pagination<Product>> {
+  ): Promise<Pageable<Product>> {
     try {
-      const response = await axios.get<Pagination<Product>>("/api/products", {
+      const response = await axios.get<Pageable<Product>>("/api/products", {
         params,
       });
       return response.data;
@@ -24,9 +24,9 @@ export class ProductAPI {
     params?: Partial<ProductsState> & {
       page?: number;
     },
-  ): Promise<Pagination<Product>> {
+  ): Promise<Pageable<Product>> {
     try {
-      const { data } = await fetcher.get<Pagination<Product>>("/products", {
+      const { data } = await fetcher.get<Pageable<Product>>("/products", {
         params: {
           q: params?.searchTerm,
           page: params?.page,
@@ -57,9 +57,9 @@ export class ProductAPI {
             displayAll: true;
           }
       ),
-  ): Promise<Pagination<Product> | Product[]> {
+  ): Promise<Pageable<Product> | Product[]> {
     try {
-      const { data } = await authFetcher.get<Product[] | Pagination<Product>>("/admin/products", {
+      const { data } = await authFetcher.get<Product[] | Pageable<Product>>("/admin/products", {
         params: {
           q: params?.searchTerm,
           categoryIds: params?.categoryIds?.join(","),
@@ -70,7 +70,7 @@ export class ProductAPI {
       if (params?.displayAll) {
         return data as Product[];
       }
-      return data as Pagination<Product>;
+      return data as Pageable<Product>;
     } catch (error) {
       throw throwingError(error);
     }

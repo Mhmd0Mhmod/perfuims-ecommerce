@@ -2,15 +2,15 @@ import { authFetcher } from "@/lib/authFetcher";
 import { throwingError } from "@/lib/utils";
 import { Payment } from "@/types/payment";
 import axios from "@/lib/axios";
-import { Pagination } from "@/types/pagination";
+import { Pageable } from "@/types/pageable";
 
 export class PaymentAPI {
   static async getAdminPayments(params: {
     page: number;
     status?: string;
-  }): Promise<Pagination<Payment>> {
+  }): Promise<Pageable<Payment>> {
     try {
-      const { data } = await axios.get<Pagination<Payment>>("/api/admin/payments", {
+      const { data } = await axios.get<Pageable<Payment>>("/api/admin/payments", {
         params,
       });
       return data;

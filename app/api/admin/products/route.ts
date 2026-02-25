@@ -1,5 +1,5 @@
 import { authFetcher } from "@/lib/authFetcher";
-import { Pagination } from "@/types/pagination";
+import { Pageable } from "@/types/pageable";
 import { Product } from "@/types/product";
 import { AxiosError } from "axios";
 import { NextRequest, NextResponse } from "next/server";
@@ -11,7 +11,7 @@ export async function GET(request: NextRequest) {
     const categorieIds = searchParams.get("categorieIds") || "";
     const dealIds = searchParams.get("dealIds") || "";
 
-    const { data } = await authFetcher.get<Pagination<Product>>("/admin/products", {
+    const { data } = await authFetcher.get<Pageable<Product>>("/admin/products", {
       params: {
         q,
         page,

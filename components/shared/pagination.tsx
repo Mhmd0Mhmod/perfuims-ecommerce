@@ -1,7 +1,7 @@
 "use client";
 
 import {
-  Pagination,
+  Pageable,
   PaginationContent,
   PaginationEllipsis,
   PaginationItem,
@@ -75,7 +75,7 @@ function PaginationClientInternal({
   };
 
   return (
-    <Pagination className="my-8">
+    <Pageable className="my-8">
       <PaginationContent>
         <PaginationItem>
           <PaginationPrevious
@@ -113,7 +113,7 @@ function PaginationClientInternal({
           />
         </PaginationItem>
       </PaginationContent>
-    </Pagination>
+    </Pageable>
   );
 }
 
@@ -122,7 +122,7 @@ export function PaginationClient(props: PaginationProps) {
 }
 export function PaginationServer(props: PaginationProps) {
   return (
-    <Pagination className="my-4">
+    <Pageable className="my-4">
       <PaginationContent>
         <PaginationItem>
           <PaginationPrevious
@@ -169,6 +169,6 @@ export function PaginationServer(props: PaginationProps) {
           />
         </PaginationItem>
       </PaginationContent>
-    </Pagination>
+    </Pageable>
   );
 }

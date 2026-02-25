@@ -3,7 +3,7 @@ import axios from "@/lib/axios";
 import { authFetcher } from "../authFetcher";
 import { fetcher } from "../fetcher";
 import { throwingError } from "../utils";
-import { PaginationParams } from "@/types/pagination";
+import { PaginationParams } from "@/types/pageable";
 
 export class OfferAPI {
   static async getOffers() {

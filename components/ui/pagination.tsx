@@ -5,7 +5,7 @@ import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { Button, buttonVariants } from "@/components/ui/button";
 
-function Pagination({ className, ...props }: React.ComponentProps<"nav">) {
+function Pageable({ className, ...props }: React.ComponentProps<"nav">) {
   return (
     <nav
       role="navigation"
@@ -97,7 +97,7 @@ function PaginationEllipsis({ className, ...props }: React.ComponentProps<"span"
 }
 
 export {
-  Pagination,
+  Pageable,
   PaginationContent,
   PaginationLink,
   PaginationItem,

@@ -2,11 +2,11 @@ import { Order, OrderSearchParams } from "@/types/order";
 import axios from "@/lib/axios";
 import { authFetcher } from "../authFetcher";
 import { throwingError } from "../utils";
-import { Pagination } from "@/types/pagination";
+import { Pageable } from "@/types/pageable";
 export class OrderAPI {
   static async getUserOrders(params?: OrderSearchParams) {
     try {
-      const { data } = await authFetcher.get<Pagination<Order>>("/orders", {
+      const { data } = await authFetcher.get<Pageable<Order>>("/orders", {
         params,
       });
       return data;
@@ -43,9 +43,9 @@ export class OrderAPI {
     page: number;
     status?: string;
     period?: string;
-  }): Promise<Pagination<Order>> {
+  }): Promise<Pageable<Order>> {
     try {
-      const { data } = await authFetcher.get<Pagination<Order>>("/admin/orders", {
+      const { data } = await authFetcher.get<Pageable<Order>>("/admin/orders", {
         params,
       });
       return data;

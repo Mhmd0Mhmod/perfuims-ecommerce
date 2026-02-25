@@ -32,7 +32,7 @@ import { ProductAPI } from "@/lib/api/product";
 import { SizeAPI } from "@/lib/api/size";
 import { formatCurrency, formatDate } from "@/lib/utils";
 import { Category } from "@/types/category";
-import { Pagination } from "@/types/pagination";
+import { Pageable } from "@/types/pageable";
 import { ProdcutSearchParams, Product } from "@/types/product";
 import { Size } from "@/types/size";
 import { Package, PackageCheck, PackageX, Plus, Search } from "lucide-react";
@@ -105,7 +105,7 @@ async function ProductsPage({ searchParams }: { searchParams: Promise<ProdcutSea
 }
 
 async function ProductStatsCards() {
-  const data = (await ProductAPI.getAdminProducts()) as Pagination<Product>;
+  const data = (await ProductAPI.getAdminProducts()) as Pageable<Product>;
   const products = data.content;
   const totalProducts = data.totalElements;
   const availableProducts = products.filter((p) => p.variants?.some((v) => v.isAvailable)).length;
@@ -154,7 +154,7 @@ async function ProductsTable({ searchParams }: { searchParams: ProdcutSearchPara
     searchTerm: searchParams.q,
     page: searchParams.page,
     displayAll: false,
-  })) as Pagination<Product>;
+  })) as Pageable<Product>;
   const products = data.content;
   if (products.length === 0) {
     return (
@@ -197,7 +197,7 @@ async function ProductsTable({ searchParams }: { searchParams: ProdcutSearchPara
       </div>
       <PaginationServer
         totalPages={data.totalPages}
-        currentPage={data.pageable.pageNumber}
+        currentPage={data.page}
         searchParams={searchParams}
       />
     </div>

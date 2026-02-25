@@ -1,6 +1,6 @@
 import { Category } from "./category";
 import { Offer } from "./offer";
-import { PaginationParams } from "./pagination";
+import { PaginationParams } from "./pageable";
 
 interface Product {
   id: number;

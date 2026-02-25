@@ -211,7 +211,7 @@ async function OrdersList({ searchParams }: { searchParams: OrderSearchParams })
         <CardFooter>
           <PaginationServer
             totalPages={orders.totalPages}
-            currentPage={orders.pageable.pageNumber}
+            currentPage={orders.page}
             searchParams={searchParams}
           />
         </CardFooter>
