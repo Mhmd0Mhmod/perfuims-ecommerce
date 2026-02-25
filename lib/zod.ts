@@ -68,6 +68,7 @@ const baseCategorySchema = {
   description: z.string().nullable(),
   isActive: z.boolean(),
   isAtHomePage: z.boolean(),
+  productIds: z.array(z.number()).optional(),
 };
 export const addCategorySchema = z.object({
   ...baseCategorySchema,

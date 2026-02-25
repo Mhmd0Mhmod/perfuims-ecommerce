@@ -1,42 +1,12 @@
-import { AddCategoryForm } from "@/components/admin/categories/AddCategoryForm";
 import { CategoryCard } from "@/components/admin/categories/CategoryCard";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
 import { Skeleton } from "@/components/ui/skeleton";
 import { CategoryAPI } from "@/lib/api/category";
 import { Plus } from "lucide-react";
+import Link from "next/link";
 import { Suspense } from "react";
-function AddCategory() {
-  return (
-    <Dialog>
-      <DialogTrigger asChild>
-        <Button>
-          <Plus className="mr-2 h-4 w-4" />
-          إضافة تصنيف
-        </Button>
-      </DialogTrigger>
-      <DialogContent>
-        <DialogClose />
-        <DialogHeader>
-          <DialogTitle>إضافة تصنيف جديد</DialogTitle>
-          <DialogDescription>
-            أدخل بيانات التصنيف الجديد هنا. انقر حفظ عند الانتهاء.
-          </DialogDescription>
-        </DialogHeader>
-        <AddCategoryForm />
-      </DialogContent>
-    </Dialog>
-  );
-}
+
 function CategoriesPage() {
   return (
     <div className="container mx-auto space-y-6 p-6">
@@ -45,7 +15,12 @@ function CategoriesPage() {
           <h1 className="text-3xl font-bold tracking-tight">التصنيفات</h1>
           <p className="text-muted-foreground">إدارة تصنيفات المنتجات</p>
         </div>
-        <AddCategory />
+        <Button asChild>
+          <Link href="/admin/categories/new">
+            <Plus className="mr-2 h-4 w-4" />
+            إضافة تصنيف
+          </Link>
+        </Button>
       </div>
 
       <Suspense

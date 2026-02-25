@@ -1,12 +1,12 @@
 "use client";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardDescription, CardTitle } from "@/components/ui/card";
-import { ProductCardProvider } from "@/context/ProductCardContext";
 import { Product } from "@/types/product";
 import Image from "next/image";
 import Link from "next/link";
 import AddToCartButton from "./AddToCartButton";
 import ProductOffer from "./ProductOffer";
+import { ProductProvider } from "@/context/ProductContext";
 
 interface ProductCardProps {
   product: Product;
@@ -16,7 +16,7 @@ function ProductCard({ product }: ProductCardProps) {
   const isAvailable = product.variants?.some((vari) => vari.isAvailable);
 
   return (
-    <ProductCardProvider product={product}>
+    <ProductProvider product={product}>
       {" "}
       <Card className="group relative flex h-full flex-col gap-0 overflow-hidden p-0 transition-all hover:shadow-lg">
         {/* Image Section */}
@@ -74,7 +74,7 @@ function ProductCard({ product }: ProductCardProps) {
           </div>
         </div>
       </Card>
-    </ProductCardProvider>
+    </ProductProvider>
   );
 }
 

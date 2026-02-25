@@ -1,11 +1,11 @@
 "use client";
 
-import { useProductCardContext } from "@/context/ProductCardContext";
+import { useProductContext } from "@/context/ProductContext";
 import { formatCurrency } from "@/lib/utils";
 import { DiscountType } from "@/types/offer";
 
 function ProductOffer() {
-  const { offer, countryCode } = useProductCardContext();
+  const { offer, countryCode } = useProductContext();
   if (!offer) return null;
   const { discountType, discountValue } = offer;
   let offerText = "";

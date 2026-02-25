@@ -1,40 +1,32 @@
-"use client ";
+"use client";
 import { Product, ProductVariant } from "@/types/product";
 import { createContext, useContext, useState } from "react";
 
-const ProductCardContext = createContext<{
+const ProductContext = createContext<{
   selectedVariant: ProductVariant | null;
   setSelectedVariant: (variant: ProductVariant) => void;
   offer: ProductVariant["offerResponseDTO"];
   countryCode: string;
 } | null>(null);
 
-function ProductCardProvider({
-  product,
-  children,
-}: {
-  product: Product;
-  children: React.ReactNode;
-}) {
+function ProductProvider({ product, children }: { product: Product; children: React.ReactNode }) {
   const [selectedVariant, setSelectedVariant] = useState<ProductVariant | null>(
     product.variants.at(0) || null,
   );
   const offer = selectedVariant?.offerResponseDTO || null;
   const countryCode = product.countryCode;
   return (
-    <ProductCardContext.Provider
-      value={{ selectedVariant, setSelectedVariant, offer, countryCode }}
-    >
+    <ProductContext.Provider value={{ selectedVariant, setSelectedVariant, offer, countryCode }}>
       {children}
-    </ProductCardContext.Provider>
+    </ProductContext.Provider>
   );
 }
-function useProductCardContext() {
-  const context = useContext(ProductCardContext);
+function useProductContext() {
+  const context = useContext(ProductContext);
   if (!context) {
-    throw new Error("useProductCardContext must be used within a ProductCardProvider");
+    throw new Error("useProductContext must be used within a ProductContextProvider");
   }
 
   return context;
 }
-export { ProductCardProvider, useProductCardContext };
+export { ProductProvider, useProductContext };

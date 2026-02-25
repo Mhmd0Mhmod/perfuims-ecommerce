@@ -13,6 +13,14 @@ export class CategoryAPI {
       throw throwingError(error);
     }
   }
+  static async getCategoryById(id: string) {
+    try {
+      const response = await authFetcher.get<Category>(`/admin/categories/${id}`);
+      return response.data;
+    } catch (error) {
+      throw throwingError(error);
+    }
+  }
 
   static async getAdminCategories(): Promise<Category[]> {
     try {

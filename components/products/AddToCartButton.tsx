@@ -1,16 +1,16 @@
 "use client";
 import { useCartContext } from "@/context/CartContext";
-import { useProductCardContext } from "@/context/ProductCardContext";
 import { useSelectedCountry } from "@/hooks/use-selected-country";
 import { cn, formatCurrency } from "@/lib/utils";
 import { Product } from "@/types/product";
 import { Minus, Plus, ShoppingCart } from "lucide-react";
 import { useCallback, useState } from "react";
 import { Button } from "../ui/button";
+import { useProductContext } from "@/context/ProductContext";
 
 function AddToCartButton({ product }: { product: Product }) {
   const { add, pending } = useCartContext();
-  const { selectedVariant, setSelectedVariant } = useProductCardContext();
+  const { selectedVariant, setSelectedVariant } = useProductContext();
   const [quantity, setQuantity] = useState(1);
   const { selectedCountry } = useSelectedCountry();
 

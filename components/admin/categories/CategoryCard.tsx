@@ -22,18 +22,10 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
 import { Category } from "@/types/category";
 import { Pencil, Trash2 } from "lucide-react";
+import Link from "next/link";
 import { toast } from "sonner";
-import { AddCategoryForm } from "./AddCategoryForm";
 
 export function CategoryCard({ category }: { category: Category }) {
   const handleDelete = async () => {
@@ -51,11 +43,11 @@ export function CategoryCard({ category }: { category: Category }) {
   };
 
   return (
-    <Card>
+    <Card className="gap-2">
       <CardHeader>
         <div className="flex items-start justify-between">
           <div className="space-y-1">
-            <CardTitle>{category.name}</CardTitle>
+            <CardTitle className="text-xl">{category.name}</CardTitle>
           </div>
           <CardDescription className="flex flex-col gap-2">
             <Badge variant={category.isActive ? "default" : "secondary"}>
@@ -66,7 +58,7 @@ export function CategoryCard({ category }: { category: Category }) {
         </div>
       </CardHeader>
       <CardContent className="space-y-2">
-        <p className="text-muted-foreground text-sm">{category.description || "لا يوجد وصف"}</p>
+        <p className="text-muted-foreground text-md">{category.description || "لا يوجد وصف"}</p>
         {category.children && category.children.length > 0 && (
           <div className="space-y-2">
             <h4 className="text-sm font-semibold">
@@ -82,21 +74,12 @@ export function CategoryCard({ category }: { category: Category }) {
           </div>
         )}
       </CardContent>
-      <CardFooter className="flex justify-end gap-2">
-        <Dialog>
-          <DialogTrigger asChild>
-            <Button variant="outline" size="sm">
-              <Pencil className="h-4 w-4" />
-            </Button>
-          </DialogTrigger>
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>تعديل التصنيف</DialogTitle>
-              <DialogDescription>عدل بيانات التصنيف هنا. انقر حفظ عند الانتهاء.</DialogDescription>
-            </DialogHeader>
-            <AddCategoryForm category={category} />
-          </DialogContent>
-        </Dialog>
+      <CardFooter className="mt-auto flex justify-end gap-2">
+        <Button variant="outline" size="sm" asChild>
+          <Link href={`/admin/categories/${category.id}/edit`}>
+            <Pencil className="h-4 w-4" />
+          </Link>
+        </Button>
 
         <AlertDialog>
           <AlertDialogTrigger asChild>
