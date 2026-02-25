@@ -97,7 +97,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
     0,
   );
   return (
-    <CartContext.Provider
+    <CartContext
       value={{
         items: cart,
         totalPrice,
@@ -109,7 +109,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
       }}
     >
       {children}
-    </CartContext.Provider>
+    </CartContext>
   );
 }
 export function useCartContext() {

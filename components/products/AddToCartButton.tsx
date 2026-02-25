@@ -1,42 +1,40 @@
 "use client";
 import { useCartContext } from "@/context/CartContext";
+import { useProductCardContext } from "@/context/ProductCardContext";
 import { useSelectedCountry } from "@/hooks/use-selected-country";
-import { formatCurrency } from "@/lib/utils";
+import { cn, formatCurrency } from "@/lib/utils";
 import { Product } from "@/types/product";
-import { cn } from "@/lib/utils";
 import { Minus, Plus, ShoppingCart } from "lucide-react";
 import { useCallback, useState } from "react";
 import { Button } from "../ui/button";
 
 function AddToCartButton({ product }: { product: Product }) {
   const { add, pending } = useCartContext();
-  const [selectedVariantId, setSelectedVariantId] = useState<number | null>(
-    product.variants.find((v) => v.isAvailable)?.id || null,
-  );
+  const { selectedVariant, setSelectedVariant } = useProductCardContext();
   const [quantity, setQuantity] = useState(1);
   const { selectedCountry } = useSelectedCountry();
 
   const onAdd = useCallback(() => {
-    if (selectedVariantId !== null) {
-      add(selectedVariantId, quantity);
+    if (selectedVariant !== null) {
+      add(selectedVariant.id, quantity);
       setQuantity(1);
     }
-  }, [add, selectedVariantId, quantity]);
+  }, [add, quantity, selectedVariant]);
 
-  const isNotAvailable = !product.variants || product.variants.length === 0;
+  const isAvailable = product.variants && product.variants.length > 0;
 
   return (
     <div className="flex w-full flex-col gap-2.5">
       {/* Variant Chips */}
-      {!isNotAvailable && (
+      {isAvailable && (
         <div className="flex w-full flex-wrap gap-1.5">
           {product.variants?.map((variant) => {
-            const isSelected = selectedVariantId === variant.id;
+            const isSelected = selectedVariant?.id === variant.id;
             const isDisabled = !variant.isAvailable;
             return (
               <button
                 key={variant.id}
-                onClick={() => !isDisabled && setSelectedVariantId(variant.id)}
+                onClick={() => !isDisabled && setSelectedVariant(variant)}
                 disabled={isDisabled}
                 className={cn(
                   "flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-medium transition-all",
@@ -51,10 +49,11 @@ function AddToCartButton({ product }: { product: Product }) {
                 <span>
                   {variant.size} {variant.unit}
                 </span>
+                |
                 <span
                   className={cn(
-                    "text-xs opacity-75",
-                    isSelected ? "text-primary-foreground/80" : "text-muted-foreground",
+                    "text-xs font-semibold",
+                    isSelected ? "text-white" : "text-muted-foreground",
                   )}
                 >
                   {selectedCountry &&
@@ -78,7 +77,7 @@ function AddToCartButton({ product }: { product: Product }) {
             size="icon"
             className="h-8 w-8 rounded-none"
             onClick={() => setQuantity((q) => Math.max(1, q - 1))}
-            disabled={quantity <= 1 || pending || isNotAvailable}
+            disabled={quantity <= 1 || pending || !isAvailable}
           >
             <Minus className="h-3 w-3" />
           </Button>
@@ -93,14 +92,14 @@ function AddToCartButton({ product }: { product: Product }) {
             }}
             onBlur={() => setQuantity((q) => Math.max(1, q))}
             className="h-8 w-9 [appearance:textfield] border-none bg-transparent text-center text-sm font-semibold outline-none [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
-            disabled={pending || isNotAvailable}
+            disabled={pending || !isAvailable}
           />
           <Button
             variant="ghost"
             size="icon"
             className="h-8 w-8 rounded-none"
             onClick={() => setQuantity((q) => q + 1)}
-            disabled={pending || isNotAvailable}
+            disabled={pending || !isAvailable}
           >
             <Plus className="h-3 w-3" />
           </Button>
@@ -110,10 +109,10 @@ function AddToCartButton({ product }: { product: Product }) {
         <Button
           className="flex-1"
           onClick={onAdd}
-          disabled={pending || isNotAvailable || !selectedVariantId}
+          disabled={pending || !isAvailable || !selectedVariant?.id}
         >
           <ShoppingCart className="ml-1.5 h-3.5 w-3.5" />
-          {isNotAvailable ? "غير متوفر" : pending ? "جارٍ الإضافة..." : "أضف إلى السلة"}
+          {isAvailable ? "أضف إلى السلة" : "غير متوفر"}
         </Button>
       </div>
     </div>

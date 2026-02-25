@@ -1,5 +1,5 @@
 import { Category } from "./category";
-import { DiscountType } from "./offer";
+import { DiscountType, Offer } from "./offer";
 
 interface Product {
   id: number;
@@ -9,6 +9,7 @@ interface Product {
   categories: Pick<Category, "id" | "name">[];
   createdAt: string;
   updatedAt: string;
+  countryCode: string;
   variants: ProductVariant[];
 }
 
@@ -18,16 +19,15 @@ interface ProductVariant {
   imageUrl: string;
   size: number;
   unit: string;
-  oldPrice?: number;
+  oldPrice: number;
   newPrice: number;
-  isAvailable: boolean;
-  offerId?: number;
-  offerTitle?: string;
-  offerDescription?: string;
-  discountType?: DiscountType;
-  discountValue?: number;
-  createdAt: string;
-  updatedAt: string;
+  isAvailable: true;
+  offerResponseDTO: Pick<
+    Offer,
+    "id" | "title" | "description" | "discountType" | "discountValue"
+  > | null;
+  createdAt: "2026-02-06T21:47:07Z";
+  updatedAt: "2026-02-06T21:47:07Z";
 }
 
 export type { Product, ProductVariant };

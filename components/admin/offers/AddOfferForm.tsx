@@ -127,7 +127,6 @@ export default function AddOfferForm({ offer, products }: AddOfferFormProps) {
         startDate: data.startDate.toISOString(),
         endDate: data.endDate.toISOString(),
       };
-
       const result = isEditing
         ? await updateOffer(offer.id, formData)
         : await createOffer(formData);

@@ -1,3 +1,4 @@
+import { getCookies } from "@/app/actions";
 import { OfferActionsMenu } from "@/components/admin/offers/OfferActionsMenu";
 import StatsSkeleton from "@/components/shared/stats-skeleton";
 import TableSkeleton from "@/components/shared/table-skeleton";
@@ -14,7 +15,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { OfferAPI } from "@/lib/api/offer";
-import { formatDate } from "@/lib/utils";
+import { formatCurrency, formatDate } from "@/lib/utils";
 import { DiscountType, Offer } from "@/types/offer";
 import { CalendarCheck, CalendarX, Percent, Plus, Search, Tag } from "lucide-react";
 import Link from "next/link";
@@ -121,6 +122,7 @@ async function OfferStatsCards() {
 
 async function OffersTable() {
   const offers = await OfferAPI.getAdminOffers();
+  const countryCode = await getCookies("country_code");
 
   if (offers.length === 0) {
     return (
@@ -148,7 +150,7 @@ async function OffersTable() {
           </TableHeader>
           <TableBody>
             {offers.map((offer) => (
-              <OfferTableRow key={offer.id} offer={offer} />
+              <OfferTableRow key={offer.id} offer={offer} countryCode={countryCode!} />
             ))}
           </TableBody>
         </Table>
@@ -164,7 +166,7 @@ async function OffersTable() {
   );
 }
 
-function OfferTableRow({ offer }: { offer: Offer }) {
+function OfferTableRow({ offer, countryCode }: { offer: Offer; countryCode: string }) {
   const isExpired = new Date(offer.endDate) < new Date();
   const isUpcoming = new Date(offer.startDate) > new Date();
 
@@ -185,7 +187,7 @@ function OfferTableRow({ offer }: { offer: Offer }) {
     if (offer.discountType === DiscountType.PERCENTAGE) {
       return `${offer.discountValue}%`;
     }
-    return `${offer.discountValue} ر.س`;
+    return formatCurrency({ amount: offer.discountValue, code: countryCode });
   };
 
   return (
