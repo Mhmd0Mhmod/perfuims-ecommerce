@@ -30,9 +30,11 @@ import { useRouter } from "next/navigation";
 export function AddCategoryForm({
   category,
   products,
+  productIds,
 }: {
   category?: Category;
   products?: Product[];
+  productIds?: number[];
 }) {
   const router = useRouter();
   const [searchTerm, setSearchTerm] = useState("");
@@ -45,7 +47,7 @@ export function AddCategoryForm({
           description: category.description,
           isActive: category.isActive,
           isAtHomePage: category.isAtHomePage,
-          productIds: category.productIds || [],
+          productIds: productIds || [],
           children: category.children?.map((child) => ({
             name: child.name,
             description: child.description,
@@ -212,9 +214,7 @@ export function AddCategoryForm({
                 <div className="flex items-center justify-between">
                   <h3 className="text-lg font-medium">المنتجات</h3>
                   {selectedProductIds.length > 0 && (
-                    <Badge variant="secondary">
-                      {selectedProductIds.length} منتج محدد
-                    </Badge>
+                    <Badge variant="secondary">{selectedProductIds.length} منتج محدد</Badge>
                   )}
                 </div>
 
@@ -229,7 +229,7 @@ export function AddCategoryForm({
                     filteredProducts.map((product) => (
                       <div
                         key={product.id}
-                        className="flex items-center gap-3 rounded-md p-2 hover:bg-muted/50 transition-colors"
+                        className="hover:bg-muted/50 flex items-center gap-3 rounded-md p-2 transition-colors"
                       >
                         <Checkbox
                           id={`product-${product.id}`}
@@ -245,9 +245,7 @@ export function AddCategoryForm({
                       </div>
                     ))
                   ) : (
-                    <p className="text-muted-foreground text-center text-sm py-4">
-                      لا توجد منتجات
-                    </p>
+                    <p className="text-muted-foreground py-4 text-center text-sm">لا توجد منتجات</p>
                   )}
                 </div>
               </div>

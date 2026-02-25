@@ -25,6 +25,9 @@ async function EditCategoryPage({ params }: EditCategoryPageProps) {
   const products = (await ProductAPI.getAdminProducts({
     displayAll: true,
   })) as Product[];
+  const productIds = products
+    .filter((p) => p.categories.some((c) => c.id === category.id))
+    .map((p) => p.id);
 
   return (
     <div className="container mx-auto space-y-6 p-6">
@@ -48,7 +51,7 @@ async function EditCategoryPage({ params }: EditCategoryPageProps) {
           <CardDescription>قم بتعديل المعلومات المطلوبة لتحديث التصنيف</CardDescription>
         </CardHeader>
         <CardContent>
-          <AddCategoryForm category={category} products={products} />
+          <AddCategoryForm category={category} products={products} productIds={productIds} />
         </CardContent>
       </Card>
     </div>
