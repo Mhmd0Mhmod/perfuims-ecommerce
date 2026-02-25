@@ -5,8 +5,6 @@ import { Product } from "@/types/product";
 import { useInfiniteQuery } from "@tanstack/react-query";
 
 export function useProducts(params?: Partial<ProductsState>) {
-  console.log(params);
-
   return useInfiniteQuery({
     queryKey: ["products", params],
     initialPageParam: 0,
@@ -14,7 +12,7 @@ export function useProducts(params?: Partial<ProductsState>) {
       ProductAPI.getProducts({ ...params, page: pageParam }),
     getNextPageParam: (lastPage: Pageable<Product>) => {
       if (!lastPage.last) {
-        return lastPage.number + 1;
+        return lastPage.page + 1;
       }
     },
   });
