@@ -25,10 +25,11 @@ import Link from "next/link";
 import { Suspense } from "react";
 
 async function page({ seachParams }: { seachParams: Promise<PaginationParams> }) {
+  const params = await seachParams;
   return (
     <div className="container mx-auto space-y-6 p-6">
       {/* Stats Cards */}
-      <Suspense fallback={<StatsSkeleton length={3} />}>
+      <Suspense fallback={<StatsSkeleton length={3} />} >
         <div className="grid gap-4 md:grid-cols-3">
           <CustomerStatsCard />
         </div>
@@ -51,8 +52,8 @@ async function page({ seachParams }: { seachParams: Promise<PaginationParams> })
           </div>
         </CardHeader>
         <CardContent>
-          <Suspense fallback={<TableSkeleton columns={5} rows={5} />}>
-            <CustomerTable searchParams={await seachParams} />
+          <Suspense fallback={<TableSkeleton columns={5} rows={5} />} key={Object.values(params).toString()}>
+            <CustomerTable searchParams={params } />
           </Suspense>
         </CardContent>
       </Card>

@@ -95,7 +95,7 @@ async function OrdersPage({ searchParams }: { searchParams: Promise<OrderSearchP
       </div>
 
       {/* Orders List */}
-      <Suspense fallback={<OrdersSkeleton />}>
+      <Suspense fallback={<OrdersSkeleton />} key={Object.values(params).toString()}>
         <OrdersList searchParams={params} />
       </Suspense>
     </div>

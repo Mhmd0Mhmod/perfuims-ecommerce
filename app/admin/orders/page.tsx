@@ -44,6 +44,7 @@ async function OrdersPage({ searchParams }: { searchParams: Promise<OrderSearchP
                 <TableSkeleton rows={5} columns={7} />
               </div>
             }
+            key={Object.values(params).toString()}
           >
             <OrdersTable searchParams={params} />
           </Suspense>

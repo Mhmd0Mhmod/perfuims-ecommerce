@@ -67,6 +67,7 @@ async function AddProductFormButton() {
   );
 }
 async function ProductsPage({ searchParams }: { searchParams: Promise<ProdcutSearchParams> }) {
+  const params = await searchParams;
   return (
     <div className="container mx-auto space-y-6 p-6">
       {/* Header */}
@@ -95,8 +96,10 @@ async function ProductsPage({ searchParams }: { searchParams: Promise<ProdcutSea
           </div>
         </CardHeader>
         <CardContent>
-          <Suspense fallback={<TableSkeleton columns={6} rows={8} />}>
-            <ProductsTable searchParams={await searchParams} />
+          <Suspense fallback={<TableSkeleton columns={6} rows={8} />}
+            key={Object.values(params).toString()}
+          >
+            <ProductsTable searchParams={params} />
           </Suspense>
         </CardContent>
       </Card>
