@@ -129,6 +129,18 @@ export const offerSchema = z.object({
 
 export type OfferFormValues = z.infer<typeof offerSchema>;
 
+export const couponSchema = z.object({
+  code: z.string().min(3, "كود الكوبون يجب أن يكون 3 أحرف على الأقل"),
+  discountType: z.nativeEnum(DiscountType),
+  discountValue: z.number().min(0, "قيمة الخصم يجب أن تكون أكبر من 0"),
+  minimumOrderAmount: z.number().min(0, "الحد الأدنى للطلب يجب أن يكون 0 أو أكثر"),
+  maxUsages: z.number().min(0, "عدد مرات الاستخدام يجب أن يكون 0 أو أكثر"),
+  expiresAt: z.date(),
+  isActive: z.boolean(),
+});
+
+export type CouponFormValues = z.infer<typeof couponSchema>;
+
 export const checkoutSchema = z.object({
   fullName: z.string({ message: "الاسم الكامل مطلوب" }).min(3, "يجب أن يكون 3 أحرف على الأقل"),
   email: z.string({ message: "البريد الإلكتروني مطلوب" }).email("بريد إلكتروني غير صالح"),

@@ -1,3 +1,4 @@
+import { getUser } from "@/app/(auth)/actions";
 import {
   Sidebar,
   SidebarContent,
@@ -12,6 +13,7 @@ import {
 } from "@/components/ui/sidebar";
 import {
   BadgePercent,
+  CreditCard,
   FolderTree,
   Globe,
   LayoutDashboard,
@@ -19,14 +21,13 @@ import {
   Ruler,
   Settings,
   ShoppingCart,
+  Ticket,
   Users,
-  CreditCard,
 } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 import ActiveLink from "../shared/active-link";
 import UserMenu from "./UserMenu";
-import { getUser } from "@/app/(auth)/actions";
-import Image from "next/image";
 
 const menuItems = [
   {
@@ -53,6 +54,11 @@ const menuItems = [
     title: "العروض",
     url: "/admin/offers",
     icon: BadgePercent,
+  },
+  {
+    title: "كوبونات",
+    url: "/admin/coupons",
+    icon: Ticket,
   },
   {
     title: "الطلبات",

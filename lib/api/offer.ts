@@ -1,9 +1,9 @@
-import { Offer } from "@/types/offer";
 import axios from "@/lib/axios";
+import { Offer, OfferCoupon } from "@/types/offer";
+import { PaginationParams } from "@/types/pageable";
 import { authFetcher } from "../authFetcher";
 import { fetcher } from "../fetcher";
 import { throwingError } from "../utils";
-import { PaginationParams } from "@/types/pageable";
 
 export class OfferAPI {
   static async getOffers() {
@@ -36,6 +36,17 @@ export class OfferAPI {
   static async getAdminOfferById(id: string): Promise<Offer> {
     try {
       const response = await authFetcher.get<Offer>(`/admin/offers/${id}`);
+      return response.data;
+    } catch (error) {
+      throw throwingError(error);
+    }
+  }
+}
+
+export class OfferCouponAPI {
+  static async getAdminOfferCoupons(): Promise<OfferCoupon[]> {
+    try {
+      const response = await authFetcher.get(`/admin/coupons`);
       return response.data;
     } catch (error) {
       throw throwingError(error);

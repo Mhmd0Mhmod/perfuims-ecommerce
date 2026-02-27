@@ -2,7 +2,14 @@
 
 import { ProductAPI } from "@/lib/api/product";
 import { authFetcher } from "@/lib/authFetcher";
-import { AddCategorySchema, AddCountrySchema, AddProductSchema, AddSizeSchema, StoreSettingsSchema } from "@/lib/zod";
+import {
+  AddCategorySchema,
+  AddCountrySchema,
+  AddProductSchema,
+  AddSizeSchema,
+  CouponFormValues,
+  StoreSettingsSchema,
+} from "@/lib/zod";
 import { APIResponse, IAPIResponse } from "@/types/api";
 import { Category } from "@/types/category";
 import { Country } from "@/types/country";
@@ -24,7 +31,7 @@ export async function addCategory(data: AddCategorySchema): Promise<IAPIResponse
 
 export async function updateCategory(
   categoryId: number,
-  data: Partial<AddCategorySchema>
+  data: Partial<AddCategorySchema>,
 ): Promise<IAPIResponse<Category>> {
   try {
     const response = await authFetcher.patch<Category>(`admin/categories/${categoryId}`, data);
@@ -58,7 +65,7 @@ export async function addCountry(data: AddCountrySchema): Promise<IAPIResponse<C
 
 export async function updateCountry(
   countryId: number,
-  data: Partial<AddCountrySchema>
+  data: Partial<AddCountrySchema>,
 ): Promise<IAPIResponse<Country>> {
   try {
     const response = await authFetcher.patch<Country>(`admin/countries/${countryId}`, data);
@@ -137,7 +144,7 @@ export async function toggleOfferStatus(id: number, isActive: boolean): Promise<
     revalidatePath("/admin/offers");
     return APIResponse.success<void>(
       undefined,
-      isActive ? "تم تفعيل العرض بنجاح" : "تم إلغاء تفعيل العرض بنجاح"
+      isActive ? "تم تفعيل العرض بنجاح" : "تم إلغاء تفعيل العرض بنجاح",
     );
   } catch (error) {
     return APIResponse.error(error);
@@ -146,7 +153,7 @@ export async function toggleOfferStatus(id: number, isActive: boolean): Promise<
 
 export async function updateOrderStatus(
   orderId: string,
-  status: OrderStatus
+  status: OrderStatus,
 ): Promise<IAPIResponse> {
   try {
     await authFetcher.patch(
@@ -154,9 +161,9 @@ export async function updateOrderStatus(
       {},
       {
         params: {
-          status
-        }
-      }
+          status,
+        },
+      },
     );
     revalidatePath("/admin/orders");
     return APIResponse.success<void>(undefined, "تم تحديث حالة الطلب بنجاح");
@@ -177,7 +184,7 @@ export async function cancelOrder(orderId: string): Promise<IAPIResponse> {
 
 export async function changePaymentStatus(
   paymentId: number,
-  status: PaymentStatus
+  status: PaymentStatus,
 ): Promise<IAPIResponse> {
   try {
     const { data } = await authFetcher.patch(
@@ -185,9 +192,9 @@ export async function changePaymentStatus(
       {},
       {
         params: {
-          status
-        }
-      }
+          status,
+        },
+      },
     );
     revalidatePath("/admin/payments");
     return APIResponse.success<void>(undefined, data.message || "تم تحديث حالة الدفع بنجاح");
@@ -203,9 +210,9 @@ export async function addProduct(data: AddProductSchema): Promise<IAPIResponse<P
       ProductAPI.getProductFormData(data),
       {
         headers: {
-          "Content-Type": "multipart/form-data"
-        }
-      }
+          "Content-Type": "multipart/form-data",
+        },
+      },
     );
     revalidatePath("/admin/products");
     return APIResponse.success<Product>(response.data, "تمت إضافة المنتج بنجاح");
@@ -216,7 +223,7 @@ export async function addProduct(data: AddProductSchema): Promise<IAPIResponse<P
 
 export async function updateProduct(
   productId: number,
-  data: AddProductSchema
+  data: AddProductSchema,
 ): Promise<IAPIResponse<Product>> {
   try {
     const response = await authFetcher.patch<Product>(
@@ -224,9 +231,9 @@ export async function updateProduct(
       ProductAPI.getProductFormData(data),
       {
         headers: {
-          "Content-Type": "multipart/form-data"
-        }
-      }
+          "Content-Type": "multipart/form-data",
+        },
+      },
     );
 
     revalidatePath("/admin/products");
@@ -247,7 +254,7 @@ export async function deleteProduct(productId: number): Promise<IAPIResponse> {
 }
 
 export async function updateStoreSettingsAction(
-  formData: StoreSettingsSchema
+  formData: StoreSettingsSchema,
 ): Promise<IAPIResponse> {
   try {
     await authFetcher.put("admin/settings", formData);
@@ -270,7 +277,7 @@ export async function addSize(data: AddSizeSchema): Promise<IAPIResponse<Size>> 
 
 export async function updateSize(
   sizeId: string,
-  data: Partial<AddSizeSchema>
+  data: Partial<AddSizeSchema>,
 ): Promise<IAPIResponse<Size>> {
   try {
     const response = await authFetcher.patch<Size>(`admin/sizes/${sizeId}`, data);
@@ -286,6 +293,51 @@ export async function deleteSize(sizeId: string): Promise<IAPIResponse> {
     await authFetcher.delete(`admin/sizes/${sizeId}`);
     revalidatePath("/admin/sizes");
     return APIResponse.success<void>(undefined, "تم حذف الحجم بنجاح");
+  } catch (error) {
+    return APIResponse.error(error);
+  }
+}
+
+export async function createCoupon(data: CouponFormValues): Promise<IAPIResponse> {
+  try {
+    await authFetcher.post("admin/coupons", data);
+    revalidatePath("/admin/coupons");
+
+    return APIResponse.success<void>(undefined, "تم إنشاء الكوبون بنجاح");
+  } catch (error) {
+    return APIResponse.error(error);
+  }
+}
+
+export async function updateCoupon(id: number, data: CouponFormValues): Promise<IAPIResponse> {
+  try {
+    await authFetcher.put(`admin/coupons/${id}`, data);
+    revalidatePath(`/admin/coupons/${id}`);
+    revalidatePath("/admin/coupons");
+    return APIResponse.success<void>(undefined, "تم تحديث الكوبون بنجاح");
+  } catch (error) {
+    return APIResponse.error(error);
+  }
+}
+
+export async function deleteCoupon(id: number): Promise<IAPIResponse> {
+  try {
+    await authFetcher.delete(`admin/coupons/${id}`);
+    revalidatePath("/admin/coupons");
+    return APIResponse.success<void>(undefined, "تم حذف الكوبون بنجاح");
+  } catch (error) {
+    return APIResponse.error(error);
+  }
+}
+
+export async function toggleCouponStatus(id: number, isActive: boolean): Promise<IAPIResponse> {
+  try {
+    await authFetcher.patch(`admin/coupons/${id}`, { isActive });
+    revalidatePath("/admin/coupons");
+    return APIResponse.success<void>(
+      undefined,
+      isActive ? "تم تفعيل الكوبون بنجاح" : "تم إلغاء تفعيل الكوبون بنجاح",
+    );
   } catch (error) {
     return APIResponse.error(error);
   }
