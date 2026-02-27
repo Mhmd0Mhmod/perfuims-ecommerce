@@ -31,3 +31,12 @@ export interface OfferCoupon {
   createdAt: string;
   updatedAt: string;
 }
+export interface AppliedCouponResponse {
+  cartTotal: number;
+  couponCode: string;
+  discountAmount: number;
+  discountType: DiscountType;
+  discountValue: number;
+  minimumOrderAmount: number;
+  totalAfterDiscount: number;
+}

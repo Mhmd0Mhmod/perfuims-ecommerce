@@ -4,8 +4,20 @@ import { authFetcher } from "@/lib/authFetcher";
 import { CheckoutSchema, UpdateProfileSchema } from "@/lib/zod";
 import { APIResponse, IAPIResponse } from "@/types/api";
 import { CartItem } from "@/types/cart";
+import { AppliedCouponResponse } from "@/types/offer";
 import { Order } from "@/types/order";
 import { revalidatePath, revalidateTag } from "next/cache";
+
+export async function validateCouponAction(
+  code: string,
+): Promise<IAPIResponse<AppliedCouponResponse>> {
+  try {
+    const response = await authFetcher.post<AppliedCouponResponse>(`/coupons/apply`, { code });
+    return APIResponse.success<AppliedCouponResponse>(response.data, "تم تطبيق الكوبون بنجاح");
+  } catch (error) {
+    return APIResponse.error(error);
+  }
+}
 
 export async function updateProfileAction(formData: UpdateProfileSchema): Promise<IAPIResponse> {
   try {
@@ -89,6 +101,7 @@ export async function createOrderAction(formData: CheckoutSchema): Promise<IAPIR
       paymentMethodId: formData.paymentMethodId,
       shippingAddress: formData.address + ", " + formData.city,
       phoneNumber: formData.phoneNumber,
+      ...(formData.couponCode ? { couponCode: formData.couponCode } : {}),
     });
     revalidateTag("cart", "default");
 

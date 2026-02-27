@@ -15,12 +15,14 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Separator } from "@/components/ui/separator";
+import { PAYMENT_METHODS_ENUM } from "@/constants/payment_methods";
+import { useCoupons } from "@/hooks/use-coupons";
 import { formatCurrency } from "@/lib/utils";
 import { checkoutSchema, CheckoutSchema } from "@/lib/zod";
 import { CartItem } from "@/types/cart";
 import { Country } from "@/types/country";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Banknote, ChevronLeft, CreditCard, Package, Truck } from "lucide-react";
+import { Banknote, ChevronLeft, CreditCard, Loader2, Package, Ticket, Truck } from "lucide-react";
 import { User } from "next-auth";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -35,7 +37,14 @@ interface CheckoutFormProps {
 
 export default function CheckoutForm({ cartItems, user, country }: CheckoutFormProps) {
   const router = useRouter();
-
+  const {
+    couponCode: couponCodeInput,
+    setCouponCode: setCouponCodeInput,
+    appliedCoupon,
+    calculateDiscount,
+    mutation: { isPending, mutate },
+    removeCoupon: removeCouponFromState,
+  } = useCoupons();
   const form = useForm<CheckoutSchema>({
     resolver: zodResolver(checkoutSchema),
     defaultValues: {
@@ -52,10 +61,22 @@ export default function CheckoutForm({ cartItems, user, country }: CheckoutFormP
     (acc, item) => acc + item.variantDetails.newPrice * item.quantity,
     0,
   );
-  const total = subtotal;
+
+  const discount = calculateDiscount(subtotal);
+  const total = Math.max(0, subtotal - discount);
+
+  const removeCoupon = () => {
+    form.setValue("couponCode", undefined);
+    toast.success("تم إزالة الكوبون");
+    removeCouponFromState();
+  };
 
   async function onSubmit(values: CheckoutSchema) {
-    const result = await createOrderAction(values);
+    const payload = {
+      ...values,
+      ...(appliedCoupon ? { couponCode: appliedCoupon.couponCode } : {}),
+    };
+    const result = await createOrderAction(payload);
     if (result.success) {
       localStorage.setItem("lastOrderId", result.data!.orderId.toString());
       if (result.data?.paymentUrl) {
@@ -68,11 +89,13 @@ export default function CheckoutForm({ cartItems, user, country }: CheckoutFormP
       toast.error(result.message || "حدث خطأ ما أثناء إتمام الطلب");
     }
   }
+
   const paymentMethodID = useWatch({
     control: form.control,
     name: "paymentMethodId",
   });
-  const isCardPayment = paymentMethodID === 1;
+  const isCardPayment = PAYMENT_METHODS_ENUM.VISA === paymentMethodID;
+
   return (
     <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
       <div className="space-y-6">
@@ -266,6 +289,40 @@ export default function CheckoutForm({ cartItems, user, country }: CheckoutFormP
 
             <Separator />
 
+            {/* Coupon Section */}
+            <div className="space-y-2">
+              <Label htmlFor="coupon" className="flex items-center gap-2 text-sm">
+                <Ticket className="h-4 w-4" />
+                كود الخصم
+              </Label>
+              <div className="flex gap-2">
+                <Input
+                  id="coupon"
+                  placeholder="أدخل كود الكوبون هنا"
+                  value={couponCodeInput}
+                  onChange={(e) => setCouponCodeInput(e.target.value)}
+                  disabled={isPending || !!appliedCoupon}
+                  className="font-mono uppercase"
+                />
+                {!appliedCoupon ? (
+                  <Button
+                    type="button"
+                    variant="secondary"
+                    onClick={() => mutate()}
+                    disabled={isPending || !couponCodeInput}
+                  >
+                    {isPending ? <Loader2 className="h-4 w-4 animate-spin" /> : "تطبيق"}
+                  </Button>
+                ) : (
+                  <Button type="button" variant="destructive" onClick={removeCoupon}>
+                    إزالة
+                  </Button>
+                )}
+              </div>
+            </div>
+
+            <Separator />
+
             <div className="space-y-1.5">
               <div className="flex justify-between">
                 <span className="text-muted-foreground">المجموع الفرعي</span>
@@ -276,6 +333,22 @@ export default function CheckoutForm({ cartItems, user, country }: CheckoutFormP
                   })}
                 </span>
               </div>
+
+              {appliedCoupon && (
+                <div className="flex justify-between text-green-600">
+                  <span className="flex items-center gap-1">
+                    خصم الكوبون ({appliedCoupon.couponCode})
+                  </span>
+                  <span>
+                    -
+                    {formatCurrency({
+                      amount: discount,
+                      code: country.code,
+                    })}
+                  </span>
+                </div>
+              )}
+
               <div className="flex justify-between">
                 <span className="text-muted-foreground">الشحن</span>
                 <span className="font-medium text-green-600">مجاني</span>

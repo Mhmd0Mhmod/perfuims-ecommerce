@@ -151,6 +151,7 @@ export const checkoutSchema = z.object({
   city: z.string({ message: "المدينة مطلوبة" }).min(2, "يجب أن تكون حرفين على الأقل"),
   address: z.string({ message: "العنوان التفصيلي مطلوب" }).min(5, "يجب أن يكون 5 أحرف على الأقل"),
   paymentMethodId: z.number(),
+  couponCode: z.string().optional(),
 });
 
 export type CheckoutSchema = z.infer<typeof checkoutSchema>;

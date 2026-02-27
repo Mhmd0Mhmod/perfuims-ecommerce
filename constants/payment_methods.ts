@@ -10,3 +10,8 @@ export const PAYMENT_METHODS = [
     displayName: "دفع عند الاستلام",
   },
 ];
+
+export const PAYMENT_METHODS_ENUM = {
+  VISA: 1,
+  CASH_ON_DELIVERY: 2,
+} as const;
