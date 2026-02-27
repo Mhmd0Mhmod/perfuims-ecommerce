@@ -27,8 +27,6 @@ export function useCoupons() {
       toast.error(error?.message || "فشل تطبيق الكوبون");
     },
   });
-  console.log(appliedCoupon);
-
   return {
     mutation,
     couponCode,

@@ -16,8 +16,6 @@ function SearchInput({ placeholder }: { placeholder?: string }) {
   });
   const onSumit = (data: { q: string }) => {
     const query = new URLSearchParams(searchParams.toString());
-    console.log(data);
-
     if (data.q) {
       query.set("q", data.q);
     } else {

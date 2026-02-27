@@ -8,7 +8,6 @@ export async function GET(request: NextRequest) {
     const page = Number(searchParams.get("page") || 0);
     const categoryIds = searchParams.get("categoryIds")?.split(",") || [];
     const offerIds = searchParams.get("offerIds")?.split(",") || [];
-    console.log(request.nextUrl.searchParams);
 
     const data = await ProductAPI.getProductsServer({
       searchTerm: q,

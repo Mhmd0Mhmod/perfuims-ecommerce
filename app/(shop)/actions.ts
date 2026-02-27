@@ -80,7 +80,6 @@ export async function editCartItem(
 
     return APIResponse.success<CartItem>(response.data, "تم تعديل المنتج بنجاح في السله");
   } catch (error) {
-    console.log(error);
     return APIResponse.error(error);
   }
 }

@@ -50,7 +50,6 @@ function AddProductForm({ product, categories, sizes }: AddProductFormProps) {
       const id = toast.loading(isEditMode ? "جارى تحديث المنتج..." : "جارى إضافة المنتج...");
       try {
         if (isEditMode) {
-          console.log(data);
           const response = await updateProduct(product!.id, data);
           if (response.success) {
             toast.success(response.message || "تم تحديث المنتج بنجاح", { id });
