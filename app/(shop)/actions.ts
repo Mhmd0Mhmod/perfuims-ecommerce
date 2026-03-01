@@ -6,6 +6,7 @@ import { APIResponse, IAPIResponse } from "@/types/api";
 import { CartItem } from "@/types/cart";
 import { AppliedCouponResponse } from "@/types/offer";
 import { Order } from "@/types/order";
+import { updateTag } from "next/cache";
 import { revalidatePath, revalidateTag } from "next/cache";
 
 export async function validateCouponAction(
@@ -51,7 +52,7 @@ export async function addToCart({
       productVariantId,
       quantity,
     });
-    revalidateTag("cart", "default");
+    updateTag("cart");
     return APIResponse.success<CartItem>(response.data, "تم إضافة المنتج بنجاح إلى السله");
   } catch (error) {
     return APIResponse.error(error);
@@ -61,17 +62,20 @@ export async function addToCart({
 export async function removeFromCart(productVariantId: number): Promise<IAPIResponse> {
   try {
     await authFetcher.delete(`/cart/${productVariantId}`);
-    revalidateTag("cart", "default");
+    updateTag("cart");
     return APIResponse.success<CartItem>(undefined, "تم إزالة المنتج بنجاح من السله");
   } catch (error) {
     return APIResponse.error(error);
   }
 }
 
-export async function editCartItem(
-  productVariantId: number,
-  quantity: number,
-): Promise<IAPIResponse> {
+export async function editCartItem({
+  productVariantId,
+  quantity,
+}: {
+  productVariantId: number;
+  quantity: number;
+}): Promise<IAPIResponse> {
   try {
     const response = await authFetcher.patch(`/cart/${productVariantId}`, {
       quantity,

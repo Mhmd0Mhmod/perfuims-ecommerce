@@ -1,27 +1,30 @@
 "use client";
 import { useCartContext } from "@/context/CartContext";
+import { useProductContext } from "@/context/ProductContext";
 import { useSelectedCountry } from "@/hooks/use-selected-country";
 import { cn, formatCurrency } from "@/lib/utils";
 import { Product } from "@/types/product";
 import { Minus, Plus, ShoppingCart } from "lucide-react";
 import { useCallback, useState } from "react";
 import { Button } from "../ui/button";
-import { useProductContext } from "@/context/ProductContext";
 
 function AddToCartButton({ product }: { product: Product }) {
-  const { add, pending } = useCartContext();
+  const { addMutation } = useCartContext();
   const { selectedVariant, setSelectedVariant } = useProductContext();
   const [quantity, setQuantity] = useState(1);
   const { selectedCountry } = useSelectedCountry();
 
   const onAdd = useCallback(() => {
     if (selectedVariant !== null) {
-      add(selectedVariant.id, quantity);
+      addMutation.mutate({ productVariantId: selectedVariant.id, quantity });
       setQuantity(1);
     }
-  }, [add, quantity, selectedVariant]);
+  }, [addMutation, quantity, selectedVariant]);
 
   const isAvailable = product.variants && product.variants.length > 0;
+  const isCurrentAdding =
+    addMutation.isPending && addMutation.variables?.productVariantId === selectedVariant?.id;
+  const isDisabled = !isAvailable || isCurrentAdding;
 
   return (
     <div className="flex w-full flex-col gap-2.5">
@@ -77,7 +80,7 @@ function AddToCartButton({ product }: { product: Product }) {
             size="icon"
             className="h-8 w-8 rounded-none"
             onClick={() => setQuantity((q) => Math.max(1, q - 1))}
-            disabled={quantity <= 1 || pending || !isAvailable}
+            disabled={isCurrentAdding || quantity <= 1}
           >
             <Minus className="h-3 w-3" />
           </Button>
@@ -92,25 +95,21 @@ function AddToCartButton({ product }: { product: Product }) {
             }}
             onBlur={() => setQuantity((q) => Math.max(1, q))}
             className="h-8 w-9 [appearance:textfield] border-none bg-transparent text-center text-sm font-semibold outline-none [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
-            disabled={pending || !isAvailable}
+            disabled={isCurrentAdding}
           />
           <Button
             variant="ghost"
             size="icon"
             className="h-8 w-8 rounded-none"
             onClick={() => setQuantity((q) => q + 1)}
-            disabled={pending || !isAvailable}
+            disabled={isCurrentAdding}
           >
             <Plus className="h-3 w-3" />
           </Button>
         </div>
 
         {/* Add to Cart Button */}
-        <Button
-          className="flex-1"
-          onClick={onAdd}
-          disabled={pending || !isAvailable || !selectedVariant?.id}
-        >
+        <Button className="flex-1" onClick={onAdd} disabled={isDisabled}>
           <ShoppingCart className="ml-1.5 h-3.5 w-3.5" />
           {isAvailable ? "أضف إلى السلة" : "غير متوفر"}
         </Button>

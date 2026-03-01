@@ -1,4 +1,3 @@
-import { useCartContext } from "@/context/CartContext";
 import { useSelectedCountry } from "@/hooks/use-selected-country";
 import { formatCurrency } from "@/lib/utils";
 import { CartItem } from "@/types/cart";
@@ -8,14 +7,15 @@ import { useState } from "react";
 import { Badge } from "../ui/badge";
 import { Button } from "../ui/button";
 import { Card } from "../ui/card";
+import { useCartContext } from "@/context/CartContext";
 
 function CartListItem({ item }: { item: CartItem }) {
   const { selectedCountry } = useSelectedCountry();
-  const { edit, remove } = useCartContext();
+  const { editMutation, removeMutation } = useCartContext();
   const [localQty, setLocalQty] = useState(item.quantity);
 
   const updateQuantity = async (newQty: number) => {
-    edit(item.id, newQty);
+    editMutation.mutate({ productVariantId: item.id, quantity: newQty });
   };
 
   const handleIncrement = () => {
@@ -31,7 +31,7 @@ function CartListItem({ item }: { item: CartItem }) {
     }
   };
   const handleRemove = () => {
-    remove(item.id);
+    removeMutation.mutate(item.id);
   };
   return (
     <Card className="border-border/50 p-0 transition-all duration-200 hover:shadow-md">

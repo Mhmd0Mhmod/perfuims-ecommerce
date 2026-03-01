@@ -1,111 +1,26 @@
 "use client";
-import { addToCart, clearCart, editCartItem, removeFromCart } from "@/app/(shop)/actions";
 import { useCart } from "@/hooks/use-cart";
 import { CartItem } from "@/types/cart";
-import { createContext, ReactNode, useContext, useTransition } from "react";
-import { toast } from "sonner";
+import { createContext, ReactNode, useContext } from "react";
 
 interface Cart {
   items: CartItem[];
-  pending: boolean;
   totalPrice: number;
-  add: (productVariantId: number, quantity: number) => void;
-  remove: (itemId: number) => void;
-  edit: (itemId: number, quantity: number) => void;
-  clear: () => void;
+  addMutation: ReturnType<typeof useCart>["addMutation"];
+  removeMutation: ReturnType<typeof useCart>["removeMutation"];
+  editMutation: ReturnType<typeof useCart>["editMutation"];
+  clearMutation: ReturnType<typeof useCart>["clearMutation"];
+  isCartLoading: boolean;
 }
 
 const CartContext = createContext<Cart | undefined>(undefined);
 export function CartProvider({ children }: { children: ReactNode }) {
-  const { data: cart = [], refetch } = useCart();
-  const [pending, startTransition] = useTransition();
-  const add = (productVariantId: number, quantity: number) => {
-    startTransition(async () => {
-      const id = toast.loading("جاري إضافة المنتج للسلة...");
-      try {
-        const reponse = await addToCart({
-          productVariantId,
-          quantity,
-        });
-        if (reponse.success) {
-          toast.success("تمت إضافة المنتج للسلة بنجاح!", { id });
-        } else {
-          toast.error("حدث خطأ أثناء إضافة المنتج للسلة.", { id });
-        }
-      } catch {
-        toast.error("حدث خطأ أثناء إضافة المنتج للسلة.", { id });
-      }
-    });
-    refetch();
-  };
+  const cart = useCart();
 
-  const remove = (itemId: number) => {
-    startTransition(() => {
-      const id = toast.loading("جاري حذف المنتج من السلة...");
-      removeFromCart(itemId)
-        .then((response) => {
-          if (response.success) {
-            toast.success("تم حذف المنتج من السلة بنجاح!", { id });
-          } else {
-            toast.error("حدث خطأ أثناء حذف المنتج من السلة.", { id });
-          }
-        })
-        .catch(() => {
-          toast.error("حدث خطأ أثناء حذف المنتج من السلة.", { id });
-        });
-    });
-    refetch();
-  };
-
-  const edit = (itemId: number, quantity: number) => {
-    startTransition(() => {
-      const id = toast.loading("جاري تعديل المنتج في السلة...");
-      editCartItem(itemId, quantity)
-        .then((response) => {
-          if (response.success) {
-            toast.success("تم تعديل المنتج في السلة بنجاح!", { id });
-          } else {
-            toast.error("حدث خطأ أثناء تعديل المنتج في السلة.", { id });
-          }
-        })
-        .catch(() => {
-          toast.error("حدث خطأ أثناء تعديل المنتج في السلة.", { id });
-        });
-    });
-    refetch();
-  };
-
-  const clear = () => {
-    startTransition(() => {
-      const id = toast.loading("جاري تفريغ السلة...");
-      clearCart()
-        .then((response) => {
-          if (response.success) {
-            toast.success("تم تفريغ السلة بنجاح!", { id });
-          } else {
-            toast.error("حدث خطأ أثناء تفريغ السلة.", { id });
-          }
-        })
-        .catch(() => {
-          toast.error("حدث خطأ أثناء تفريغ السلة.", { id });
-        });
-    });
-    refetch();
-  };
-  const totalPrice = cart.reduce(
-    (total, item) => total + item.variantDetails.newPrice * item.quantity,
-    0,
-  );
   return (
     <CartContext
       value={{
-        items: cart,
-        totalPrice,
-        pending,
-        add,
-        remove,
-        edit,
-        clear,
+        ...cart,
       }}
     >
       {children}

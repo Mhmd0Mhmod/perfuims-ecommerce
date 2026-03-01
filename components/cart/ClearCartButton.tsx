@@ -10,9 +10,14 @@ function ClearCartButton({
   asChild?: boolean;
   children: React.ReactNode;
 }) {
-  const { clear } = useCartContext();
+  const { clearMutation } = useCartContext();
   return (
-    <Button onClick={clear} asChild={asChild} className={className}>
+    <Button
+      onClick={() => clearMutation.mutate()}
+      asChild={asChild}
+      className={className}
+      disabled={clearMutation.isPending}
+    >
       {children}
     </Button>
   );

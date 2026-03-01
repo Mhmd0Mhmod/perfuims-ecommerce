@@ -1,10 +1,7 @@
 "use client";
-import { useCartContext } from "@/context/CartContext";
-import { Barcode, ShoppingCart, Trash2 } from "lucide-react";
-import Link from "next/link";
+import { ShoppingCart } from "lucide-react";
 import { Badge } from "../ui/badge";
 import { Button } from "../ui/button";
-import { ScrollArea } from "../ui/scroll-area";
 import {
   Sheet,
   SheetClose,
@@ -15,23 +12,25 @@ import {
   SheetTrigger,
 } from "../ui/sheet";
 import CartList from "./CartList";
-import ClearCartButton from "./ClearCartButton";
+
+import { useCartContext } from "@/context/CartContext";
+import { Skeleton } from "../ui/skeleton";
 
 function CartButton() {
-  const { items } = useCartContext();
+  const { items, isCartLoading } = useCartContext();
+
   return (
     <Sheet>
       <SheetTrigger asChild>
         <Button variant="ghost" size="icon" className="relative">
           <ShoppingCart className="h-5 w-5" />
           <Badge className="bg-primary absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center p-0 text-xs">
-            {items.length}
+            {isCartLoading ? <Skeleton className="h-4 w-4 rounded-full" /> : items.length}
           </Badge>
         </Button>
       </SheetTrigger>
       <SheetContent side="left" dir="ltr">
         <SheetClose />
-
         <div className="flex h-full flex-col" dir="rtl">
           <SheetHeader>
             <SheetTitle className="mb-4 text-lg font-semibold">سلة التسوق</SheetTitle>
@@ -40,25 +39,7 @@ function CartButton() {
             </SheetDescription>
           </SheetHeader>
           <div className="space-y-4 px-4 py-2">
-            <ScrollArea className="max-h-[70vh]">
-              <CartList cartItems={items} />
-            </ScrollArea>
-            <div className="grid grid-cols-1 gap-2">
-              {items.length > 0 && (
-                <Button asChild variant={"outline"}>
-                  <Link href="/checkout">
-                    <Barcode className="mr-2 h-4 w-4" />
-                    إتمام الشراء
-                  </Link>
-                </Button>
-              )}
-              {items.length > 0 && (
-                <ClearCartButton>
-                  <Trash2 className="mr-2 h-4 w-4" />
-                  إفراغ السلة
-                </ClearCartButton>
-              )}
-            </div>
+            <CartList />
           </div>
         </div>
       </SheetContent>
